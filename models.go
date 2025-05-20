@@ -9,3 +9,16 @@ type User struct {
 	Rev      string `json:"_rev,omitempty"`
 	Doctype  string `json:"doctype"`
 }
+
+type UserProfile struct {
+	ID        string
+	FirstName string
+	LastName  string
+	Image     string
+}
+
+type AdminProfile struct {
+}
+
+type SuperAdminProfile struct {
+}
