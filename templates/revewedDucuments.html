@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KACCIMA - Documents</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .document-item {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+    }
+
+    .document-item h4 {
+      margin: 0 0 8px;
+      color: #333;
+    }
+
+    .document-item p {
+      margin: 4px 0;
+    }
+
+    .status.approved {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status.pending {
+      color: orange;
+      font-weight: bold;
+    }
+
+    .download-link {
+      display: inline-block;
+      margin-top: 6px;
+      color: #007bff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40">
+        <span class="logo-text">KACCIMA</span>
+      </div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="notification.html">Notifications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li class="active"><a href="revewedDucuments.html">Documents</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="dashboard-container">
+    <aside class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="notification.html">Notifications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li class="active"><a href="revewedDucuments.html">Documents</a></li>
+      </ul>
+    </aside>
+
+    <section class="dashboard-content">
+      <h3>Uploaded Documents</h3>
+      <div id="documentsList" class="documents-list"></div>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const docs = JSON.parse(localStorage.getItem("kaccimaUploadedDocuments")) || [];
+
+      const container = document.getElementById("documentsList");
+
+      if (docs.length === 0) {
+        container.innerHTML = "<p>No documents uploaded yet.</p>";
+      } else {
+        docs.forEach(doc => {
+          const div = document.createElement("div");
+          div.className = "document-item";
+          div.innerHTML = `
+            <h4>${doc.name}</h4>
+            <p><strong>File Name:</strong> ${doc.fileName || 'Not uploaded'}</p>
+            <p><strong>Status:</strong> 
+              <span class="status ${doc.approved ? 'approved' : 'pending'}">
+                ${doc.approved ? 'Approved' : 'Pending'}
+              </span>
+            </p>
+            ${doc.fileName ? `<p><span class="download-link" onclick="alert('Download not available – file is not stored on server')">Download</span></p>` : ''}
+          `;
+          container.appendChild(div);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

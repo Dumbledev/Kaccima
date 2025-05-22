@@ -1,0 +1,584 @@
+/* Global Styles */
+:root {
+    --primary-color: #15e420;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --white: #ffffff;
+    --border-radius: 5px;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-image: url(images/bg4.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* optional: keeps the background fixed on scroll */
+    
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    min-height: 100vh;
+}
+
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #004494;
+    transform: translateY(-2px);
+}
+
+.btn.outline {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn.outline:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Header Styles */
+header {
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+/* If you want text next to the logo */
+.logo-text {
+    margin-left: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-left: 2rem;
+}
+
+nav ul li a {
+    color: var(--dark-color);
+    font-weight: 500;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+.auth-buttons .btn {
+    margin-left: 1rem;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    margin-right: 1rem;
+    font-weight: 500;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://via.placeholder.com/1920x1080');
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    padding: 5rem 2rem;
+    text-align: center;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+}
+
+.cta-buttons {
+    margin-top: 2rem;
+}
+
+/* Auth Container */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+}
+
+.auth-form {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 500px;
+}
+
+.auth-form h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+}
+
+.auth-links {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.auth-links a {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Registration Container */
+.registration-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.registration-container h1 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
+
+
+.multi-step-form {
+    position: relative;
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox-group input {
+    margin-right: 0.5rem;
+}
+
+.inline-inputs {
+    display: flex;
+    gap: 1rem;
+}
+
+.inline-inputs input {
+    flex: 1;
+}
+
+.upload-group {
+    margin-bottom: 1.5rem;
+}
+
+.upload-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.upload-group input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px dashed #ddd;
+    border-radius: var(--border-radius);
+}
+
+.form-navigation {
+    display: flex;
+    gap: 10px; /* Adjust space between buttons if needed */
+    justify-content: flex-start; /* Aligns buttons to the left */
+    margin-top: 10px;
+}
+
+
+/* Payment Container */
+.payment-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.payment-methods h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.fee {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: var(--success-color);
+}
+
+.payment-option {
+    display: none;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+}
+
+.payment-option.active {
+    display: block;
+}
+
+.payment-tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+    padding: 0.75rem 1.5rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.tab-btn.active {
+    border-bottom-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.card-form {
+    margin-top: 1rem;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 2rem auto;
+    min-height: 70vh;
+}
+.sidebar {
+    width: 250px;
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px); /* Adds blur behind */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    margin-right: 2rem;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: initial;
+}
+
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin-bottom: 1rem;
+}
+
+.sidebar a {
+    display: block;
+    padding: 0.5rem 0;
+    color: var(--dark-color);
+}
+
+.sidebar a:hover, .sidebar li.active a {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.dashboard-content {
+    flex: 1;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+}
+
+.notification {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+.notification.success {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid var(--success-color);
+    color: var(--success-color);
+}
+
+.membership-status, .contact-info, .profile-info {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-info .info-item {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.profile-info .label {
+    font-weight: 500;
+    width: 150px;
+}
+
+.profile-info .value.active {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    nav ul {
+        margin: 1rem 0;
+    }
+    
+    .auth-buttons {
+        margin-top: 1rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .dashboard-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .inline-inputs {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* Footer styles */
+footer {
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+    padding: 20px 10px;
+    position: relative;
+    z-index: 10;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-size: 14px;
+}
+.upload-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.upload-group {
+    margin-bottom: 20px;
+}
+
+.mui-label {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.mui-file-upload {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+}
+
+.mui-file-upload:hover {
+    border-color: #3f51b5;
+    box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+}
+
+.mui-file-upload .material-icons {
+    margin-right: 8px;
+    color: #3f51b5;
+}
+
+.mui-file-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.upload-group {
+    margin-bottom: 20px;
+    flex: 1 1 calc(50% - 16px);
+    min-width: 250px;
+}
+
+.mui-label {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.mui-file-upload {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+}
+
+.mui-file-upload:hover {
+    border-color: #3f51b5;
+    box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+}
+
+.mui-file-upload .material-icons {
+    margin-right: 8px;
+    color: #3f51b5;
+}
+
+.mui-file-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}

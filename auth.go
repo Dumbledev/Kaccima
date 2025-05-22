@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
+
+	// "io"
 	"net/http"
 	"strings"
 
@@ -20,165 +23,230 @@ func signUp(w http.ResponseWriter, r *http.Request) {
 
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "applicaton/json")
-	var userResponse UserResponse
-	r.ParseForm()
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	name := r.FormValue("companyName")
 	email := strings.ToLower(r.FormValue("email"))
 	password := r.FormValue("password")
-	role := strings.ToLower(r.FormValue("role"))
+	address := r.FormValue("officeAddress")
+	employeesNo := r.FormValue("employeesNo")
+	nonNigerianEmployees := r.FormValue("nonNigerianEmployees")
+	directorsNo := r.FormValue("directorsNo")
+	nonNigerianDirectors := r.FormValue("nonNigerianDirectors")
+	businessNature := r.FormValue("businessNature")
+	bankers := r.FormValue("bankers")
+	contactPerson := r.FormValue("contactPerson")
+	rep := r.FormValue("representative")
 
-	userResp, err := findUser(dbFindUrl, email)
+	coverLetter, _, err := r.FormFile("coverLetter")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer coverLetter.Close()
+	temp1, err2 := os.CreateTemp("static", "file-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp1.Close()
+	fileBytes, err3 := io.ReadAll(coverLetter)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp1.Write(fileBytes)
+
+	memorandum, _, err := r.FormFile("memorandum")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer memorandum.Close()
+	temp2, err2 := os.CreateTemp("static", "file-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp2.Close()
+	fileBytes1, err3 := io.ReadAll(memorandum)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp2.Write(fileBytes1)
+
+	businessCertificate, _, err := r.FormFile("registrationCert")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer businessCertificate.Close()
+	temp3, err2 := os.CreateTemp("static", "file-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp3.Close()
+	fileBytes2, err3 := io.ReadAll(businessCertificate)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp2.Write(fileBytes2)
+
+	incorporationCertificate, _, err := r.FormFile("incorporationCert")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer incorporationCertificate.Close()
+	temp4, err2 := os.CreateTemp("static", "file-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp4.Close()
+	fileBytes3, err3 := io.ReadAll(incorporationCertificate)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp2.Write(fileBytes3)
+
+	passportPhoto, _, err := r.FormFile("passportPhotos")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer passportPhoto.Close()
+	temp5, err2 := os.CreateTemp("static", "file-*.png")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp5.Close()
+	fileBytes4, err3 := io.ReadAll(passportPhoto)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp5.Write(fileBytes4)
+
+	businessPremiseCertificate, _, err := r.FormFile("premisesCert")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer businessPremiseCertificate.Close()
+	temp6, err2 := os.CreateTemp("static", "file-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp6.Close()
+	fileBytes5, err3 := io.ReadAll(businessPremiseCertificate)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp6.Write(fileBytes5)
+
+	formC07, _, err := r.FormFile("formC07")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer formC07.Close()
+	temp7, err2 := os.CreateTemp("static", "file-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp7.Close()
+	fileBytes6, err3 := io.ReadAll(formC07)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp7.Write(fileBytes6)
+
+	idDocument, _, err := r.FormFile("nationalId")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer idDocument.Close()
+	temp8, err2 := os.CreateTemp("static", "file-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp8.Close()
+	fileBytes7, err3 := io.ReadAll(idDocument)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp5.Write(fileBytes7)
+
+	orgResp, err := findOrganization(dbFindUrl, email)
 	if err != nil {
 		fmt.Println("err", err)
 		return
 	}
-	if len(userResp.Body) != 0 {
-		fmt.Println("Email Already Taken, Please Choose Another one.")
+	if len(orgResp.Body) != 0 {
+		tmpl.ExecuteTemplate(w, "sign_in.html", "Organization Already Registered, Please Choose Another one.")
 		return
 	}
 	hashedPassword, hashedErr := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if hashedErr != nil {
-		fmt.Println(hashedErr)
+		tmpl.ExecuteTemplate(w, "sign_up.html", "Error")
 		return
 	}
 
-	var user = User{
-		ID:       uuid.NewString(),
-		Email:    email,
-		Password: string(hashedPassword),
-		Role:     role,
-		Doctype:  "user",
+	var org = Organization{
+		ID:                         uuid.NewString(),
+		Name:                       name,
+		Address:                    address,
+		Email:                      email,
+		NumberOfEmployees:          employeesNo,
+		NonNigerianEmployees:       nonNigerianEmployees,
+		NumberOfDirectors:          directorsNo,
+		NonNigerianDirectors:       nonNigerianDirectors,
+		NatureOfBusiness:           businessNature,
+		Bankers:                    bankers,
+		ContactPerson:              contactPerson,
+		Representative:             rep,
+		Password:                   string(hashedPassword),
+		CoverLetter:                temp1.Name(),
+		Memorandum:                 temp2.Name(),
+		BusinessCertificate:        temp3.Name(),
+		IncorporationCertificate:   temp4.Name(),
+		PassportPhoto:              temp5.Name(),
+		BusinessPremiseCertificate: temp6.Name(),
+		FormC07:                    temp7.Name(),
+		IDDocument:                 temp8.Name(),
+		Doctype:                    "organization",
 	}
 
-	jUser, err := json.Marshal(user)
+	jsonData, err := json.Marshal(org)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	// fmt.Println(string(jUser))
-	request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jUser))
+	request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
 	if err != nil {
-		fmt.Println("Byte Error", err)
+		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(1)")
 		return
 	}
 	request.Header.Set("Content-type", "application/json")
 	client := &http.Client{}
 	res, error := client.Do(request)
 	if error != nil {
-		fmt.Println("Req Err", error)
+		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(2)")
 	}
 	defer res.Body.Close()
-
-	body, _ := io.ReadAll(res.Body)
-	err = json.Unmarshal(body, &userResponse)
-	if err != nil {
-		log.Fatalln("UnMarshal Err: ", error)
-		return
-	}
-	userResp, err = findUser(dbFindUrl, email)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	if len(userResp.Body) == 0 {
-		fmt.Println("No User Data Found")
-		return
-	}
-	user = userResp.Body[0]
-	fmt.Println(user)
-	if user.Role == "admin" {
-		adminProfile := AdminProfile{
-			// ID:      uuid.NewString(),
-			// UserId:  user.ID,
-			// Doctype: "adminProfile",
-		}
-		jData, err := json.Marshal(adminProfile)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jData))
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		request.Header.Set("Content-Type", "application/json")
-		client := &http.Client{}
-		res, err := client.Do(request)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer res.Body.Close()
-		body, err := io.ReadAll(res.Body)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(body)
-		http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
-		return
-	} else if user.Role == "user" {
-		userProfile := UserProfile{
-			// ID:      uuid.NewString(),
-			// UserId:  user.ID,
-			// Doctype: "lecturerProfile",
-		}
-		jData, err := json.Marshal(userProfile)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jData))
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		request.Header.Set("Content-Type", "application/json")
-		client := &http.Client{}
-		res, err := client.Do(request)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer res.Body.Close()
-		body, err := io.ReadAll(res.Body)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(body)
-		http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
-		return
-	} else if user.Role == "super_admin" {
-		studentProfile := SuperAdminProfile{
-			// ID:      uuid.NewString(),
-			// UserId:  user.ID,
-			// Doctype: "studentProfile",
-		}
-		jData, err := json.Marshal(studentProfile)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jData))
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		request.Header.Set("Content-Type", "application/json")
-		client := &http.Client{}
-		res, err := client.Do(request)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer res.Body.Close()
-		body, err := io.ReadAll(res.Body)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(body)
-		http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
-		return
-	}
 
 	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
 }

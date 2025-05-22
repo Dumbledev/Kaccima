@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KACCIMA - Notifications</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40">
+        <span class="logo-text">KACCIMA</span>
+      </div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li class="active"><a href="notification.html">Notifications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="revewedDucuments.html">Documents</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="dashboard-container">
+    <aside class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li class="active"><a href="notification.html">Notifications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="revewedDucuments.html">Documents</a></li>
+      </ul>
+    </aside>
+
+    <section class="dashboard-content">
+      <h3>Notifications</h3>
+      <div id="notificationsList"></div>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const notifications = JSON.parse(localStorage.getItem("kaccimaNotifications")) || [
+        { title: "Payment Received", message: "Your payment has been successfully recorded." },
+        { title: "Document Approved", message: "Your registration documents have been approved." },
+        { title: "Renewal Reminder", message: "Your membership will expire soon. Please renew." }
+      ];
+
+      const container = document.getElementById("notificationsList");
+
+      if (notifications.length === 0) {
+        container.innerHTML = "<p>No notifications available.</p>";
+      } else {
+        notifications.forEach(note => {
+          const div = document.createElement("div");
+          div.className = "notification-box";
+          div.innerHTML = `<h4>${note.title}</h4><p>${note.message}</p>`;
+          container.appendChild(div);
+        });
+      }
+    });
+  </script>
+
+  <style>
+    .notification-box {
+      background: #f5f5f5;
+      border-left: 5px solid #007bff;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+  </style>
+</body>
+</html>

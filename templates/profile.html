@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KACCIMA - Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+     <header>
+        <nav>
+                    <div class="logo">
+            <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40">
+           
+            <span class="logo-text">KACCIMA</span>
+        </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="notification.html">Notifications</a></li>
+                <li class="active"><a href="profile.html">Profile</a></li>
+                <li><a href="#">Documents</a></li>
+            </ul>
+        </aside>
+
+        <!-- Profile Content -->
+        <section class="dashboard-content">
+            <div class="profile-info">
+                <h3>Profile Information</h3>
+                
+                <!-- User Photo -->
+                <div class="photo-container">
+                  <img id="passportPhoto" src="images/default-avatar.png" alt="User Photo" class="profile-photo" width="70px" height="70px">
+
+                </div>
+
+               <div class="info-item">
+    <span class="label">Company Name:</span>
+    <span class="value" id="companyName"></span>
+</div>
+<div class="info-item">
+    <span class="label">Representative:</span>
+    <span class="value" id="representative"></span>
+</div>
+<div class="info-item">
+    <span class="label">Contact Person:</span>
+    <span class="value" id="contactPerson"></span>
+</div>
+<div class="info-item">
+    <span class="label">Email:</span>
+    <span class="value" id="email"></span>
+</div>
+<div class="info-item">
+    <span class="label">Office Address:</span>
+    <span class="value" id="officeAddress"></span>
+</div>
+
+                <div class="info-item">
+                    <span class="label">Membership Status:</span>
+                    <span class="value active">Active</span>
+                </div>
+
+                <button class="btn outline" id="editProfile">Edit Profile</button>
+            </div>
+        </section>
+    </main>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+
+    if (!storedData) return;
+
+    const setField = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value || '';
+    };
+
+    setField('companyName', storedData.companyName);
+    setField('representative', storedData.representative);
+    setField('contactPerson', storedData.contactPerson);
+    setField('email', storedData.email);
+    setField('officeAddress', storedData.officeAddress);
+
+    // Load passport photo if available
+    const passportImg = document.getElementById('passportPhoto');
+    if (storedData.passportPhotoBase64 && passportImg) {
+      passportImg.src = storedData.passportPhotoBase64;
+    }
+  });
+</script>
+
+  
+</body>
+</html>

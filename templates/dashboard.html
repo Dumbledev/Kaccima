@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KACCIMA - Dashboard</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40"/>
+        <span class="logo-text">KACCIMA</span>
+      </div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="dashboard-container">
+    <aside class="sidebar">
+      <ul>
+        <li class="active"><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="notification.html">Notifications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="revewedDucuments.html">Documents</a></li>
+      </ul>
+    </aside>
+
+    <section class="dashboard-content">
+      <div class="notification success" id="paymentStatusContainer">
+        <p>Your payment status: <span id="paymentStatus">Pending</span></p>
+      </div>
+
+      <div class="membership-status">
+        <h3>Membership Subscription</h3>
+        <p>Registration Date: <span id="registrationDate"></span></p>
+        <p>Expected Renewal Date: <span id="renewalDate"></span></p>
+        <p>Time left to renew: <span id="countdownTimer"></span></p>
+        <a href="payment.html" class="btn">Renew Payment</a>
+      </div>
+
+      <div class="profile-info">
+        <h3>Profile Information</h3>
+        <div class="info-item"><span class="label">Company Name:</span><span class="value" id="companyName"></span></div>
+        <div class="info-item"><span class="label">Office Address:</span><span class="value" id="officeAddress"></span></div>
+        <div class="info-item"><span class="label">Business Nature:</span><span class="value" id="businessNature"></span></div>
+        <div class="info-item"><span class="label">Bankers:</span><span class="value" id="bankers"></span></div>
+        <div class="info-item"><span class="label">Email:</span><span class="value" id="email"></span></div>
+        <div class="info-item"><span class="label">Membership Status:</span><span class="value active">Active</span></div>
+        <button class="btn outline" id="editProfile">Edit Profile</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 KACCIMA. All rights reserved.</p>
+      <p>Contact us: info@kaccima.org | +234-123-456-7890</p>
+    </div>
+  </footer>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+
+    if (!storedData) return;
+
+    const setField = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value || '';
+    };
+
+    setField('companyName', storedData.companyName);
+    setField('officeAddress', storedData.officeAddress);
+    setField('businessNature', Array.isArray(storedData.businessNature) ? storedData.businessNature.join(', ') : '');
+    setField('bankers', storedData.bankers);
+    setField('email', storedData.email);
+    setField('paymentStatus', storedData.paymentStatus || 'Pending');
+
+    // Set dates
+    const regDate = storedData.registrationDate || new Date().toISOString();
+    const regDateObj = new Date(regDate);
+    const renewalDate = new Date(regDateObj);
+    renewalDate.setFullYear(regDateObj.getFullYear() + 1);
+
+    document.getElementById('registrationDate').textContent = regDateObj.toDateString();
+    document.getElementById('renewalDate').textContent = renewalDate.toDateString();
+
+    // Countdown
+    const countdownEl = document.getElementById('countdownTimer');
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = renewalDate - now;
+      if (diff <= 0) {
+        countdownEl.textContent = 'Expired';
+        clearInterval(interval);
+      } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        countdownEl.textContent = `${days} day(s)`;
+      }
+    }, 1000);
+  });
+</script>
+
+</body>
+</html>
