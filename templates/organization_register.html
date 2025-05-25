@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KACCIMA - Member Registration</title>
+    <style>
+       
+    /* Button Styles */
+    .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Primary Button (Next/Submit) */
+    .btn {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn:hover {
+        background-color: #12c21e;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Secondary Button (Previous) */
+    .btn.prev-step {
+        background-color: #f0f0f0;
+        color: #333;
+        margin-right: 15px;
+    }
+
+    .btn.prev-step:hover {
+        background-color: #e0e0e0;
+    }
+
+    /* Form Navigation Container */
+    .form-navigation {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    /* Single Button Navigation (Next step) */
+    .form-navigation:has(.next-step:only-child) {
+        justify-content: flex-end;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .btn {
+            padding: 10px 20px;
+            font-size: 15px;
+        }
+        
+        .form-navigation {
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .btn.prev-step {
+            margin-right: 0;
+        }
+    }
+
+        /* Global Styles */
+        :root {
+            --primary-color: #15e420;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --white: #ffffff;
+            --border-radius: 5px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-image: url(images/bg4.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* Centered Container */
+        .centered-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Form Styles */
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .form-group {
+            flex: 1 1 calc(50% - 20px);
+            min-width: 200px;
+            max-width: 400px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+        
+        .inline-inputs {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .inline-inputs input {
+            flex: 1;
+        }
+        
+        .upload-group {
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Registration Container */
+        .registration-container {
+            width: 90%;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text {
+            margin-left: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Form Navigation */
+        .form-navigation {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Material UI File Upload */
+        .mui-label {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.87);
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .mui-file-upload {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.23);
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            cursor: pointer;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: Roboto, sans-serif;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .mui-file-upload:hover {
+            border-color: #3f51b5;
+            box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+        }
+
+        .mui-file-upload .material-icons {
+            margin-right: 8px;
+            color: #3f51b5;
+        }
+
+        .mui-file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 20px 10px;
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 14px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .form-group {
+                flex: 1 1 100%;
+            }
+            
+            .inline-inputs {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin: 1rem 0;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="centered-container">
+        <header>
+            <nav>
+                <div class="logo">
+                    <img src="/static/logo.png" alt="KACCIMA Logo" width="40" height="40">
+                    <span class="logo-text">KACCIMA</span>
+                </div>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="registration-container">
+            <h1><img src="/static/logo.png" alt="KACCIMA Logo" width="50" height="50"> KACCIMA Member Registration</h1>
+            
+            <form id="registrationForm" class="multi-step-form" action="/sign_up_handler" method="post" enctype="multipart/form-data">
+                <!-- Step 1: Company Information -->
+                <div class="form-step" data-step="1">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="companyName">Name of company</label>
+                            <input type="text" id="companyName" name="companyName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="officeAddress">Office address</label>
+                            <input type="text" id="officeAddress" name="officeAddress" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nature of business</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="businessNature" value="commerce" id="commerce"> Commerce</label>
+                                <label><input type="checkbox" name="businessNature" value="industry" id="industry"> Industry</label>
+                                <label><input type="checkbox" name="businessNature" value="mines" id="mines"> Mines</label>
+                                <label><input type="checkbox" name="businessNature" value="agriculture" id="agriculture"> Agriculture</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Number of directors</label>
+                            <div class="inline-inputs">
+                                <input type="number" id="nigerianDirectors" name="directorsNo" placeholder="Nigerian" min="0" required>
+                                <input type="number" id="nonNigerianDirectors" name="nonNigerianDirectors" placeholder="Non-Nigerian" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Number of employees</label>
+                            <div class="inline-inputs">
+                                <input type="number" id="nigerianEmployees" name="employeesNo" placeholder="Nigerian" min="0" required>
+                                <input type="number" id="nonNigerianEmployees" name="nonNigerianEmployees" placeholder="Non-Nigerian" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bankers">Bankers</label>
+                            <input type="text" id="bankers" name="bankers" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPerson">Contact person</label>
+                            <input type="text" id="contactPerson" name="contactPerson" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="representative">Representative</label>
+                            <input type="text" id="representative" name="representative" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required placeholder="company@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">Create Password</label>
+                            <input type="password" id="password" name="password" required minlength="8" placeholder="At least 8 characters">
+                            <small class="password-hint">Use letters, numbers, and symbols</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter password">
+                            <small id="passwordError" class="error-message" style="display:none;">Passwords don't match!</small>
+                        </div>
+                    </div>
+
+                    <!-- For the first step (Next button only) -->
+                    <div class="form-navigation">
+                        <button type="button" class="btn next-step">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Document Upload -->
+                <div class="form-step" data-step="2" >
+                    <h3 style="text-align: center;">Upload Required Documents</h3>
+                    
+                    <div class="upload-section">
+                        <div class="form-row">
+                            <div class="upload-group">
+                                <label for="coveringLetter" class="mui-label">Covering letter (company letterhead)</label>
+                                <div class="mui-file-upload">
+                                    <span class="material-icons">upload_file</span>
+                                    <span class="file-label" id="label-coveringLetter">Choose file</span>
+                                    <input type="file" id="coveringLetter" name="coverLetter" required accept=".pdf">
+                                </div>
+                            </div>
+
+                            <div class="upload-group">
+                                <label for="memorandum" class="mui-label">Memorandum & articles</label>
+                                <div class="mui-file-upload">
+                                    <span class="material-icons">upload_file</span>
+                                    <span class="file-label" id="label-memorandum">Choose file</span>
+                                    <input type="file" id="memorandum" name="memorandum" required accept=".pdf">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="upload-group">
+                                <label for="registrationCert" class="mui-label">Business name certificate</label>
+                                <div class="mui-file-upload">
+                                    <span class="material-icons">upload_file</span>
+                                    <span class="file-label" id="label-registrationCert">Choose file</span>
+                                    <input type="file" id="registrationCert" name="registrationCert" required accept=".pdf">
+                                </div>
+                            </div>
+
+                            <div class="upload-group">
+                                <label for="incorporationCert" class="mui-label">Incorporation certificate</label>
+                                <div class="mui-file-upload">
+                                    <span class="material-icons">upload_file</span>
+                                    <span class="file-label" id="label-incorporationCert">Choose file</span>
+                                    <input type="file" id="incorporationCert" name="incorporationCert" required accept=".pdf">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="upload-group">
+                                <label for="premisesCert" class="mui-label">Business premises certificate</label>
+                                <div class="mui-file-upload">
+                                    <span class="material-icons">upload_file</span>
+                                    <span class="file-label" id="label-premisesCert">Choose file</span>
+                                    <input type="file" id="premisesCert" name="premisesCert" required accept=".pdf">
+                                </div>
+                            </div>
+
+                            <div class="upload-group">
+                                <label for="passportPhotos" class="mui-label">Passport photos</label>
+                                <div class="mui-file-upload">
+                                    <span class="material-icons">upload_file</span>
+                                    <span class="file-label" id="label-passportPhotos">Choose files</span>
+                                    <input type="file" id="passportPhotos" name="passportPhotos" multiple required accept=".jpg,.jpeg,.png">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="upload-group">
+                                <label for="formC07" class="mui-label">Form C07</label>
+                                <div class="mui-file-upload">
+                                    <span class="material-icons">upload_file</span>
+                                    <span class="file-label" id="label-formC07">Choose file</span>
+                                    <input type="file" id="formC07" name="formC07" required accept=".pdf">
+                                </div>
+                            </div>
+                             <div class="upload-group">
+                                <label for="nationalId" class="mui-label">ID Document</label>
+                                <div class="mui-file-upload">
+                                    <span class="material-icons">upload_file</span>
+                                    <span class="file-label" id="label-nationalId">Choose file</span>
+                                    <input type="file" id="nationalId" name="nationalId" required accept=".pdf">
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                    <div class="form-navigation">
+                        <button type="button" class="btn prev-step">Previous</button>
+                        <button type="submit" class="btn">Submit Registration</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2025 KACCIMA. All rights reserved.</p>
+                <p>Contact us: info@kaccima.org | +234-123-456-7890</p>
+            </div>
+        </footer>
+    </div>
+
+  
+</body>
+</html>
