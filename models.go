@@ -5,7 +5,6 @@ type User struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Role     string `json:"role"`
-	Approved bool   `json:"approved"`
 	Rev      string `json:"_rev,omitempty"`
 	Doctype  string `json:"doctype"`
 }
@@ -51,6 +50,8 @@ type Organization struct {
 	PassportPhoto              string `json:"passportPhoto"`
 	FormC07                    string `json:"formC07"`
 	IDDocument                 string `json:"idDocument"`
+	Approved                   bool   `json:"approved"`
+	UserId                     string `json:"userId"`
 	Doctype                    string `json:"doctype"`
 }
 

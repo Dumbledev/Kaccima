@@ -13,7 +13,16 @@ import (
 )
 
 func organization(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "index.html", nil)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	tmpl.ExecuteTemplate(w, "organization.html", organization)
 }
 
 func organizationRegister(w http.ResponseWriter, r *http.Request) {
@@ -217,6 +226,8 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		BusinessPremiseCertificate: temp6.Name(),
 		FormC07:                    temp7.Name(),
 		IDDocument:                 temp8.Name(),
+		UserId:                     currentUser.ID,
+		Approved:                   false,
 		Doctype:                    "organization",
 	}
 
@@ -227,7 +238,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
 	if err != nil {
-		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(1)")
+		tmpl.ExecuteTemplate(w, "500.html", "Server Error(1)")
 		return
 	}
 	request.Header.Set("Content-type", "application/json")
@@ -238,6 +249,6 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/organization", http.StatusPermanentRedirect)
 
 }

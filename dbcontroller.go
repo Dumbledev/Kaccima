@@ -94,9 +94,9 @@ func findUserById(url string, userId string) (UserResponse, error) {
 // 	return response, error
 // }
 
-func findOrganization(url, email string) (OrganizationResponse, error) {
+func findOrganization(url, userId string) (OrganizationResponse, error) {
 	var response OrganizationResponse
-	jsonData := map[string]map[string]any{"selector": {"email": email, "doctype": "organization"}}
+	jsonData := map[string]map[string]any{"selector": {"userId": userId, "doctype": "organization"}}
 	data, error := json.Marshal(jsonData)
 	if error != nil {
 		log.Fatalln("Marshal", error)
