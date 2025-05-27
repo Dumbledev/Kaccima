@@ -31,6 +31,7 @@ func main() {
 	http.HandleFunc("/sign_in", signIn)
 	http.HandleFunc("/sign_in_handler", signInHandler)
 	http.HandleFunc("/sign_out", signOut)
+	http.HandleFunc("/forgot_password", forgotPassword)
 
 	http.Handle("/organization", isAuthenticated(organization))
 	http.Handle("/organization_register", isAuthenticated(organizationRegister))

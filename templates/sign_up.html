@@ -59,7 +59,7 @@
     <main class="auth-container">
         <div class="auth-form">
             <h2>Register</h2>
-            <form id="loginForm" method="post" action="/sign_in_handler">
+            <form id="loginForm" method="post" action="/sign_up_handler">
                 <div class="form-group">
                     <label for="loginEmail">Email </label>
                     <input type="email" id="loginEmail" name="email" placeholder="Email" required>
@@ -71,7 +71,7 @@
                 <button type="submit" class="btn">Register</button>
             </form>
             <div class="auth-links">
-                <a href="#">Forgot password?</a>
+                <a href="/forgot_password">Forgot password?</a>
                 <p>Don't have an account? <a href="/sign_in">Login</a></p>
             </div>
         </div>
@@ -109,33 +109,33 @@
             }, 5000);
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // document.getElementById('loginForm').addEventListener('submit', function(e) {
+        //     e.preventDefault();
 
-            const emailInput = document.getElementById('loginEmail').value.trim();
-            const passwordInput = document.getElementById('loginPassword').value;
+        //     const emailInput = document.getElementById('loginEmail').value.trim();
+        //     const passwordInput = document.getElementById('loginPassword').value;
 
-            // Retrieve stored registration data
-            const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+        //     // Retrieve stored registration data
+        //     const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
 
-            if (!storedData) {
-                showAlert('error', 'No registration data found. Please register first.');
-                return;
-            }
+        //     if (!storedData) {
+        //         showAlert('error', 'No registration data found. Please register first.');
+        //         return;
+        //     }
 
-            if (
-                storedData.email.toLowerCase() === emailInput.toLowerCase() &&
-                storedData.password === passwordInput
-            ) {
-                showAlert('success', 'Login successful! Redirecting...');
-                // Redirect to dashboard after 2 seconds
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 2000);
-            } else {
-                showAlert('error', 'Invalid email or password. Please try again.');
-            }
-        });
+        //     if (
+        //         storedData.email.toLowerCase() === emailInput.toLowerCase() &&
+        //         storedData.password === passwordInput
+        //     ) {
+        //         showAlert('success', 'Login successful! Redirecting...');
+        //         // Redirect to dashboard after 2 seconds
+        //         setTimeout(() => {
+        //             window.location.href = 'dashboard.html';
+        //         }, 2000);
+        //     } else {
+        //         showAlert('error', 'Invalid email or password. Please try again.');
+        //     }
+        // });
     </script>
 </body>
 </html>

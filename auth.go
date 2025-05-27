@@ -18,10 +18,6 @@ func signUp(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "sign_up.html", nil)
 }
 
-func adminSignUp(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "sign_up.html", nil)
-}
-
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "applicaton/json")
 	r.ParseMultipartForm(10 * 1024 * 1024)
@@ -71,6 +67,10 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 
 	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
+}
+
+func adminSignUp(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "sign_up.html", nil)
 }
 
 func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
@@ -180,8 +180,8 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/organization", http.StatusPermanentRedirect)
 		return
 	}
-	// else if user.Role == "superAdmi" {
-	// 	http.Redirect(w, r, "/lecturer", http.StatusPermanentRedirect)
+	// else if user.Role == "superAdmin" {
+	// 	http.Redirect(w, r, "/suoer_admin", http.StatusPermanentRedirect)
 	// 	return
 	// }
 }
@@ -193,6 +193,10 @@ func signOut(w http.ResponseWriter, r *http.Request) {
 	session.Save(r, w)
 	currentUser = User{}
 	http.Redirect(w, r, "/", http.StatusPermanentRedirect)
+}
+
+func forgotPassword(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "forgot-password.html", nil)
 }
 
 func isAuthenticated(endpoint func(http.ResponseWriter, *http.Request)) http.Handler {
