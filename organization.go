@@ -18,7 +18,6 @@ func organization(w http.ResponseWriter, r *http.Request) {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
 		return
 	}
-	fmt.Println(orgResp.Body)
 	if len(orgResp.Body) == 0 {
 		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
 		return
@@ -253,6 +252,5 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	http.Redirect(w, r, "/organization", http.StatusPermanentRedirect)
-
+	http.Redirect(w, r, "/organization", http.StatusSeeOther)
 }
