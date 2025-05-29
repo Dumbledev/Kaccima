@@ -16,7 +16,9 @@ func organization(w http.ResponseWriter, r *http.Request) {
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
 	}
+	fmt.Println(orgResp.Body)
 	if len(orgResp.Body) == 0 {
 		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
 		return
@@ -246,6 +248,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	res, error := client.Do(request)
 	if error != nil {
 		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(2)")
+		return
 	}
 	defer res.Body.Close()
 

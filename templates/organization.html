@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KACCIMA - Profile</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
      <header>
@@ -45,15 +45,15 @@
 
                <div class="info-item">
     <span class="label">Company Name:</span>
-    <span class="value" id="companyName"></span>
+    <span class="value" id="companyName">{{.Name}}</span>
 </div>
 <div class="info-item">
     <span class="label">Representative:</span>
-    <span class="value" id="representative"></span>
+    <span class="value" id="representative">{{.Representative}}</span>
 </div>
 <div class="info-item">
     <span class="label">Contact Person:</span>
-    <span class="value" id="contactPerson"></span>
+    <span class="value" id="contactPerson">{{.ContactPerson}}</span>
 </div>
 <div class="info-item">
     <span class="label">Email:</span>
@@ -61,7 +61,7 @@
 </div>
 <div class="info-item">
     <span class="label">Office Address:</span>
-    <span class="value" id="officeAddress"></span>
+    <span class="value" id="officeAddress">{{.Address}}</span>
 </div>
 
                 <div class="info-item">
