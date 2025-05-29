@@ -211,6 +211,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	var org = Organization{
 		ID:                         uuid.NewString(),
 		Name:                       name,
+		Email:                      email,
 		Address:                    address,
 		NumberOfEmployees:          employeesNo,
 		NonNigerianEmployees:       nonNigerianEmployees,
