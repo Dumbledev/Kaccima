@@ -23,7 +23,7 @@ func organization(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	organization := orgResp.Body[0]
-	tmpl.ExecuteTemplate(w, "organization.html", organization)
+	tmpl.ExecuteTemplate(w, "organization-profile.html", organization)
 }
 
 func organizationRegister(w http.ResponseWriter, r *http.Request) {
