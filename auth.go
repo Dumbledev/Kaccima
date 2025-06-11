@@ -70,7 +70,7 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminSignUp(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "sign_up.html", nil)
+	tmpl.ExecuteTemplate(w, "admin_sign_up.html", nil)
 }
 
 func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
@@ -85,12 +85,12 @@ func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(userResponse.Body) != 0 {
-		tmpl.ExecuteTemplate(w, "sign_in.html", "Organization Already Registered, Please Choose Another one.")
+		tmpl.ExecuteTemplate(w, "admin_sign_in.html", "Email Already Registered, Please Choose Another one.")
 		return
 	}
 	hashedPassword, hashedErr := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if hashedErr != nil {
-		tmpl.ExecuteTemplate(w, "sign_up.html", "Error")
+		tmpl.ExecuteTemplate(w, "admin_sign_up.html", "Error")
 		return
 	}
 
@@ -110,14 +110,15 @@ func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println(string(jUser))
 	request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
 	if err != nil {
-		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(1)")
+		tmpl.ExecuteTemplate(w, "admin_sign_up.html", "Server Error(1)")
 		return
 	}
 	request.Header.Set("Content-type", "application/json")
 	client := &http.Client{}
 	res, error := client.Do(request)
 	if error != nil {
-		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(2)")
+		tmpl.ExecuteTemplate(w, "admin_sign_up.html", "Server Error(2)")
+		return
 	}
 	defer res.Body.Close()
 

@@ -37,6 +37,8 @@ func main() {
 	http.Handle("/organization_register", isAuthenticated(organizationRegister))
 	http.Handle("/organization_register_handler", isAuthenticated(organizationRegisterHandler))
 
+	http.Handle("/admin", isAuthenticated(admin))
+
 	// http.Handle("/profile", isAuthenticated(profile))
 	// http.Handle("/profile_update", isAuthenticated(profileUpdate))
 	// http.Handle("/profile_update_handler", isAuthenticated(profileUpdateHandler))
