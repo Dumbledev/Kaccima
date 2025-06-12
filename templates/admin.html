@@ -80,28 +80,28 @@
           <div class="stats-container">
     <div class="stat-card">
         <span class="stat-title">Total Members</span>
-        <span class="stat-value" id="totalMembers">1,250</span>
+        <span class="stat-value" id="">{{.UserCount}}</span>
         <span class="stat-change positive">
             <span class="material-icons">arrow_upward</span> 5.2% from last month
         </span>
     </div>
     <div class="stat-card">
         <span class="stat-title">Pending Approvals</span>
-        <span class="stat-value" id="pendingApprovals">25</span>
+        <span class="stat-value" id="">{{.PendingOrgCount}}</span>
         <span class="stat-change negative">
             <span class="material-icons">arrow_downward</span> 3 pending today
         </span>
     </div>
     <div class="stat-card">
         <span class="stat-title">Total Payments</span>
-        <span class="stat-value" id="totalPayments">₦14,500,000</span>
+        <span class="stat-value" id="">₦14,500,000</span>
         <span class="stat-change positive">
             <span class="material-icons">arrow_upward</span> 12.5% from last month
         </span>
     </div>
     <div class="stat-card">
         <span class="stat-title">Recent Payments</span>
-        <span class="stat-value" id="recentPayments">₦1,200,000</span>
+        <span class="stat-value" id="">₦1,200,000</span>
         <span class="stat-change positive">
             <span class="material-icons">arrow_upward</span> 8 payments today
         </span>
@@ -128,9 +128,18 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="memberApprovalsBody">
-    <!-- Dynamic member rows will be inserted here -->
-</tbody>
+                     {{range .PendingOrg}}
+                        <tbody id="">
+                        
+                                <td>{{.Name}}</td>    
+                                <td>One</td>    
+                                <td>{{.Email}}</td>    
+                                <td>{{.Approved}}</td>    
+                                <td>{{.DateJoined}}</td>    
+                                <td>Review</td>    
+                        </tbody>
+                    {{end}}
+
 
                 </table>
             </div>

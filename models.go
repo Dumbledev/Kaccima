@@ -50,6 +50,7 @@ type Organization struct {
 	PassportPhoto              string `json:"passportPhoto"`
 	FormC07                    string `json:"formC07"`
 	IDDocument                 string `json:"idDocument"`
+	DateJoined                 string `json:"dateJoined"`
 	Approved                   bool   `json:"approved"`
 	UserId                     string `json:"userId"`
 	Doctype                    string `json:"doctype"`

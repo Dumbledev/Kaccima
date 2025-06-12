@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -23,7 +24,7 @@ func organization(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	organization := orgResp.Body[0]
-	tmpl.ExecuteTemplate(w, "organization-profile.html", organization)
+	tmpl.ExecuteTemplate(w, "organization_profile.html", organization)
 }
 
 func organizationRegister(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +45,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	bankers := r.FormValue("bankers")
 	contactPerson := r.FormValue("contactPerson")
 	rep := r.FormValue("representative")
+	dateJoined := time.Now().Local()
 
 	orgResp, err := findOrganization(dbFindUrl, email)
 	if err != nil {
@@ -228,6 +230,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		BusinessPremiseCertificate: temp6.Name(),
 		FormC07:                    temp7.Name(),
 		IDDocument:                 temp8.Name(),
+		DateJoined:                 dateJoined.String(),
 		UserId:                     currentUser.ID,
 		Approved:                   false,
 		Doctype:                    "organization",
