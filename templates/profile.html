@@ -4,15 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KACCIMA - Profile</title>
-    <link rel="stylesheet" href="/static/styles.css">
+   <link rel="stylesheet" href="../static/styles.css">
+    <style>
+        .dashboard-container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        .dashboard-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .profile-info {
+            max-width: 600px;
+            margin: auto;
+        }
+        .profile-photo {
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
      <header>
         <nav>
             <div class="logo">
-                <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40">           
+                <a href="index.html"><img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40"></a>         
                 <span class="logo-text">KACCIMA</span>
-            </div>
+             </div>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="#">About</a></li>
@@ -26,6 +61,7 @@
         <aside class="sidebar">
             <ul>
                 <li><a href="/dashboard">Dashboard</a></li>
+                <li ><a href="/organization">organization-profile</a></li>
                 <li><a href="/notification">Notifications</a></li>
                 <li class="active"><a href="/profile">Profile</a></li>
                 <li><a href="#">Documents</a></li>

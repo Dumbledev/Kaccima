@@ -13,6 +13,20 @@ import (
 	"github.com/google/uuid"
 )
 
+func organizationDashboardd(w http.ResponseWriter, r *http.Request) {
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	tmpl.ExecuteTemplate(w, "dashboard.html", organization)
+}
+
 func organization(w http.ResponseWriter, r *http.Request) {
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
@@ -25,6 +39,48 @@ func organization(w http.ResponseWriter, r *http.Request) {
 	}
 	organization := orgResp.Body[0]
 	tmpl.ExecuteTemplate(w, "organization_profile.html", organization)
+}
+
+func notification(w http.ResponseWriter, r *http.Request) {
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	tmpl.ExecuteTemplate(w, "notification.html", organization)
+}
+
+func reviewedDocuments(w http.ResponseWriter, r *http.Request) {
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	tmpl.ExecuteTemplate(w, "reviewedDocuments.html", organization)
+}
+
+func profile(w http.ResponseWriter, r *http.Request) {
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	tmpl.ExecuteTemplate(w, "profile.html", organization)
 }
 
 func organizationRegister(w http.ResponseWriter, r *http.Request) {
