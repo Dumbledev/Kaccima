@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KACCIMA - Admin Settings</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h3>KACCIMA Admin</h3>
+    </div>
+    <div class="sidebar-menu">
+      <a href="admin.html" class="menu-item">
+        <span class="material-icons">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="members.html" class="menu-item">
+        <span class="material-icons">groups</span>
+        <span>Members</span>
+      </a>
+      <a href="payments.html" class="menu-item">
+        <span class="material-icons">payments</span>
+        <span>Payments</span>
+      </a>
+      <a href="documents.html" class="menu-item">
+        <span class="material-icons">description</span>
+        <span>Documents</span>
+      </a>
+      <a href="report.html" class="menu-item">
+        <span class="material-icons">assessment</span>
+        <span>Reports</span>
+      </a>
+                  <a href="../register.html" class="menu-item">
+                <span class="material-icons">assessment</span>
+                <span>Register User</span>
+            </a>
+      <a href="settings.html" class="menu-item active">
+        <span class="material-icons">settings</span>
+        <span>Settings</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <span class="material-icons" id="sidebarToggle" style="cursor: pointer;">menu</span>
+      </div>
+      <div class="header-right">
+        <div class="user-profile">
+          <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Admin" class="user-avatar" />
+          <span class="user-name">Admin User</span>
+          <span class="material-icons">arrow_drop_down</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Settings Content -->
+    <div class="content">
+      <!-- Profile Update Form -->
+      <form id="profileForm" novalidate>
+        <div class="section-title">Update Profile</div>
+        <div class="form-group">
+          <label for="adminName">Name</label>
+          <input type="text" id="adminName" name="adminName" value="Admin User" required />
+        </div>
+        <div class="form-group">
+          <label for="adminEmail">Email</label>
+          <input type="email" id="adminEmail" name="adminEmail" value="admin@kaccima.org" required />
+        </div>
+        <button type="submit" class="btn-primary">Update Profile</button>
+        <div id="profileMessage" class="message"></div>
+      </form>
+
+      <!-- Password Change Form -->
+      <form id="passwordForm" novalidate>
+        <div class="section-title">Change Password</div>
+        <div class="form-group">
+          <label for="currentPassword">Current Password</label>
+          <input type="password" id="currentPassword" name="currentPassword" required />
+        </div>
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <input type="password" id="newPassword" name="newPassword" minlength="6" required />
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm New Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" minlength="6" required />
+        </div>
+        <button type="submit" class="btn-primary">Change Password</button>
+        <div id="passwordMessage" class="message"></div>
+      </form>
+
+      <!-- Logo Upload Form -->
+      <form id="logoForm" novalidate>
+        <div class="section-title">Upload Site Logo</div>
+        <div class="form-group">
+          <label for="siteLogo">Select Image</label>
+          <input type="file" id="siteLogo" name="siteLogo" accept="image/*" />
+        </div>
+        <button type="submit" class="btn-primary">Upload Logo</button>
+        <div id="logoMessage" class="message"></div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // Show message helper
+    function showMessage(el, message, type = "success") {
+      el.textContent = message;
+      el.className = "message " + type;
+      el.style.display = "block";
+      setTimeout(() => {
+        el.style.display = "none";
+      }, 4000);
+    }
+
+    // Profile Update
+    document.getElementById("profileForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = this.adminName.value.trim();
+      const email = this.adminEmail.value.trim();
+      const messageEl = document.getElementById("profileMessage");
+
+      if (!name || !email) {
+        showMessage(messageEl, "Please fill in all fields.", "error");
+        return;
+      }
+      // TODO: call backend API here to update profile
+      console.log("Profile Updated:", { name, email });
+      showMessage(messageEl, "Profile updated successfully.", "success");
+    });
+
+    // Password Change
+    document.getElementById("passwordForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const currentPass = this.currentPassword.value;
+      const newPass = this.newPassword.value;
+      const confirmPass = this.confirmPassword.value;
+      const messageEl = document.getElementById("passwordMessage");
+
+      if (!currentPass || !newPass || !confirmPass) {
+        showMessage(messageEl, "Please fill in all password fields.", "error");
+        return;
+      }
+      if (newPass.length < 6) {
+        showMessage(messageEl, "New password must be at least 6 characters.", "error");
+        return;
+      }
+      if (newPass !== confirmPass) {
+        showMessage(messageEl, "New password and confirmation do not match.", "error");
+        return;
+      }
+      // TODO: call backend API here to change password
+      console.log("Password Changed");
+      showMessage(messageEl, "Password changed successfully.", "success");
+      this.reset();
+    });
+
+    // Logo Upload
+    document.getElementById("logoForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const fileInput = this.siteLogo;
+      const messageEl = document.getElementById("logoMessage");
+
+      if (fileInput.files.length === 0) {
+        showMessage(messageEl, "Please select a logo image file.", "error");
+        return;
+      }
+      const file = fileInput.files[0];
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        showMessage(messageEl, "Invalid file type. Please select an image file.", "error");
+        return;
+      }
+
+      // TODO: Upload file to backend via API
+      console.log("Logo Uploaded:", file.name);
+      showMessage(messageEl, "Logo uploaded successfully.", "success");
+      this.reset();
+    });
+
+    // Sidebar toggle logic (optional)
+    document.getElementById("sidebarToggle").addEventListener("click", () => {
+      document.querySelector(".sidebar").classList.toggle("collapsed");
+      // You can add logic to shrink main content margin if needed
+    });
+  </script>
+</body>
+</html>

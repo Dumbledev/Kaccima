@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payments - KACCIMA Admin Dashboard</title>
+<link rel="stylesheet" href="../styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <script src="../script.js" defer></script>
+  
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h3>KACCIMA Admin</h3>
+    </div>
+    <div class="sidebar-menu">
+      <a href="admin.html" class="menu-item">
+        <span class="material-icons">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="members.html" class="menu-item">
+        <span class="material-icons">groups</span>
+        <span>Members</span>
+      </a>
+      <a href="payments.html" class="menu-item active">
+        <span class="material-icons">payments</span>
+        <span>Payments</span>
+      </a>
+      <a href="documents.html" class="menu-item">
+        <span class="material-icons">description</span>
+        <span>Documents</span>
+      </a>
+      <a href="report.html" class="menu-item">
+        <span class="material-icons">assessment</span>
+        <span>Reports</span>
+      </a>
+                  <a href="../register.html" class="menu-item">
+                <span class="material-icons">assessment</span>
+                <span>Register User</span>
+            </a>
+      <a href="settings.html" class="menu-item">
+        <span class="material-icons">settings</span>
+        <span>Settings</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <span class="material-icons" id="sidebarToggle" style="cursor: pointer;">menu</span>
+      </div>
+      <div class="header-right">
+        <div class="user-profile">
+          <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="Admin" class="user-avatar" />
+          <span class="user-name">Admin User</span>
+          <span class="material-icons">arrow_drop_down</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="page-header">
+        <h2>Transaction History</h2>
+        <div class="search-box">
+          <span class="material-icons">search</span>
+          <input type="text" id="searchPayments" placeholder="Search payments..." />
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table id="paymentsTable">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Amount</th>
+              <th>Payment Method</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Example row -->
+            <tr>
+              <td>Jane Doe</td>
+              <td>₦200,000</td>
+              <td>Bank Transfer</td>
+              <td>2025-06-10</td>
+              <td><span class="status verified">Verified</span></td>
+              <td>
+                <button class="action-btn btn-view" onclick="showPaymentDetails('Jane Doe', '₦200,000', 'Bank Transfer', '2025-06-10', 'Verified')">Details</button>
+              </td>
+            </tr>
+            <!-- Additional rows can be added dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Transaction Details Modal -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Payment Details</h3>
+        <button class="close-btn" onclick="closePaymentModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="paymentDetails">
+        <!-- Details will be inserted here dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPaymentDetails(member, amount, method, date, status) {
+      const modal = document.getElementById('paymentModal');
+      const details = document.getElementById('paymentDetails');
+      details.innerHTML = `
+        <p><strong>Member:</strong> ${member}</p>
+        <p><strong>Amount:</strong> ${amount}</p>
+        <p><strong>Payment Method:</strong> ${method}</p>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Status:</strong> ${status}</p>
+      `;
+      modal.style.display = 'block';
+    }
+
+    function closePaymentModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    // Optional: Close modal on outside click
+    window.onclick = function(event) {
+      const modal = document.getElementById('paymentModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

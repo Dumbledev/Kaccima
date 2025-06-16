@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports - KACCIMA Admin Dashboard</title>
+ <link rel="stylesheet" href="../styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <script src="../script.js" defer></script>
+        <style>
+            .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--white);
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            height: 100vh;
+            padding: 20px 0;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        /* Container and Form Layout */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Form Elements */
+.form-container .form-group {
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.form-container input[type="text"],
+.form-container input[type="date"],
+.form-container select,
+.form-container textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+  border-color: #2c7be5;
+  box-shadow: 0 0 0 3px rgba(44, 123, 229, 0.15);
+  background-color: #fff;
+}
+
+/* Textarea Height */
+.form-container textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Submit Button */
+.btn-submit {
+  background-color: #2c7be5;
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #1a68d1;
+}
+
+/* Success Message */
+.success-message {
+  margin-top: 20px;
+  background-color: #e6f4ea;
+  border-left: 5px solid #34a853;
+  padding: 16px;
+  border-radius: 8px;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+  
+        </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h3>KACCIMA Admin</h3>
+    </div>
+    <div class="sidebar-menu">
+      <a href="admin.html" class="menu-item">
+        <span class="material-icons">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="members.html" class="menu-item">
+        <span class="material-icons">groups</span>
+        <span>Members</span>
+      </a>
+      <a href="payments.html" class="menu-item">
+        <span class="material-icons">payments</span>
+        <span>Payments</span>
+      </a>
+      <a href="documents.html" class="menu-item">
+        <span class="material-icons">description</span>
+        <span>Documents</span>
+      </a>
+      <a href="report.html" class="menu-item active">
+        <span class="material-icons">report</span>
+        <span>Reports</span>
+      </a>
+                  <a href="../register.html" class="menu-item">
+                <span class="material-icons">assessment</span>
+                <span>Register User</span>
+            </a>
+      <a href="settings.html" class="menu-item">
+        <span class="material-icons">settings</span>
+        <span>Settings</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <span class="material-icons" id="sidebarToggle" style="cursor: pointer;">menu</span>
+      </div>
+      <div class="header-right">
+        <div class="user-profile">
+          <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Admin" class="user-avatar" />
+          <span class="user-name">Admin User</span>
+          <span class="material-icons">arrow_drop_down</span>
+        </div>
+      </div>
+    </header>
+
+ <!-- Report Content -->
+<div class="content">
+  <div class="container">
+    <div class="page-header">
+      <h2>Submit Admin Report</h2>
+      <p>Use this form to report issues related to members, payments, or documents.</p>
+    </div>
+
+    <form id="reportForm" class="form-container">
+      <div class="form-group">
+        <label for="reportType">Report Type</label>
+        <select id="reportType" name="reportType" required>
+          <option value="">-- Select Report Type --</option>
+          <option value="misconduct">User Misconduct</option>
+          <option value="payment">Payment Renewal Issue</option>
+          <option value="document">Document Rejection</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="memberName">Member Name or Email</label>
+        <input type="text" id="memberName" name="memberName" placeholder="Enter member's name or email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="reportReason">Description / Reason</label>
+        <textarea id="reportReason" name="reportReason" rows="6" placeholder="Describe the issue..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="reportDate">Report Date</label>
+        <input type="date" id="reportDate" name="reportDate" required />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Submit Report</button>
+      </div>
+    </form>
+
+    <div id="reportSuccess" class="success-message" style="display: none;">
+      ✅ Report successfully submitted!
+    </div>
+  </div>
+</div>
+
+  </main>
+
+  <script>
+    document.getElementById('reportForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Example submission logic
+      const form = event.target;
+      const reportData = {
+        type: form.reportType.value,
+        member: form.memberName.value,
+        reason: form.reportReason.value,
+        date: form.reportDate.value,
+      };
+
+      console.log('Report submitted:', reportData);
+
+      // Show success message
+      document.getElementById('reportSuccess').style.display = 'block';
+
+      // Clear form
+      form.reset();
+    });
+  </script>
+</body>
+</html>

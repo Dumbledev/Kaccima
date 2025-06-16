@@ -17,6 +17,41 @@
             transition: all 0.3s;
             z-index: 100;
         }
+        
+/* Base button styles */
+button {
+  padding: 10px 20px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Accept button style */
+button:first-child {
+  background-color: #28a745; /* green */
+}
+
+button:first-child:hover {
+  background-color: #218838;
+  box-shadow: 0 5px 12px rgba(33, 136, 56, 0.5);
+}
+
+/* Reject button style */
+button:last-child {
+  background-color: #dc3545; /* red */
+}
+
+button:last-child:hover {
+  background-color: #c82333;
+  box-shadow: 0 5px 12px rgba(200, 35, 51, 0.5);
+}
+
         </style>
 </head>
 
@@ -27,27 +62,31 @@
             <h3>KACCIMA Admin</h3>
         </div>
         <div class="sidebar-menu">
-            <a href="#" class="menu-item active">
+            <a href="admin.html" class="menu-item active">
                 <span class="material-icons">dashboard</span>
                 <span>Dashboard</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="./members" class="menu-item">
                 <span class="material-icons">groups</span>
                 <span>Members</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="payments.html" class="menu-item">
                 <span class="material-icons">payments</span>
                 <span>Payments</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="documents.html" class="menu-item">
                 <span class="material-icons">description</span>
                 <span>Documents</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="report.html" class="menu-item">
                 <span class="material-icons">assessment</span>
                 <span>Reports</span>
             </a>
-            <a href="#" class="menu-item">
+                        <a href="organization_register.html" class="menu-item">
+                <span class="material-icons">assessment</span>
+                <span>Register User</span>
+            </a>
+            <a href="settings.html" class="menu-item">
                 <span class="material-icons">settings</span>
                 <span>Settings</span>
             </a>
@@ -117,31 +156,32 @@
                         <input type="text" placeholder="Search members...">
                     </div>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Company</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Join Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                     {{range .PendingOrg}}
-                        <tbody id="">
-                        
-                                <td>{{.Name}}</td>    
-                                <td>One</td>    
-                                <td>{{.Email}}</td>    
-                                <td>{{.Approved}}</td>    
-                                <td>{{.DateJoined}}</td>    
-                                <td>Review</td>    
-                        </tbody>
-                    {{end}}
+<table>
+    <thead>
+        <tr>
+            <th>Company</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Join Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {{range .PendingOrg}}
+    <tbody>
+        <tr>
+            <td>One</td>
+            <td>{{.Email}}</td>
+            <td>{{.Approved}}</td>
+            <td>{{.DateJoined}}</td>
+            <td>
+                <button onclick="accept('{{.Email}}')">Accept</button>
+                <button onclick="reject('{{.Email}}')">Reject</button>
+            </td>
+        </tr>
+    </tbody>
+    {{end}}
+</table>
 
-
-                </table>
             </div>
 
             <!-- Pending Payments Table -->
