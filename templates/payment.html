@@ -369,11 +369,11 @@
     <header>
         <nav>
             <div class="logo">
-                <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40">
+                <img src="/static/logo.png" alt="KACCIMA Logo" width="40" height="40">
                 <span class="logo-text">KACCIMA</span>
             </div>
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
@@ -392,12 +392,12 @@
             
             <div class="summary-item">
                 <span class="summary-label">Company Name:</span>
-                <span class="summary-value" id="summaryCompanyName">ABC Manufacturing Ltd.</span>
+                <span class="summary-value" id="summaryCompanyName">{{.Name}}</span>
             </div>
             
             <div class="summary-item">
                 <span class="summary-label">Registration Number:</span>
-                <span class="summary-value" id="registrationNumber">KAN/2023/12345</span>
+                <span class="summary-value" id="registrationNumber">{{.ID}}</span>
             </div>
             
             <div class="summary-item">

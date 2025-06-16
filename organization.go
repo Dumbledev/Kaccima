@@ -311,5 +311,19 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	http.Redirect(w, r, "/organization", http.StatusSeeOther)
+	http.Redirect(w, r, "/payment", http.StatusSeeOther)
+}
+
+func payment(w http.ResponseWriter, r *http.Request) {
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	tmpl.ExecuteTemplate(w, "payment.html", organization)
 }

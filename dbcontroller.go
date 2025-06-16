@@ -146,9 +146,9 @@ func findOrganization(url, userId string) (OrganizationResponse, error) {
 	return response, error
 }
 
-func findOrganizationApprovalStatus(url string, approved bool) (OrganizationResponse, error) {
+func findOrganizationApprovalStatus(url, status string) (OrganizationResponse, error) {
 	var response OrganizationResponse
-	jsonData := map[string]map[string]any{"selector": {"approved": approved, "doctype": "organization"}}
+	jsonData := map[string]map[string]any{"selector": {"approved": status, "doctype": "organization"}}
 	data, error := json.Marshal(jsonData)
 	if error != nil {
 		log.Fatalln("Marshal", error)

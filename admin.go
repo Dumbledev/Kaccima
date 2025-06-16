@@ -24,7 +24,7 @@ func admin(w http.ResponseWriter, r *http.Request) {
 	}
 	totalMembers = len(userResponse.Body)
 
-	orgStatusResponse, err := findOrganizationApprovalStatus(dbFindUrl, false)
+	orgPendingStatusResponse, err := findOrganizationApprovalStatus(dbFindUrl, "Pending")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -33,11 +33,11 @@ func admin(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("No Record Found")
 		return
 	}
-	pendingOrg := len(orgStatusResponse.Body)
+	pendingOrg := len(orgPendingStatusResponse.Body)
 	p := PageResult{
 		UserCount:       totalMembers,
 		PendingOrgCount: pendingOrg,
-		PendingOrg:      orgStatusResponse.Body,
+		PendingOrg:      orgPendingStatusResponse.Body,
 	}
 	tmpl.ExecuteTemplate(w, "admin.html", p)
 }
