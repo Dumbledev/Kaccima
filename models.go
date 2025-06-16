@@ -53,12 +53,33 @@ type Organization struct {
 	DateJoined                 string `json:"dateJoined"`
 	Approved                   string `json:"approved"`
 	UserId                     string `json:"userId"`
+	Rev                        string `json:"_rev,omitempty"`
 	Doctype                    string `json:"doctype"`
 }
 
 type OrganizationResponse struct {
 	Status   string
 	Body     []Organization `json:"docs"`
+	Bookmark string         `json:"bookmark"`
+	Warning  string         `json:"warning"`
+}
+
+type BankTransfer struct {
+	ID               string `json:"_id"`
+	UserId           string `json:"userId"`
+	OrganizationName string `json:"name"`
+	PaymentMethod    string `json:"paymentMethod"`
+	Status           string `json:"status"`
+	Date             string `json:"date"`
+	OrganizationId   string `json:"organizationId"`
+	RecieptFile      string `json:"receiptFile"`
+	Doctype          string `json:"doctype"`
+	Rev              string `json:"_rev,omitempty"`
+}
+
+type BankTransferResponse struct {
+	Status   string
+	Body     []BankTransfer `json:"docs"`
 	Bookmark string         `json:"bookmark"`
 	Warning  string         `json:"warning"`
 }

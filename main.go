@@ -37,6 +37,7 @@ func main() {
 	http.Handle("/notification", isAuthenticated(notification))
 	http.Handle("/profile", isAuthenticated(profile))
 	http.Handle("/payment", isAuthenticated(payment))
+	http.Handle("/bank_transfer_handler", isAuthenticated(bankTransferHandler))
 	http.Handle("/reviewedDocuments", isAuthenticated(reviewedDocuments))
 	http.Handle("/organization", isAuthenticated(organization))
 	http.Handle("/organization_register", isAuthenticated(organizationRegister))

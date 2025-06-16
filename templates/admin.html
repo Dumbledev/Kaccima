@@ -156,9 +156,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Member
-                            </th>
-                            <th>Amount</th>
+                            <th>Member</th>
+                            <!-- <th>Amount</th> -->
                             <th>Payment Method</th>
                             <th>Date</th>
                             <th>Status</th>
@@ -166,8 +165,16 @@
                         </tr>
                     </thead>
                   <tbody id="paymentVerificationsBody">
-    <!-- Dynamic payment rows will be inserted here -->
-</tbody>
+                    {{range .PendingBankPayment}}
+                        <tbody id="">                    
+                                <td>{{.OrganizationName}}</td>    
+                                <td>{{.PaymentMethod}}</td>    
+                                <td>{{.Date}}</td>  
+                                <td>{{.Status}}</td>      
+                                <td>Review</td>    
+                        </tbody>
+                    {{end}}
+                </tbody>
 
                 </table>
             </div>

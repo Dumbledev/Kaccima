@@ -327,3 +327,57 @@ func payment(w http.ResponseWriter, r *http.Request) {
 	organization := orgResp.Body[0]
 	tmpl.ExecuteTemplate(w, "payment.html", organization)
 }
+
+func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	reciept, _, err := r.FormFile("receiptFile")
+	organizationId := r.FormValue("organizationId")
+	name := r.FormValue("name")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer reciept.Close()
+	temp, err2 := os.CreateTemp("static", "file-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer temp.Close()
+	fileBytes, err3 := io.ReadAll(reciept)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	temp.Write(fileBytes)
+	bankTranfer := BankTransfer{
+		ID:               uuid.NewString(),
+		UserId:           currentUser.ID,
+		OrganizationName: name,
+		OrganizationId:   organizationId,
+		PaymentMethod:    "Bank Transfer",
+		Status:           "Pending",
+		Date:             time.Now().String(),
+		Doctype:          "bankTransfer",
+		RecieptFile:      temp.Name(),
+	}
+	jsonData, err := json.Marshal(bankTranfer)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Server Error(1)")
+		return
+	}
+	request.Header.Set("Content-type", "application/json")
+	client := &http.Client{}
+	res, error := client.Do(request)
+	if error != nil {
+		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(2)")
+		return
+	}
+	defer res.Body.Close()
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+}
