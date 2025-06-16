@@ -288,7 +288,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		IDDocument:                 temp8.Name(),
 		DateJoined:                 dateJoined.String(),
 		UserId:                     currentUser.ID,
-		Approved:                   false,
+		Approved:                   "Pending",
 		Doctype:                    "organization",
 	}
 

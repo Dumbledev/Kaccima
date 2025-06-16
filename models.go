@@ -51,7 +51,7 @@ type Organization struct {
 	FormC07                    string `json:"formC07"`
 	IDDocument                 string `json:"idDocument"`
 	DateJoined                 string `json:"dateJoined"`
-	Approved                   bool   `json:"approved"`
+	Approved                   string `json:"approved"`
 	UserId                     string `json:"userId"`
 	Doctype                    string `json:"doctype"`
 }
