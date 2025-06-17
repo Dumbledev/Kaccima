@@ -9,6 +9,16 @@
     --border-radius: 5px;
     --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+ .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--white);
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            height: 100vh;
+            padding: 20px 0;
+            transition: all 0.3s;
+            z-index: 100;
+        }
 
 * {
     margin: 0;
@@ -18,7 +28,7 @@
 }
 
 body {
-    background-image: url(bg4.jpg);
+    background-image: url(images/bg4.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -999,3 +1009,127 @@ footer {
                 width: 100%;
             }
         }
+           /* Main Content */
+    main.main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px 40px;
+      background-color: var(--light-gray);
+      min-height: 100vh;
+    }
+
+    header.header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    header.header .header-left span {
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--primary-color);
+    }
+    header.header .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      color: var(--dark-gray);
+      font-weight: 600;
+    }
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary-color);
+    }
+
+    /* Content container */
+    .content {
+      max-width: 900px;
+      margin: auto;
+      background: var(--white);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: var(--box-shadow);
+    }
+
+    /* Section title */
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 6px;
+      margin-bottom: 25px;
+    }
+
+    /* Form Styles */
+    form {
+      margin-bottom: 40px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--dark-gray);
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="file"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border-gray);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="file"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 8px var(--primary-color);
+    }
+
+    /* Buttons */
+    button.btn-primary {
+      background-color: var(--primary-color);
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      color: white;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button.btn-primary:hover {
+      background-color: var(--primary-color-dark);
+    }
+
+    /* Success & error message */
+    .message {
+      margin-top: 15px;
+      padding: 14px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      display: none;
+    }
+    .message.success {
+      background-color: var(--success-bg);
+      color: var(--success-text);
+      border-left: 5px solid var(--success-border);
+    }
+    .message.error {
+      background-color: var(--error-bg);
+      color: var(--error-text);
+      border-left: 5px solid var(--error-border);
+    }

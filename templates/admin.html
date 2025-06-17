@@ -4,20 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KACCIMA - Admin Dashboard</title>
-    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-            .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--white);
-            box-shadow: var(--box-shadow);
-            position: fixed;
-            height: 100vh;
-            padding: 20px 0;
-            transition: all 0.3s;
-            z-index: 100;
-        }
-        </style>
+
 </head>
 
 <body>
@@ -27,27 +16,31 @@
             <h3>KACCIMA Admin</h3>
         </div>
         <div class="sidebar-menu">
-            <a href="#" class="menu-item active">
+            <a href="/admin" class="menu-item active">
                 <span class="material-icons">dashboard</span>
                 <span>Dashboard</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/admin_members" class="menu-item">
                 <span class="material-icons">groups</span>
                 <span>Members</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/admin_payments" class="menu-item">
                 <span class="material-icons">payments</span>
                 <span>Payments</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/admin_documents" class="menu-item">
                 <span class="material-icons">description</span>
                 <span>Documents</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/admin_report" class="menu-item">
                 <span class="material-icons">assessment</span>
                 <span>Reports</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/organization_register" class="menu-item">
+                <span class="material-icons">assessment</span>
+                <span>Register User</span>
+            </a>
+            <a href="/admin_settings" class="menu-item">
                 <span class="material-icons">settings</span>
                 <span>Settings</span>
             </a>
@@ -129,7 +122,7 @@
                         </tr>
                     </thead>
                      {{range .PendingOrg}}
-                        <tbody id="">
+                        <tbody id="memberApprovalsBody">
                         
                                 <td>{{.Name}}</td>    
                                 <td>One</td>    
@@ -139,8 +132,6 @@
                                 <td>Review</td>    
                         </tbody>
                     {{end}}
-
-
                 </table>
             </div>
 
@@ -154,7 +145,7 @@
                     </div>
                 </div>
                 <table>
-                    <thead>
+                   <thead>
                         <tr>
                             <th>Member</th>
                             <!-- <th>Amount</th> -->
@@ -175,7 +166,6 @@
                         </tbody>
                     {{end}}
                 </tbody>
-
                 </table>
             </div>
         </div>

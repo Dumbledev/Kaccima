@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents - Admin Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="script.js" defer></script>
+       
+</head>
+<body>
+    <!-- Sidebar -->
+    <!-- Sidebar Navigation -->
+ {{template "adminSideNav"}}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <span class="material-icons" id="sidebarToggle" style="cursor:pointer;">menu</span>
+            </div>
+            <div class="header-right">
+                <div class="user-profile">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Admin" class="user-avatar">
+                    <span class="user-name">Admin User</span>
+                    <span class="material-icons">arrow_drop_down</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="content">
+            <div class="page-header">
+                <h2>Documents</h2>
+                <div class="search-box">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="searchDocuments" placeholder="Search documents...">
+                </div>
+            </div>
+
+            <!-- Documents Table -->
+            <div class="table-container">
+                <table id="documentsTable">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Uploaded By</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- JS will populate -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Document Viewer Modal -->
+    <div class="modal" id="documentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalDocTitle">Document Viewer</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="documentViewer">
+                    <p>Document preview will appear here</p>
+                </div>
+                <div class="document-actions">
+                    <button class="action-btn btn-approve">
+                        <span class="material-icons">check</span> Approve
+                    </button>
+                    <button class="action-btn btn-reject">
+                        <span class="material-icons">close</span> Reject
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sampleDocuments = [
+            { name: 'Covering Letter', uploadedBy: 'John Doe', date: '2024-04-20', status: 'Pending' },
+            { name: 'Memorandum & Articles', uploadedBy: 'Jane Smith', date: '2024-04-10', status: 'Pending' },
+            { name: 'Business Name Certificate', uploadedBy: 'Michael Johnson', date: '2024-04-17', status: 'Pending' },
+            { name: 'Incorporation Certificate', uploadedBy: 'Emily Brown', date: '2024-04-15', status: 'Pending' }
+        ];
+        localStorage.setItem('documents', JSON.stringify(sampleDocuments));
+
+        function populateDocumentsTable() {
+            const documents = JSON.parse(localStorage.getItem('documents'));
+            const tableBody = document.querySelector('#documentsTable tbody');
+            tableBody.innerHTML = '';
+
+            documents.forEach(doc => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${doc.name}</td>
+                    <td>${doc.uploadedBy}</td>
+                    <td>${doc.date}</td>
+                    <td><span class="status-badge status-${doc.status.toLowerCase()}">${doc.status}</span></td>
+                    <td>
+                        <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
+                            <span class="material-icons">visibility</span> View
+                        </button>
+                        <button class="action-btn btn-approve">
+                            <span class="material-icons">check</span> Approve
+                        </button>
+                        <button class="action-btn btn-reject">
+                            <span class="material-icons">close</span> Reject
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function viewDocument(docName) {
+            document.getElementById('modalDocTitle').innerText = `Viewing: ${docName}`;
+            document.getElementById('documentViewer').innerHTML = `<p>Preview of <strong>${docName}</strong> would appear here.</p>`;
+            document.getElementById('documentModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('documentModal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', populateDocumentsTable);
+    </script>
+</body>
+</html>

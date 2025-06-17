@@ -56,3 +56,23 @@ func admin(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl.ExecuteTemplate(w, "admin.html", p)
 }
+
+func adminDocuments(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_documents.html", nil)
+}
+
+func adminMembers(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_members.html", nil)
+}
+
+func adminPayment(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_payments.html", nil)
+}
+
+func adminReport(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_report.html", nil)
+}
+
+func adminSettings(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_settings.html", nil)
+}
