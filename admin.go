@@ -13,7 +13,7 @@ func admin(w http.ResponseWriter, r *http.Request) {
 		PendingOrg         []Organization
 		PendingBankPayment []BankTransfer
 	}
-
+	var pendingBankTransfer []BankTransfer
 	userResponse, err := findUsers(dbFindUrl)
 	if err != nil {
 		fmt.Println(err)
@@ -37,16 +37,17 @@ func admin(w http.ResponseWriter, r *http.Request) {
 	pendingOrg := len(orgPendingStatusResponse.Body)
 
 	bankTransferPendingStatusResponse, err := findBankPaymentApprovalStatus(dbFindUrl, "Pending")
-	fmt.Println(bankTransferPendingStatusResponse.Body, "Bodus")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	if len(bankTransferPendingStatusResponse.Body) == 0 {
+		pendingBankTransfer = []BankTransfer{}
 		fmt.Println("No Record Found")
-		return
+	} else {
+		pendingBankTransfer = bankTransferPendingStatusResponse.Body
 	}
-	pendingBankTransfer := bankTransferPendingStatusResponse.Body
+
 	p := PageResult{
 		UserCount:          totalMembers,
 		PendingOrgCount:    pendingOrg,
