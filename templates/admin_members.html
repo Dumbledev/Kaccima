@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members - KACCIMA Admin Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <script src="../script.js" defer></script>
+
+</head>
+<body>
+  <!-- Sidebar -->
+  {{template "adminSideNav"}}
+
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <span class="material-icons" id="sidebarToggle" style="cursor: pointer;">menu</span>
+      </div>
+      <div class="header-right">
+        <div class="user-profile">
+          <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Admin" class="user-avatar" />
+          <span class="user-name">Admin User</span>
+          <span class="material-icons">arrow_drop_down</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Members Section -->
+    <div class="content">
+      <div class="page-header">
+        <h2>Members</h2>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h3 class="table-title">All Registered Members</h3>
+          <div class="search-box">
+            <span class="material-icons">search</span>
+            <input type="text" id="searchMembers" placeholder="Search members..." />
+          </div>
+        </div>
+
+        <table id="membersTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Example rows (to be dynamically loaded via JS or backend integration) -->
+            <tr>
+              <td>Jane Doe</td>
+              <td>jane.doe@example.com</td>
+              <td><span class="status active">Active</span></td>
+              <td>
+                <button class="action-btn btn-view">View</button>
+                <button class="action-btn btn-deactivate">Deactivate</button>
+              </td>
+            </tr>
+            <tr>
+              <td>John Smith</td>
+              <td>john.smith@example.com</td>
+              <td><span class="status pending">Pending</span></td>
+              <td>
+                <button class="action-btn btn-approve">Approve</button>
+                <button class="action-btn btn-reject">Reject</button>
+              </td>
+            </tr>
+            <!-- More rows can be dynamically inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

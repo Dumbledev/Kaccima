@@ -489,16 +489,18 @@
                         After making your payment, please upload your payment receipt below for verification.
                     </p>
                     
-                    <form id="bankPaymentForm">
+                    <form id="bankPaymentForm" method="post" enctype="multipart/form-data" action="/bank_transfer_handler">
+                        <input type="text" hidden name="organizationId" value="{{.ID}}">
+                        <input type="text" hidden name="name" value="{{.Name}}">
                         <div class="form-group">
                             <label for="paymentReceipt" class="form-label">Payment Receipt</label>
-                            <input type="file" id="paymentReceipt" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                            <input type="file" id="paymentReceipt" class="form-control" name="receiptFile" accept=".jpg,.jpeg,.png,.pdf" required>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="paymentRef" class="form-label">Payment Reference</label>
-                            <input type="text" id="paymentRef" class="form-control" placeholder="Transaction reference number" required>
-                        </div>
+                        <!-- <div class="form-group">
+                            <label for="paymentRef" class="form-label">Company Name</label>
+                            <input type="text" id="paymentRef" name="companyName" class="form-control" placeholder="Transaction reference number" required>
+                        </div> -->
                         
                         <div class="form-group" style="margin-top: 2rem;">
                             <button type="submit" class="btn btn-primary">
@@ -605,14 +607,14 @@
                 modal.style.display = 'flex';
             });
             
-            bankForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                // In a real app, you would upload receipt and verify payment
-                document.getElementById('modalMessage').textContent = 
-                    `Your payment receipt has been submitted for verification. 
-                    We'll notify you once your payment is confirmed.`;
-                modal.style.display = 'flex';
-            });
+            // bankForm.addEventListener('submit', function(e) {
+            //     e.preventDefault();
+            //     // In a real app, you would upload receipt and verify payment
+            //     document.getElementById('modalMessage').textContent = 
+            //         `Your payment receipt has been submitted for verification. 
+            //         We'll notify you once your payment is confirmed.`;
+            //     modal.style.display = 'flex';
+            // });
             
             modalBtn.addEventListener('click', function() {
                 modal.style.display = 'none';

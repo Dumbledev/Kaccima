@@ -8,11 +8,12 @@ import (
 func admin(w http.ResponseWriter, r *http.Request) {
 	var totalMembers int
 	type PageResult struct {
-		UserCount       int
-		PendingOrgCount int
-		PendingOrg      []Organization
+		UserCount          int
+		PendingOrgCount    int
+		PendingOrg         []Organization
+		PendingBankPayment []BankTransfer
 	}
-
+	var pendingBankTransfer []BankTransfer
 	userResponse, err := findUsers(dbFindUrl)
 	if err != nil {
 		fmt.Println(err)
@@ -34,10 +35,44 @@ func admin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	pendingOrg := len(orgPendingStatusResponse.Body)
+
+	bankTransferPendingStatusResponse, err := findBankPaymentApprovalStatus(dbFindUrl, "Pending")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(bankTransferPendingStatusResponse.Body) == 0 {
+		pendingBankTransfer = []BankTransfer{}
+		fmt.Println("No Record Found")
+	} else {
+		pendingBankTransfer = bankTransferPendingStatusResponse.Body
+	}
+
 	p := PageResult{
-		UserCount:       totalMembers,
-		PendingOrgCount: pendingOrg,
-		PendingOrg:      orgPendingStatusResponse.Body,
+		UserCount:          totalMembers,
+		PendingOrgCount:    pendingOrg,
+		PendingOrg:         orgPendingStatusResponse.Body,
+		PendingBankPayment: pendingBankTransfer,
 	}
 	tmpl.ExecuteTemplate(w, "admin.html", p)
+}
+
+func adminDocuments(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_documents.html", nil)
+}
+
+func adminMembers(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_members.html", nil)
+}
+
+func adminPayment(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_payments.html", nil)
+}
+
+func adminReport(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_report.html", nil)
+}
+
+func adminSettings(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "admin_settings.html", nil)
 }

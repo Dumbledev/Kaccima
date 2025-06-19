@@ -37,12 +37,18 @@ func main() {
 	http.Handle("/notification", isAuthenticated(notification))
 	http.Handle("/profile", isAuthenticated(profile))
 	http.Handle("/payment", isAuthenticated(payment))
+	http.Handle("/bank_transfer_handler", isAuthenticated(bankTransferHandler))
 	http.Handle("/reviewedDocuments", isAuthenticated(reviewedDocuments))
 	http.Handle("/organization", isAuthenticated(organization))
 	http.Handle("/organization_register", isAuthenticated(organizationRegister))
 	http.Handle("/organization_register_handler", isAuthenticated(organizationRegisterHandler))
 
 	http.Handle("/admin", isAuthenticated(admin))
+	http.Handle("/admin_documents", isAuthenticated(adminDocuments))
+	http.Handle("/admin_members", isAuthenticated(adminMembers))
+	http.Handle("/admin_payments", isAuthenticated(adminPayment))
+	http.Handle("/admin_report", isAuthenticated(adminReport))
+	http.Handle("/admin_settings", isAuthenticated(adminSettings))
 
 	// http.Handle("/profile", isAuthenticated(profile))
 	// http.Handle("/profile_update", isAuthenticated(profileUpdate))
