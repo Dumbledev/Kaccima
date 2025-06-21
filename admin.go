@@ -58,7 +58,30 @@ func admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminDocuments(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "admin_documents.html", nil)
+	organizations := []Organization{}
+	orgResp, err := findAllOrganizations(dbFindUrl)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organizations = orgResp.Body
+	}
+	tmpl.ExecuteTemplate(w, "admin_documents.html", organizations)
+}
+
+func adminOrganizationDocuments(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, id)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	tmpl.ExecuteTemplate(w, "admin_organization_documents.html", organization)
 }
 
 func adminMembers(w http.ResponseWriter, r *http.Request) {
@@ -71,7 +94,6 @@ func adminMembers(w http.ResponseWriter, r *http.Request) {
 	if len(orgResp.Body) != 0 {
 		organizations = orgResp.Body
 	}
-	fmt.Println(organizations)
 	tmpl.ExecuteTemplate(w, "admin_members.html", organizations)
 }
 
