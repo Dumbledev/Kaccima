@@ -45,6 +45,7 @@ func main() {
 
 	http.Handle("/admin", isAuthenticated(admin))
 	http.Handle("/admin_documents", isAuthenticated(adminDocuments))
+	http.Handle("/admin_organization_documents/{organizationId}", isAuthenticated(adminOrganizationDocuments))
 	http.Handle("/admin_members", isAuthenticated(adminMembers))
 	http.Handle("/admin_payments", isAuthenticated(adminPayment))
 	http.Handle("/admin_report", isAuthenticated(adminReport))

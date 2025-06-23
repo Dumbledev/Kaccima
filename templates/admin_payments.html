@@ -53,18 +53,18 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Example row -->
+          {{range .}}
             <tr>
-              <td>Jane Doe</td>
+              <td>{{.OrganizationName}}</td>
               <td>₦200,000</td>
-              <td>Bank Transfer</td>
-              <td>2025-06-10</td>
-              <td><span class="status verified">Verified</span></td>
+              <td>{{.PaymentMethod}}</td>
+              <td>{{.Date}}</td>
+              <td><span class="status verified">{{.Status}}</span></td>
               <td>
-                <button class="action-btn btn-view" onclick="showPaymentDetails('Jane Doe', '₦200,000', 'Bank Transfer', '2025-06-10', 'Verified')">Details</button>
+                <button class="action-btn btn-view" onclick="showPaymentDetails(`{{.OrganizationName}}`, '₦200,000', `{{.PaymentMethod}}`, `{{.Date}}`, `{{.Date}}`)">Details</button>
               </td>
             </tr>
-            <!-- Additional rows can be added dynamically -->
+            {{end}}
           </tbody>
         </table>
       </div>

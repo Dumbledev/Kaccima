@@ -4,8 +4,195 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KACCIMA - Dashboard</title>
-  <link rel="stylesheet" href="../static/styles.css" />
-  
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    * {
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+/* Header/Nav */
+header nav {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  border-bottom: 1px solid #ccc;
+}
+.value-input {
+  padding: 6px;
+  width: 60%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-left: auto;
+  display: block;
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 20px;
+  color: #009245;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+nav ul li.active a,
+nav ul li a:hover {
+  color: #009245;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #fff;
+  height: 100vh;
+  padding: 20px 10px;
+  border-right: 1px solid #ccc;
+  position: fixed;
+  top: 70px;
+  left: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.sidebar ul li.active a,
+.sidebar ul li a:hover {
+  background-color: #00d05a;
+  color: white;
+}
+
+/* Main Content */
+.dashboard-container {
+  display: flex;
+}
+
+.dashboard-content {
+  margin-left: 240px;
+  padding: 30px;
+  flex: 1;
+}
+
+.notification.success {
+  background-color: #e4f7e9;
+  border: 1px solid #b6e3c3;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: #2e7d32;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.membership-status,
+.profile-info {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.membership-status h3,
+.profile-info h3 {
+  color: #00b339;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-item .label {
+  font-weight: 600;
+}
+
+.info-item .value.active {
+  color: green;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #00d05a;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #00b347;
+}
+
+.btn.outline {
+  background-color: transparent;
+  border: 2px solid #00d05a;
+  color: #00d05a;
+}
+
+.btn.outline:hover {
+  background-color: #00d05a;
+  color: white;
+}
+
+/* Footer */
+footer {
+  background-color: #f8f9fa;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  border-top: 1px solid #ccc;
+}
+
+  </style>
+
 </head>
 <body>
   <header>
@@ -28,10 +215,10 @@
     <aside class="sidebar">
       <ul>
         <li class="active"><a href="/dashboard">Dashboard</a></li>
-        <li ><a href="/organization">Organization Profile</a></li>
+        <li><a href="/organization">Organization Profile</a></li>
         <li><a href="/notification">Notifications</a></li>
         <li><a href="/profile">Profile</a></li>
-        <li><a href="/reviewedDocuments">Documents</a></li>
+  
       </ul>
     </aside>
 
@@ -48,16 +235,24 @@
         <a href="/payment" class="btn">Renew Payment</a>
       </div>
 
-      <div class="profile-info">
-        <h3>Profile Information</h3>
-        <div class="info-item"><span class="label">Company Name:</span><span class="value" id="companyName">{{.Name}}</span></div>
-        <div class="info-item"><span class="label">Office Address:</span><span class="value" id="officeAddress">{{.Address}}</span></div>
-        <div class="info-item"><span class="label">Business Nature:</span><span class="value" id="businessNature">{{.NatureOfBusiness}}</span></div>
-        <div class="info-item"><span class="label">Bankers:</span><span class="value" id="bankers">{{.Bankers}}</span></div>
-        <div class="info-item"><span class="label">Email:</span><span class="value" id="email">{{.Email}}</span></div>
-        <div class="info-item"><span class="label">Membership Status:</span><span class="value active">Active</span></div>
-        <button class="btn outline" id="editProfile">Edit Profile</button>
-      </div>
+<div class="profile-info"> 
+  <h3>Profile Information</h3>
+  <div class="info-item"><span class="label">Company Name:</span><span class="value" id="companyName">{{.Name}}</span></div>
+  <div class="info-item"><span class="label">Office Address:</span><span class="value" id="officeAddress">{{.Address}}</span></div>
+  <div class="info-item"><span class="label">Business Nature:</span><span class="value" id="businessNature">{{.NatureOfBusiness}}</span></div>
+  <div class="info-item"><span class="label">Bankers:</span><span class="value" id="bankers">{{.Bankers}}</span></div>
+  <div class="info-item"><span class="label">Email:</span><span class="value" id="email">{{.Email}}</span></div>
+  <div class="info-item"><span class="label">Membership Status:</span><span class="value active">Active</span></div>
+  
+  <!-- Buttons Section -->
+  <div style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;">
+    <button class="btn outline" id="editProfile">Edit Profile</button>
+    <a href="/certificate/download" class="btn outline" id="downloadCertificate" download>Download Certificate</a>
+    <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Payment Receipt</a>
+  </div>
+</div>
+
+
     </section>
   </main>
 
@@ -67,48 +262,88 @@
       <p>Contact us: info@kaccima.org | +234-123-456-7890</p>
     </div>
   </footer>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
 
-    if (!storedData) return;
+  <script>
+    
+// Edit Profile Functionality
+document.getElementById('editProfile').addEventListener('click', () => {
+  const isEditing = document.getElementById('editProfile').textContent === 'Save Profile';
 
-    const setField = (id, value) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = value || '';
+  if (isEditing) {
+    // Save the new values
+    const updatedData = {
+      companyName: document.getElementById('companyNameInput').value,
+      officeAddress: document.getElementById('officeAddressInput').value,
+      businessNature: document.getElementById('businessNatureInput').value.split(','),
+      bankers: document.getElementById('bankersInput').value,
+      email: document.getElementById('emailInput').value,
+      paymentStatus: document.getElementById('paymentStatus').textContent,
+      registrationDate: localStorage.getItem('registrationDate') || new Date().toISOString(),
     };
 
-    setField('companyName', storedData.companyName);
-    setField('officeAddress', storedData.officeAddress);
-    setField('businessNature', Array.isArray(storedData.businessNature) ? storedData.businessNature.join(', ') : '');
-    setField('bankers', storedData.bankers);
-    setField('email', storedData.email);
-    setField('paymentStatus', storedData.paymentStatus || 'Pending');
+    localStorage.setItem('kaccimaRegistration', JSON.stringify(updatedData));
 
-    // Set dates
-    const regDate = storedData.registrationDate || new Date().toISOString();
-    const regDateObj = new Date(regDate);
-    const renewalDate = new Date(regDateObj);
-    renewalDate.setFullYear(regDateObj.getFullYear() + 1);
+    // Replace inputs with text
+    document.getElementById('companyName').outerHTML = `<span class="value" id="companyName">${updatedData.companyName}</span>`;
+    document.getElementById('officeAddress').outerHTML = `<span class="value" id="officeAddress">${updatedData.officeAddress}</span>`;
+    document.getElementById('businessNature').outerHTML = `<span class="value" id="businessNature">${updatedData.businessNature.join(', ')}</span>`;
+    document.getElementById('bankers').outerHTML = `<span class="value" id="bankers">${updatedData.bankers}</span>`;
+    document.getElementById('email').outerHTML = `<span class="value" id="email">${updatedData.email}</span>`;
 
-    document.getElementById('registrationDate').textContent = regDateObj.toDateString();
-    document.getElementById('renewalDate').textContent = renewalDate.toDateString();
+    document.getElementById('editProfile').textContent = 'Edit Profile';
+  } else {
+    // Convert to input fields
+    const getValue = (id) => document.getElementById(id).textContent;
 
-    // Countdown
-    const countdownEl = document.getElementById('countdownTimer');
-    const interval = setInterval(() => {
-      const now = new Date();
-      const diff = renewalDate - now;
-      if (diff <= 0) {
-        countdownEl.textContent = 'Expired';
-        clearInterval(interval);
-      } else {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        countdownEl.textContent = `${days} day(s)`;
-      }
-    }, 1000);
-  });
-</script>
+    document.getElementById('companyName').outerHTML = `<input type="text" id="companyNameInput" class="value-input" value="${getValue('companyName')}">`;
+    document.getElementById('officeAddress').outerHTML = `<input type="text" id="officeAddressInput" class="value-input" value="${getValue('officeAddress')}">`;
+    document.getElementById('businessNature').outerHTML = `<input type="text" id="businessNatureInput" class="value-input" value="${getValue('businessNature')}">`;
+    document.getElementById('bankers').outerHTML = `<input type="text" id="bankersInput" class="value-input" value="${getValue('bankers')}">`;
+    document.getElementById('email').outerHTML = `<input type="email" id="emailInput" class="value-input" value="${getValue('email')}">`;
 
+    document.getElementById('editProfile').textContent = 'Save Profile';
+  }
+});
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+      if (!storedData) return;
+
+      const setField = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value || '';
+      };
+
+      setField('companyName', storedData.companyName);
+      setField('officeAddress', storedData.officeAddress);
+      setField('businessNature', Array.isArray(storedData.businessNature) ? storedData.businessNature.join(', ') : '');
+      setField('bankers', storedData.bankers);
+      setField('email', storedData.email);
+      setField('paymentStatus', storedData.paymentStatus || 'Pending');
+
+ const regDate = storedData.registrationDate || new Date().toISOString();
+const regDateObj = new Date(regDate);
+
+// Renewal always on January 1st of the next year
+const nextRenewalYear = new Date().getFullYear() + 1;
+const renewalDate = new Date(`${nextRenewalYear}-01-01`);
+
+document.getElementById('registrationDate').textContent = regDateObj.toDateString();
+document.getElementById('renewalDate').textContent = renewalDate.toDateString();
+
+
+      const countdownEl = document.getElementById('countdownTimer');
+      const interval = setInterval(() => {
+        const now = new Date();
+        const diff = renewalDate - now;
+        if (diff <= 0) {
+          countdownEl.textContent = 'Expired';
+          clearInterval(interval);
+        } else {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          countdownEl.textContent = `${days} day(s)`;
+        }
+      }, 1000);
+    });
+  </script>
 </body>
 </html>

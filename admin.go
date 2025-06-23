@@ -58,15 +58,59 @@ func admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminDocuments(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "admin_documents.html", nil)
+	organizations := []Organization{}
+	orgResp, err := findAllOrganizations(dbFindUrl)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organizations = orgResp.Body
+	}
+	tmpl.ExecuteTemplate(w, "admin_documents.html", organizations)
+}
+
+func adminOrganizationDocuments(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, id)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	tmpl.ExecuteTemplate(w, "admin_organization_documents.html", organization)
 }
 
 func adminMembers(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "admin_members.html", nil)
+	organizations := []Organization{}
+	orgResp, err := findAllOrganizations(dbFindUrl)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organizations = orgResp.Body
+	}
+	tmpl.ExecuteTemplate(w, "admin_members.html", organizations)
 }
 
 func adminPayment(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "admin_payments.html", nil)
+	var pendingBankTransfer []BankTransfer
+	bankTransferPendingStatusResponse, err := findBankPaymentApprovalStatus(dbFindUrl, "Pending")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(bankTransferPendingStatusResponse.Body) == 0 {
+		pendingBankTransfer = []BankTransfer{}
+		fmt.Println("No Record Found")
+	} else {
+		pendingBankTransfer = bankTransferPendingStatusResponse.Body
+	}
+	tmpl.ExecuteTemplate(w, "admin_payments.html", pendingBankTransfer)
 }
 
 func adminReport(w http.ResponseWriter, r *http.Request) {

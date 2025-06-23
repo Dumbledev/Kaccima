@@ -56,24 +56,17 @@
           </thead>
           <tbody>
             <!-- Example rows (to be dynamically loaded via JS or backend integration) -->
-            <tr>
-              <td>Jane Doe</td>
-              <td>jane.doe@example.com</td>
-              <td><span class="status active">Active</span></td>
-              <td>
-                <button class="action-btn btn-view">View</button>
-                <button class="action-btn btn-deactivate">Deactivate</button>
-              </td>
-            </tr>
-            <tr>
-              <td>John Smith</td>
-              <td>john.smith@example.com</td>
-              <td><span class="status pending">Pending</span></td>
-              <td>
-                <button class="action-btn btn-approve">Approve</button>
-                <button class="action-btn btn-reject">Reject</button>
-              </td>
-            </tr>
+             {{range .}}
+              <tr>
+                <td>{{.Name}}</td>
+                <td>{{.Email}}</td>
+                <td><span class="status active">{{.Approved}}</span></td>
+                <td>
+                  <button class="action-btn btn-approve">Approve</button>
+                  <button class="action-btn btn-reject">Reject</button>
+                </td>
+              </tr>
+            {{end}}
             <!-- More rows can be dynamically inserted here -->
           </tbody>
         </table>

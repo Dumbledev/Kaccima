@@ -400,23 +400,23 @@
                 <li class="active"><a href="/organization">Organization Profile</a></li>
                 <li><a href="/notification">Notifications</a></li>
                 <li><a href="/profile">Profile</a></li>
-                <li><a href="/reviewedDocuments">Documents</a></li>
+                
             </ul>
         </aside>
 
         <!-- Main Content -->
         <div class="main-content">
-            <div class="profile-container">
+  <div class="profile-container">
                 <div class="profile-header">
                     <div class="profile-title">
-                          <img id="passportPhoto" src="static/default-avatar.png" alt="User Photo" class="profile-photo" width="70px" height="70px"> 
-                        <h1>Organization Profile </h1>
+        
+                        <h1>Organization Profile</h1>
                     </div>
                     <button class="edit-btn" onclick="location.href='edit-profile.html'">
                         <span class="material-icons">edit</span>
                         Edit Profile
                     </button>
-                </div>
+                </div> 
 
                 <!-- Basic Information Section -->
                 <div class="profile-section">
@@ -435,6 +435,10 @@
                                 <div class="field-label">Nature of Business</div>
                                 <div class="field-value" id="businessNature">{{.NatureOfBusiness}}</div>
                             </div>
+                             <div class="profile-field">
+                                <div class="field-label">CAC Number</div>
+                                <div class="field-value" id="businessNature">BACAYY126272</div>
+                            </div>
                         </div>
 
                         <div class="profile-card">
@@ -447,25 +451,17 @@
                                 <div class="field-value" id="representative">{{.Representative}}</div>
                             </div>
                             <div class="profile-field">
-                                <div class="field-label">Email Address</div>
+                                <div class="field-label">Phone Number</div>
+                                <div class="field-value" id="Phone">+2348087373872</div>
+                            </div>
+                             <div class="profile-field">
+                                <div class="field-label">Email</div>
                                 <div class="field-value" id="email">{{.Email}}</div>
                             </div>
+                            
                         </div>
 
-                        <div class="profile-card">
-                            <div class="profile-field">
-                                <div class="field-label">Bankers</div>
-                                <div class="field-value" id="bankers">{{.Bankers}}</div>
-                            </div>
-                            <div class="profile-field">
-                                <div class="field-label">Directors (Nigerian/Non-Nigerian)</div>
-                                <div class="field-value" id="directors">{{.NumberOfDirectors}} / {{.NonNigerianDirectors}}</div>
-                            </div>
-                            <div class="profile-field">
-                                <div class="field-label">Employees (Nigerian/Non-Nigerian)</div>
-                                <div class="field-value" id="employees">{{.NumberOfEmployees}} / {{.NonNigerianEmployees}}</div>
-                            </div>
-                        </div>
+                      
                     </div>
                 </div>
 
@@ -544,19 +540,6 @@
       </div>
     </div>
 
-    <div class="document-item">
-      <span class="material-icons document-icon">image</span>
-      <div class="document-info">
-        <div class="document-name">Passport Photos (3)</div>
-        <span class="document-status status-approved">Approved</span>
-      </div>
-      <div class="document-actions">
-        <button class="action-btn" title="View">
-          <span class="material-icons">visibility</span>
-        </button>
-        <a href="/{{.PassportPhoto}}" target="_blank" class="material-icons fileLink" download="Passport_Photos">download</a>
-      </div>
-    </div>
 
     <div class="document-item">
       <span class="material-icons document-icon">description</span>
