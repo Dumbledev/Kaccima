@@ -51,7 +51,7 @@
               <th>Name</th>
               <th>Email</th>
               <th>Status</th>
-              <th>Actions</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -60,11 +60,17 @@
               <tr>
                 <td>{{.Name}}</td>
                 <td>{{.Email}}</td>
-                <td><span class="status active">{{.Approved}}</span></td>
-                <td>
-                  <button class="action-btn btn-approve">Approve</button>
-                  <button class="action-btn btn-reject">Reject</button>
-                </td>
+               <td>
+  {{if eq .Approved "pending"}}
+    <span class="status non-active">Non-Active</span>
+  {{else if eq .Approved "approved"}}
+    <span class="status active">Active</span>
+  {{else}}
+    <span class="status non-active">Non-Active</span>
+  {{end}}
+</td>
+
+        
               </tr>
             {{end}}
             <!-- More rows can be dynamically inserted here -->
