@@ -73,83 +73,7 @@
           <span class="stat-value">₦1,200,000</span>
           <span class="stat-change positive">
             <span class="material-icons">arrow_upward</span> 8 payments today
-<<<<<<< Updated upstream
-        </span>
-    </div>
-</div>
-
-            <!-- Pending Approvals Table -->
-            <div class="table-container">
-                <div class="table-header">
-                    <h2 class="table-title">Pending Member Approvals</h2>
-                    <div class="search-box">
-                        <span class="material-icons">search</span>
-                        <input type="text" placeholder="Search members...">
-                    </div>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Company</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Join Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                     {{range .PendingOrg}}
-                        <tbody id="">
-                        
-                                <td>{{.Name}}</td>    
-                                <td>One</td>    
-                                <td>{{.Email}}</td>    
-                                <td>{{.Approved}}</td>    
-                                <td>{{.DateJoined}}</td>    
-                                <td>Review</td>    
-                        </tbody>
-                    {{end}}
-
-
-                </table>
-            </div>
-
-            <!-- Pending Payments Table -->
-            <div class="table-container">
-                <div class="table-header">
-                    <h2 class="table-title">Pending Payment Verifications</h2>
-                    <div class="search-box">
-                        <span class="material-icons">search</span>
-                        <input type="text" placeholder="Search payments...">
-                    </div>
-                </div>
-                <table>
-                   <thead>
-                        <tr>
-                            <th>Member</th>
-                            <!-- <th>Amount</th> -->
-                            <th>Payment Method</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                  <tbody id="paymentVerificationsBody">
-                    {{range .PendingBankPayment}}
-                        <tbody id="">                    
-                                <td>{{.OrganizationName}}</td>    
-                                <td>{{.PaymentMethod}}</td>    
-                                <td>{{.Day}}-{{.Month}}-{{.Year}}</td>  
-                                <td>{{.Status}}</td>      
-                                <td>Review</td>    
-                        </tbody>
-                    {{end}}
-                </tbody>
-                </table>
-            </div>
-=======
           </span>
->>>>>>> Stashed changes
         </div>
       </div>
 
@@ -182,7 +106,7 @@
           <tbody>
             {{range .PendingOrg}}
             <tr>
-              <td>{{.Name}}</td>
+             <td>{{.OrganizationName}}</td>
               <td>{{.PhoneNumber}}</td>
               <td>{{.ContactPerson}}</td>
               <td>{{.Email}}</td>
@@ -224,21 +148,33 @@
             <tr>
               <th>Member</th>
               <th>Payment Method</th>
+              <th>Amount</th>
               <th>Date</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody id="paymentVerificationsBody">
+        
             {{range .PendingBankPayment}}
             <tr>
               <td>{{.OrganizationName}}</td>
               <td>{{.PaymentMethod}}</td>
+              <td>{{.Amount}}</td>
               <td>{{.Date}}</td>
               <td>{{.Status}}</td>
               <td>
-                <button title="Review Payment"><i class="fas fa-eye"></i></button>
+                <button onclick="viewOrg('{{.ID}}')" title="View">
+                  <i class="fas fa-eye
+             "></i>
+                </button>
+                <button onclick="approveOrg('{{.ID}}')" title="Accept">
+                  <i class="fas fa-check-circle"></i>
+                </button>
+                <button onclick="rejectOrg('{{.ID}}')" title="Reject">
+                  <i class="fas fa-times-circle"></i>
+                </button>
               </td>
+             
             </tr>
             {{end}}
           </tbody>
@@ -246,29 +182,6 @@
       </div>
     </div>
   </main>
-
-  <!-- Document Viewer Modal -->
-  <div class="modal" id="documentModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="modalDocTitle">Document Viewer</h3>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="document-viewer" id="documentViewer">
-          <p>Document preview will appear here</p>
-        </div>
-        <div class="document-actions">
-          <button class="action-btn btn-approve">
-            <span class="material-icons">check</span> Approve Document
-          </button>
-          <button class="action-btn btn-reject">
-            <span class="material-icons">close</span> Reject Document
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script src="../static/script.js"></script>
   <script>
