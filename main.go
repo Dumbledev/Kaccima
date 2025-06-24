@@ -33,7 +33,7 @@ func main() {
 	http.HandleFunc("/sign_out", signOut)
 	http.HandleFunc("/forgot_password", forgotPassword)
 
-	http.Handle("/dashboard", isAuthenticated(organizationDashboardd))
+	http.Handle("/dashboard", isAuthenticated(organizationDashboard))
 	http.Handle("/notification", isAuthenticated(notification))
 	http.Handle("/profile", isAuthenticated(profile))
 	http.Handle("/payment", isAuthenticated(payment))

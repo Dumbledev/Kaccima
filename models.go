@@ -30,31 +30,39 @@ type SuperAdminProfile struct {
 }
 
 type Organization struct {
-	ID                         string `json:"_id"`
-	Name                       string `json:"name"`
-	Address                    string `json:"address"`
-	NatureOfBusiness           string `json:"businessNature"`
-	Bankers                    string `json:"bankers"`
-	NumberOfEmployees          string `json:"numberOfEmployees"`
-	NonNigerianEmployees       string `json:"nonNigerianEmployees"`
-	NumberOfDirectors          string `json:"numberOfDirectors"`
-	NonNigerianDirectors       string `json:"nonNigerianDiretors"`
-	ContactPerson              string `json:"contactPerson"`
-	Representative             string `json:"representative"`
-	Email                      string `json:"email"`
-	CoverLetter                string `json:"coverLetter"`
-	Memorandum                 string `json:"memorandum"`
-	BusinessCertificate        string `json:"businessCertificate"`
-	IncorporationCertificate   string `json:"incorporationCertificate"`
-	BusinessPremiseCertificate string `json:"businessPremiseCertificate"`
-	PassportPhoto              string `json:"passportPhoto"`
-	FormC07                    string `json:"formC07"`
-	IDDocument                 string `json:"idDocument"`
-	DateJoined                 string `json:"dateJoined"`
-	Approved                   string `json:"approved"`
-	UserId                     string `json:"userId"`
-	Rev                        string `json:"_rev,omitempty"`
-	Doctype                    string `json:"doctype"`
+	ID                                 string `json:"_id"`
+	Name                               string `json:"name"`
+	Address                            string `json:"address"`
+	NatureOfBusiness                   string `json:"businessNature"`
+	Bankers                            string `json:"bankers"`
+	NumberOfEmployees                  string `json:"numberOfEmployees"`
+	NonNigerianEmployees               string `json:"nonNigerianEmployees"`
+	NumberOfDirectors                  string `json:"numberOfDirectors"`
+	NonNigerianDirectors               string `json:"nonNigerianDiretors"`
+	ContactPerson                      string `json:"contactPerson"`
+	Representative                     string `json:"representative"`
+	Email                              string `json:"email"`
+	CoverLetter                        string `json:"coverLetter"`
+	CoverLetterApproval                string `json:"coverLetterApproval"`
+	Memorandum                         string `json:"memorandum"`
+	MemorandumApproval                 string `json:"memorandumApproval"`
+	BusinessCertificate                string `json:"businessCertificate"`
+	BusinessCertificateApproval        string `json:"businessCertificateApproval"`
+	IncorporationCertificate           string `json:"incorporationCertificate"`
+	IncorporationCertificateApproval   string `json:"incorporationCertificateApproval"`
+	BusinessPremiseCertificate         string `json:"businessPremiseCertificate"`
+	BusinessPremiseCertificateApproval string `json:"businessPremiseCertificateApproval"`
+	PassportPhoto                      string `json:"passportPhoto"`
+	PassportPhotoApproval              string `json:"passportPhotoApproval"`
+	FormC07                            string `json:"formC07"`
+	FormC07Approval                    string `json:"formC07Approval"`
+	IDDocument                         string `json:"idDocument"`
+	IDDocumentApproval                 string `json:"idDocumentApproval"`
+	DateJoined                         string `json:"dateJoined"`
+	Status                             string `json:"status"`
+	UserId                             string `json:"userId"`
+	Rev                                string `json:"_rev,omitempty"`
+	Doctype                            string `json:"doctype"`
 }
 
 type OrganizationResponse struct {
@@ -70,6 +78,9 @@ type BankTransfer struct {
 	OrganizationName string `json:"name"`
 	PaymentMethod    string `json:"paymentMethod"`
 	Status           string `json:"status"`
+	Year             int    `json:"year"`
+	Month            string `json:"month"`
+	Day              int    `json:"day"`
 	Date             string `json:"date"`
 	OrganizationId   string `json:"organizationId"`
 	RecieptFile      string `json:"receiptFile"`

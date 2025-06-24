@@ -13,7 +13,11 @@ import (
 	"github.com/google/uuid"
 )
 
-func organizationDashboardd(w http.ResponseWriter, r *http.Request) {
+func organizationDashboard(w http.ResponseWriter, r *http.Request) {
+	type PageResult struct {
+		Organization Organization
+		Payment      BankTransfer
+	}
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
@@ -24,7 +28,21 @@ func organizationDashboardd(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	organization := orgResp.Body[0]
-	tmpl.ExecuteTemplate(w, "dashboard.html", organization)
+	paymentResp, err := findOrganizationPayment(dbFindUrl, organization.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	payment := paymentResp.Body[0]
+	p := PageResult{
+		Organization: organization,
+		Payment:      payment,
+	}
+	tmpl.ExecuteTemplate(w, "dashboard.html", p)
 }
 
 func organization(w http.ResponseWriter, r *http.Request) {
@@ -266,30 +284,38 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	temp5.Write(fileBytes7)
 
 	var org = Organization{
-		ID:                         uuid.NewString(),
-		Name:                       name,
-		Email:                      email,
-		Address:                    address,
-		NumberOfEmployees:          employeesNo,
-		NonNigerianEmployees:       nonNigerianEmployees,
-		NumberOfDirectors:          directorsNo,
-		NonNigerianDirectors:       nonNigerianDirectors,
-		NatureOfBusiness:           businessNature,
-		Bankers:                    bankers,
-		ContactPerson:              contactPerson,
-		Representative:             rep,
-		CoverLetter:                temp1.Name(),
-		Memorandum:                 temp2.Name(),
-		BusinessCertificate:        temp3.Name(),
-		IncorporationCertificate:   temp4.Name(),
-		PassportPhoto:              temp5.Name(),
-		BusinessPremiseCertificate: temp6.Name(),
-		FormC07:                    temp7.Name(),
-		IDDocument:                 temp8.Name(),
-		DateJoined:                 dateJoined.String(),
-		UserId:                     currentUser.ID,
-		Approved:                   "Pending",
-		Doctype:                    "organization",
+		ID:                                 uuid.NewString(),
+		Name:                               name,
+		Email:                              email,
+		Address:                            address,
+		NumberOfEmployees:                  employeesNo,
+		NonNigerianEmployees:               nonNigerianEmployees,
+		NumberOfDirectors:                  directorsNo,
+		NonNigerianDirectors:               nonNigerianDirectors,
+		NatureOfBusiness:                   businessNature,
+		Bankers:                            bankers,
+		ContactPerson:                      contactPerson,
+		Representative:                     rep,
+		CoverLetter:                        temp1.Name(),
+		CoverLetterApproval:                "Pending",
+		Memorandum:                         temp2.Name(),
+		MemorandumApproval:                 "Pending",
+		BusinessCertificate:                temp3.Name(),
+		BusinessCertificateApproval:        "Pending",
+		IncorporationCertificate:           temp4.Name(),
+		IncorporationCertificateApproval:   "Pending",
+		PassportPhoto:                      temp5.Name(),
+		PassportPhotoApproval:              "Pending",
+		BusinessPremiseCertificate:         temp6.Name(),
+		BusinessPremiseCertificateApproval: "Pending",
+		FormC07:                            temp7.Name(),
+		FormC07Approval:                    "Pending",
+		IDDocument:                         temp8.Name(),
+		IDDocumentApproval:                 "Pending",
+		DateJoined:                         dateJoined.String(),
+		UserId:                             currentUser.ID,
+		Status:                             "Pending",
+		Doctype:                            "organization",
 	}
 
 	jsonData, err := json.Marshal(org)
@@ -329,16 +355,34 @@ func payment(w http.ResponseWriter, r *http.Request) {
 }
 
 func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
+	payment := BankTransfer{}
+	year, month, day := time.Now().Date()
 	r.ParseMultipartForm(10 * 1024 * 1024)
-	reciept, _, err := r.FormFile("receiptFile")
 	organizationId := r.FormValue("organizationId")
 	name := r.FormValue("name")
+
+	paymentResp, err := findOrganizationPayment(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(paymentResp.Body) != 0 {
+		payment = paymentResp.Body[0]
+		if payment.Year == year {
+			http.Redirect(w, r, "/payment", http.StatusPermanentRedirect)
+			fmt.Println("Already Paid For Current Year")
+			return
+		}
+	}
+	// payment := paymentResp.Body[0]
+
+	reciept, _, err := r.FormFile("receiptFile")
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 	defer reciept.Close()
-	temp, err2 := os.CreateTemp("static", "file-*.pdf")
+	temp, err2 := os.CreateTemp("static", "payment-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
@@ -358,6 +402,9 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 		PaymentMethod:    "Bank Transfer",
 		Status:           "Pending",
 		Date:             time.Now().String(),
+		Day:              day,
+		Month:            month.String(),
+		Year:             year,
 		Doctype:          "bankTransfer",
 		RecieptFile:      temp.Name(),
 	}
