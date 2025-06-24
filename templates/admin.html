@@ -1,109 +1,79 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KACCIMA - Admin Dashboard</title>
-    <link rel="stylesheet" href="/static/styles.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-            .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--white);
-            box-shadow: var(--box-shadow);
-            position: fixed;
-            height: 100vh;
-            padding: 20px 0;
-            transition: all 0.3s;
-            z-index: 100;
-        }
-        </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KACCIMA - Admin Dashboard</title>
+
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
+
+  <style>
+
+  </style>
 </head>
 
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h3>KACCIMA Admin</h3>
+  {{template "adminSideNav"}}
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="header">
+      <div class="header-left">
+        <span
+          class="material-icons"
+          id="sidebarToggle"
+          style="cursor: pointer"
+          >menu</span
+        >
+      </div>
+      <div class="header-right">
+        <div class="user-profile">
+          <img src="../static/avater.jpg" alt="Admin" class="user-avatar" />
+          <span class="user-name">Admin</span>
         </div>
-        <div class="sidebar-menu">
-            <a href="#" class="menu-item active">
-                <span class="material-icons">dashboard</span>
-                <span>Dashboard</span>
-            </a>
-            <a href="/admin_members" class="menu-item">
-                <span class="material-icons">groups</span>
-                <span>Members</span>
-            </a>
-            <a href="#" class="menu-item">
-                <span class="material-icons">payments</span>
-                <span>Payments</span>
-            </a>
-            <a href="#" class="menu-item">
-                <span class="material-icons">description</span>
-                <span>Documents</span>
-            </a>
-            <a href="#" class="menu-item">
-                <span class="material-icons">assessment</span>
-                <span>Reports</span>
-            </a>
-            <a href="#" class="menu-item">
-                <span class="material-icons">settings</span>
-                <span>Settings</span>
-            </a>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Dashboard Cards -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <span class="stat-title">Total Members</span>
+          <span class="stat-value">{{.UserCount}}</span>
+          <span class="stat-change positive">
+            <span class="material-icons">arrow_upward</span> 5.2% from last
+            month
+          </span>
         </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="main-content">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left">
-                <span class="material-icons" id="sidebarToggle" style="cursor: pointer;">menu</span>
-            </div>
-            <div class="header-right">
-                <div class="user-profile">
-                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Admin" class="user-avatar">
-                    <span class="user-name">Admin User</span>
-                    <span class="material-icons">arrow_drop_down</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Content -->
-        <div class="content">
-            <div class="page-header">
-               
-                
-            </div>
-
-          <div class="stats-container">
-    <div class="stat-card">
-        <span class="stat-title">Total Members</span>
-        <span class="stat-value" id="">{{.UserCount}}</span>
-        <span class="stat-change positive">
-            <span class="material-icons">arrow_upward</span> 5.2% from last month
-        </span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-title">Pending Approvals</span>
-        <span class="stat-value" id="">{{.PendingOrgCount}}</span>
-        <span class="stat-change negative">
+        <div class="stat-card">
+          <span class="stat-title">Pending Approvals</span>
+          <span class="stat-value">{{.PendingOrgCount}}</span>
+          <span class="stat-change negative">
             <span class="material-icons">arrow_downward</span> 3 pending today
-        </span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-title">Total Payments</span>
-        <span class="stat-value" id="">₦14,500,000</span>
-        <span class="stat-change positive">
-            <span class="material-icons">arrow_upward</span> 12.5% from last month
-        </span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-title">Recent Payments</span>
-        <span class="stat-value" id="">₦1,200,000</span>
-        <span class="stat-change positive">
+          </span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-title">Total Payments</span>
+          <span class="stat-value">₦14,500,000</span>
+          <span class="stat-change positive">
+            <span class="material-icons">arrow_upward</span> 12.5% from last
+            month
+          </span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-title">Recent Payments</span>
+          <span class="stat-value">₦1,200,000</span>
+          <span class="stat-change positive">
             <span class="material-icons">arrow_upward</span> 8 payments today
+<<<<<<< Updated upstream
         </span>
     </div>
 </div>
@@ -177,31 +147,149 @@
                 </tbody>
                 </table>
             </div>
+=======
+          </span>
+>>>>>>> Stashed changes
         </div>
-    </main>
+      </div>
 
-    <!-- Document Viewer Modal -->
-    <div class="modal" id="documentModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalDocTitle">Document Viewer</h3>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="document-viewer" id="documentViewer">
-                    <p>Document preview will appear here</p>
-                </div>
-                <div class="document-actions">
-                    <button class="action-btn btn-approve">
-                        <span class="material-icons">check</span> Approve Document
-                    </button>
-                    <button class="action-btn btn-reject">
-                        <span class="material-icons">close</span> Reject Document
-                    </button>
-                </div>
-            </div>
+      <!-- Pending Approvals Table -->
+      <div class="table-container">
+        <div class="table-header">
+          <h2 class="table-title">Pending Member Approvals</h2>
+          <div class="search-box">
+            <span class="material-icons">search</span>
+            <input type="text" placeholder="Search members..." />
+          </div>
         </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Company Name</th>
+              <th>Phone Number</th>
+              <th>Contact Person</th>
+              <th>Email</th>
+              <th>CAC Number</th>
+              <th>Office Address</th>
+              <th>Nature of Business</th>
+              <th>Status</th>
+              <th>Approved</th>
+              <th>Join Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range .PendingOrg}}
+            <tr>
+              <td>{{.Name}}</td>
+              <td>{{.PhoneNumber}}</td>
+              <td>{{.ContactPerson}}</td>
+              <td>{{.Email}}</td>
+              <td>{{.CACNumber}}</td>
+              <td>{{.OfficeAddress}}</td>
+              <td>{{.NatureOfBusiness}}</td>
+              <td>{{.Status}}</td>
+              <td>{{.Approved}}</td>
+              <td>{{.DateJoined}}</td>
+              <td>
+                <button onclick="viewOrg('{{.ID}}')" title="View">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button onclick="approveOrg('{{.ID}}')" title="Accept">
+                  <i class="fas fa-check-circle"></i>
+                </button>
+                <button onclick="rejectOrg('{{.ID}}')" title="Reject">
+                  <i class="fas fa-times-circle"></i>
+                </button>
+              </td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pending Payments Table -->
+      <div class="table-container">
+        <div class="table-header">
+          <h2 class="table-title">Pending Payment Verifications</h2>
+          <div class="search-box">
+            <span class="material-icons">search</span>
+            <input type="text" placeholder="Search payments..." />
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Payment Method</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="paymentVerificationsBody">
+            {{range .PendingBankPayment}}
+            <tr>
+              <td>{{.OrganizationName}}</td>
+              <td>{{.PaymentMethod}}</td>
+              <td>{{.Date}}</td>
+              <td>{{.Status}}</td>
+              <td>
+                <button title="Review Payment"><i class="fas fa-eye"></i></button>
+              </td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+      </div>
     </div>
-    <script src="../static/script.js"></script>
+  </main>
+
+  <!-- Document Viewer Modal -->
+  <div class="modal" id="documentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalDocTitle">Document Viewer</h3>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="document-viewer" id="documentViewer">
+          <p>Document preview will appear here</p>
+        </div>
+        <div class="document-actions">
+          <button class="action-btn btn-approve">
+            <span class="material-icons">check</span> Approve Document
+          </button>
+          <button class="action-btn btn-reject">
+            <span class="material-icons">close</span> Reject Document
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/script.js"></script>
+  <script>
+    function viewOrg(id) {
+      console.log("Viewing organization with ID:", id);
+      // Implement modal or detail section population here
+    }
+
+    function approveOrg(id) {
+      console.log("Approving organization with ID:", id);
+      // Call your backend or perform AJAX request
+    }
+
+    function rejectOrg(id) {
+      console.log("Rejecting organization with ID:", id);
+      // Confirm and then reject
+    }
+
+    function closeModal() {
+      document.getElementById("documentModal").style.display = "none";
+    }
+  </script>
 </body>
 </html>
