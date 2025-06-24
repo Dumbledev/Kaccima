@@ -161,16 +161,16 @@
               <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
               <td>{{.Status}}</td>
               <td>
-                <button onclick="viewOrg('{{.ID}}')" title="View">
+                <a href="/{{.RecieptFile}}" target="_blank" onclick="viewOrg('{{.ID}}')" title="View">
                   <i class="fas fa-eye
              "></i>
-                </button>
-                <button onclick="approveOrg('{{.ID}}')" title="Accept">
+                </a>
+                <a href="/accept_receipt/{{.ID}}">
                   <i class="fas fa-check-circle"></i>
-                </button>
-                <button onclick="rejectOrg('{{.ID}}')" title="Reject">
+                </a>
+                <a href="/reject_receipt/{{.ID}}">
                   <i class="fas fa-times-circle"></i>
-                </button>
+                </a>
               </td>
              
             </tr>

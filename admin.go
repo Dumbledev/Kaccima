@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -98,19 +101,19 @@ func adminMembers(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminPayment(w http.ResponseWriter, r *http.Request) {
-	var pendingBankTransfer []BankTransfer
-	bankTransferPendingStatusResponse, err := findBankPaymentApprovalStatus(dbFindUrl, "Pending")
+	var bankTransfers []BankTransfer
+	bankTransferPendingStatusResponse, err := findOrganizationPayments(dbFindUrl)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	if len(bankTransferPendingStatusResponse.Body) == 0 {
-		pendingBankTransfer = []BankTransfer{}
+		bankTransfers = []BankTransfer{}
 		fmt.Println("No Record Found")
 	} else {
-		pendingBankTransfer = bankTransferPendingStatusResponse.Body
+		bankTransfers = bankTransferPendingStatusResponse.Body
 	}
-	tmpl.ExecuteTemplate(w, "admin_payments.html", pendingBankTransfer)
+	tmpl.ExecuteTemplate(w, "admin_payments.html", bankTransfers)
 }
 
 func adminReport(w http.ResponseWriter, r *http.Request) {
@@ -119,4 +122,78 @@ func adminReport(w http.ResponseWriter, r *http.Request) {
 
 func adminSettings(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "admin_settings.html", nil)
+}
+
+func acceptReceipt(w http.ResponseWriter, r *http.Request) {
+	paymentId := r.PathValue("paymentId")
+	fmt.Println(paymentId, "id")
+	payment := BankTransfer{}
+	paymentResp, err := findOrganizationPaymentByID(dbFindUrl, paymentId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(paymentResp.Body) != 0 {
+		payment = paymentResp.Body[0]
+	}
+	payment.Status = "Accepted"
+	fmt.Println(payment)
+
+	jsonData, err := json.Marshal(&payment)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+payment.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	fmt.Println(string(body))
+	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+}
+
+func rejectReceipt(w http.ResponseWriter, r *http.Request) {
+	paymentId := r.PathValue("paymentId")
+	payment := BankTransfer{}
+	paymentResp, err := findOrganizationPaymentByID(dbFindUrl, paymentId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(paymentResp.Body) != 0 {
+		payment = paymentResp.Body[0]
+	}
+	payment.Status = "Rejected"
+
+	jsonData, err := json.Marshal(&payment)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+payment.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	fmt.Println(string(body))
+	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
 }
