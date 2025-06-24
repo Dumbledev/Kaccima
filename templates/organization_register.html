@@ -206,17 +206,7 @@
 
   nextBtns.forEach(btn => btn.addEventListener('click', () => {
     // If moving from Step 2 to Step 3, validate password
-    if (currentStep === 1) {
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      const error = document.getElementById('passwordError');
-      if (password !== confirmPassword) {
-        error.style.display = 'block';
-        return;
-      } else {
-        error.style.display = 'none';
-      }
-    }
+
     if (currentStep < steps.length - 1) showStep(++currentStep);
   }));
 
