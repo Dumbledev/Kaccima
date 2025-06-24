@@ -145,6 +145,18 @@
     </div>
   </div>
 
+  <!-- ✅ New Row for CAC Number and Phone Number -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="cacNumber">CAC Registration Number</label>
+      <input type="text" id="cacNumber" name="cacNumber" required placeholder="e.g. RC1234567">
+    </div>
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number</label>
+      <input type="tel" id="phoneNumber" name="phoneNumber" required placeholder="+234xxxxxxxxxx" pattern="^\+?\d{10,15}$">
+    </div>
+  </div>
+
   <div class="form-row">
     <div class="form-group">
       <label for="password">Create Password</label>
@@ -164,7 +176,8 @@
   </div>
 </div>
 
-        <!-- Step 2: Document Upload -->
+
+        <!-- Step 3: Document Upload -->
         <div class="form-step" data-step="3">
           <h3>Upload Required Documents</h3>
           <div class="form-row">
