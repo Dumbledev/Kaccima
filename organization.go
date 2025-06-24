@@ -107,6 +107,7 @@ func organizationRegister(w http.ResponseWriter, r *http.Request) {
 
 func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "applicaton/json")
+	year, month, day := time.Now().Date()
 	r.ParseMultipartForm(10 * 1024 * 1024)
 	name := r.FormValue("companyName")
 	email := r.FormValue("email")
@@ -312,6 +313,9 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		FormC07Approval:                    "Pending",
 		IDDocument:                         temp8.Name(),
 		IDDocumentApproval:                 "Pending",
+		Year:                               year,
+		Month:                              month.String(),
+		Day:                                day,
 		DateJoined:                         dateJoined.String(),
 		UserId:                             currentUser.ID,
 		Status:                             "Pending",

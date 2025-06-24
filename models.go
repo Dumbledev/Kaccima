@@ -58,6 +58,9 @@ type Organization struct {
 	FormC07Approval                    string `json:"formC07Approval"`
 	IDDocument                         string `json:"idDocument"`
 	IDDocumentApproval                 string `json:"idDocumentApproval"`
+	Year                               int    `json:"year"`
+	Month                              string `json:"month"`
+	Day                                int    `json:"day"`
 	DateJoined                         string `json:"dateJoined"`
 	Status                             string `json:"status"`
 	UserId                             string `json:"userId"`
