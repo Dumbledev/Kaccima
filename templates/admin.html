@@ -98,7 +98,6 @@
               <th>Office Address</th>
               <th>Nature of Business</th>
               <th>Status</th>
-              <th>Approved</th>
               <th>Join Date</th>
               <th>Actions</th>
             </tr>
@@ -106,16 +105,15 @@
           <tbody>
             {{range .PendingOrg}}
             <tr>
-             <td>{{.OrganizationName}}</td>
+              <td>{{.Name}}</td>
               <td>{{.PhoneNumber}}</td>
               <td>{{.ContactPerson}}</td>
               <td>{{.Email}}</td>
               <td>{{.CACNumber}}</td>
-              <td>{{.OfficeAddress}}</td>
+              <td>{{.Address}}</td>
               <td>{{.NatureOfBusiness}}</td>
               <td>{{.Status}}</td>
-              <td>{{.Approved}}</td>
-              <td>{{.DateJoined}}</td>
+              <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
               <td>
                 <button onclick="viewOrg('{{.ID}}')" title="View">
                   <i class="fas fa-eye"></i>
@@ -159,8 +157,8 @@
             <tr>
               <td>{{.OrganizationName}}</td>
               <td>{{.PaymentMethod}}</td>
-              <td>{{.Amount}}</td>
-              <td>{{.Date}}</td>
+              <td>N25,000</td>
+              <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
               <td>{{.Status}}</td>
               <td>
                 <button onclick="viewOrg('{{.ID}}')" title="View">

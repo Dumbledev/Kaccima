@@ -34,6 +34,8 @@ type Organization struct {
 	Name                               string `json:"name"`
 	Address                            string `json:"address"`
 	NatureOfBusiness                   string `json:"businessNature"`
+	PhoneNumber                        string `json:"phoneNumber"`
+	CACNumber                          string `json:"cacNumber"`
 	Bankers                            string `json:"bankers"`
 	NumberOfEmployees                  string `json:"numberOfEmployees"`
 	NonNigerianEmployees               string `json:"nonNigerianEmployees"`
