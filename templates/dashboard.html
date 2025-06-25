@@ -4,196 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KACCIMA - Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    * {
-
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f6f9;
-  color: #333;
-  background-image: url(../static/bg.jpg);
-}
-
-/* Header/Nav */
-header nav {
-  background-color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-  border-bottom: 1px solid #ccc;
-}
-.value-input {
-  padding: 6px;
-  width: 60%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  margin-left: auto;
-  display: block;
-}
-
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-text {
-  font-weight: bold;
-  font-size: 20px;
-  color: #009245;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 25px;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-}
-
-nav ul li.active a,
-nav ul li a:hover {
-  color: #009245;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background-color: #fff;
-  height: 100vh;
-  padding: 20px 10px;
-  border-right: 1px solid #ccc;
-  position: fixed;
-  top: 70px;
-  left: 0;
-}
-
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar ul li {
-  margin: 20px 0;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  display: block;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.sidebar ul li.active a,
-.sidebar ul li a:hover {
-  background-color: #00d05a;
-  color: white;
-}
-
-/* Main Content */
-.dashboard-container {
-  display: flex;
-}
-
-.dashboard-content {
-  margin-left: 240px;
-  padding: 30px;
-  flex: 1;
-}
-
-.notification.success {
-  background-color: #e4f7e9;
-  border: 1px solid #b6e3c3;
-  padding: 10px 15px;
-  border-radius: 5px;
-  color: #2e7d32;
-  margin-bottom: 20px;
-  font-weight: 500;
-}
-
-.membership-status,
-.profile-info {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  padding: 20px;
-  margin-bottom: 30px;
-}
-
-.membership-status h3,
-.profile-info h3 {
-  color: #00b339;
-  margin-bottom: 20px;
-}
-
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.info-item .label {
-  font-weight: 600;
-}
-
-.info-item .value.active {
-  color: green;
-}
-
-.btn {
-  display: inline-block;
-  background-color: #00d05a;
-  color: white;
-  padding: 8px 18px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: 600;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-  background-color: #00b347;
-}
-
-.btn.outline {
-  background-color: transparent;
-  border: 2px solid #00d05a;
-  color: #00d05a;
-}
-
-.btn.outline:hover {
-  background-color: #00d05a;
-  color: white;
-}
-
-/* Footer */
-footer {
-  background-color: #f8f9fa;
-  padding: 15px 30px;
-  text-align: center;
-  font-size: 14px;
-  color: #777;
-  border-top: 1px solid #ccc;
-}
-
-  </style>
-
+ <link rel="stylesheet" href="../static/user_style.css">
 </head>
 <body>
   <header>
@@ -206,54 +17,106 @@ footer {
         <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/notification">Notifications</a></li>
         <li><a href="/profile">Profile</a></li>
-        <li class="active"><a href="/reviewedDocuments">Documents</a></li>
+        
         <li><a href="/sign_out">Logout</a></li>
       </ul>
     </nav>
   </header>
 
   <main class="dashboard-container">
-    <aside class="sidebar">
-      <ul>
-        <li class="active"><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/organization">Organization Profile</a></li>
-        <li><a href="/notification">Notifications</a></li>
-        <li><a href="/profile">Profile</a></li>
-  
-      </ul>
-    </aside>
+ <aside class="sidebar">
+           
+            <ul>
+                <li class="active"><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/organization">Organization Profile</a></li>
+                <li><a href="/notification">Notifications</a></li>
+                
+                
+            </ul>
+        </aside>
 
     <section class="dashboard-content">
       <div class="notification success" id="paymentStatusContainer">
         <p>Your payment status: <span id="paymentStatus">{{.Payment.Status}}</span></p>
       </div>
+<div class="profile-card">
+  <h3 class="section-title">Membership Subscription</h3>
+  <div class="profile-grid">
+    <div class="profile-field">
+      <div class="field-label">Registration Date</div>
+      <div class="field-value">{{.Payment.Day}}-{{.Payment.Month}}-{{.Payment.Year}}</div>
+    </div>
 
-      <div class="membership-status">
-        <h3>Membership Subscription</h3>
-        <p>Registration Date: <span id="">{{.Payment.Day}}-{{.Payment.Month}}-{{.Payment.Year}}</span></p>
-        <p>Expected Renewal Date: <span id="renewalDate"></span></p>
-        <p>Time left to renew: <span id="countdownTimer"></span></p>
-        <a href="/payment" class="btn">Renew Payment</a>
-      </div>
+    <div class="profile-field">
+      <div class="field-label">Expected Renewal Date</div>
+      <div class="field-value">January 1, {{.Payment.Year}}</div>
+    </div>
 
-<div class="profile-info"> 
-  <h3>Profile Information</h3>
-  <div class="info-item"><span class="label">Company Name:</span><span class="value" id="companyName">{{.Organization.Name}}</span></div>
-  <div class="info-item"><span class="label">Office Address:</span><span class="value" id="officeAddress">{{.Organization.Address}}</span></div>
-  <div class="info-item"><span class="label">Business Nature:</span><span class="value" id="businessNature">{{.Organization.NatureOfBusiness}}</span></div>
-  <div class="info-item"><span class="label">Bankers:</span><span class="value" id="bankers">{{.Organization.Bankers}}</span></div>
-  <div class="info-item"><span class="label">Email:</span><span class="value" id="email">{{.Organization.Email}}</span></div>
-  <div class="info-item"><span class="label">Membership Status:</span><span class="value active">{{.Organization.Status}}</span></div>
+    <div class="profile-field">
+      <div class="field-label">Time left to renew</div>
+      <div class="field-value"><span id="countdownTimer"></span></div>
+    </div>
+  </div>
   
-  <!-- Buttons Section -->
-  <div style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;">
-    <button class="btn outline" id="editProfile">Edit Profile</button>
+  <div class="button-group">
+    <a href="/payment" class="btn">Renew Payment</a>
     <a href="/certificate/download" class="btn outline" id="downloadCertificate" download>Download Certificate</a>
-    <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Payment Receipt</a>
+    <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
   </div>
 </div>
 
+<div class="profile-section"> 
+  <h2 class="section-title">Profile Information</h2>
 
+  <div class="profile-grid">
+    <div class="profile-field">
+      <div class="field-label">Company Name</div>
+      <div class="field-value" id="companyName">{{.Organization.Name}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Office Address</div>
+      <div class="field-value" id="officeAddress">{{.Organization.Address}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Business Nature</div>
+      <div class="field-value" id="businessNature">{{.Organization.NatureOfBusiness}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Bankers</div>
+      <div class="field-value" id="bankers">{{.Organization.Bankers}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Email</div>
+      <div class="field-value" id="email">{{.Organization.Email}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Registration Date</div>
+      <div class="field-value" id="registrationDate">{{.Payment.Day}}-{{.Payment.Month}}-{{.Payment.Year}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Membership Status</div>
+      <div class="field-value" id="paymentStatus">{{.Payment.Status}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Membership ID</div>
+      <div class="field-value" id="paymentStatus">{{.Payment.Status}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Edit</div>
+      <button class="btn edit-btn" id="editProfile">Edit Profile</button>
+    </div>
+  </div>
+  
+</div>
+      <div class="profile-info">
+        <h3 class="section-title">Membership Information</h3>
+        <p>As a member of KACCIMA, you are entitled to various benefits including access to business resources, networking opportunities, and support for your business growth.</p>
+      </div>
+
+      <div class="profile-info">
+        <h3 class="section-title">Contact Information</h3>
+       <p>Contact us: info@kaccima.org | +234-123-456-7890</p>
     </section>
   </main>
 

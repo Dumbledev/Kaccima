@@ -4,374 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KACCIMA - Organization Profile</title>
-    <style>
-        /* Global Styles */
-        :root {
-            --primary-color: #15e420;
-            --secondary-color: #6c757d;
-            --success-color: #28a745;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --white: #ffffff;
-            --border-radius: 5px;
-            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-image: url(../static/bg4.jpg);
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            min-height: 100vh;
-        }
-
-        /* Header Styles */
-        header {
-            background-color: var(--white);
-            box-shadow: var(--box-shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            width: 100%;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-text {
-            margin-left: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 2rem;
-        }
-
-        nav ul li a {
-            color: var(--dark-color);
-            font-weight: 500;
-            text-decoration: none;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary-color);
-        }
-
-        /* Dashboard Container */
-        .dashboard-container {
-            display: flex;
-            flex-direction: row;
-            min-height: calc(100vh - 80px);
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: 250px;
-            background-color: #f4f4f4;
-            padding: 20px;
-            margin: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-        }
-
-        .sidebar h2 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin: 10px 0;
-        }
-
-        .sidebar ul li a {
-            text-decoration: none;
-            color: #333;
-            display: block;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #e0e0e0;
-        }
-
-        .sidebar ul li.active a {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        /* Main Content Area */
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            background-color: var(--white);
-            margin: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-        }
-
-        /* Profile Container */
-        .profile-container {
-            width: 100%;
-        }
-
-        .profile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .profile-title {
-            display: flex;
-            align-items: center;
-        }
-
-        .profile-title img {
-            margin-right: 15px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .edit-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.3s;
-        }
-
-        .edit-btn:hover {
-            background-color: #12c21e;
-        }
-
-        .edit-btn .material-icons {
-            margin-right: 5px;
-            font-size: 18px;
-        }
-
-        /* Profile Sections */
-        .profile-section {
-            margin-bottom: 2rem;
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        /* Profile Grid */
-        .profile-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .profile-card {
-            background-color: #f9f9f9;
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .profile-field {
-            margin-bottom: 1rem;
-        }
-
-        .field-label {
-            font-weight: 600;
-            color: var(--secondary-color);
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .field-value {
-            font-size: 1rem;
-            color: var(--dark-color);
-            padding: 8px;
-            background-color: white;
-            border-radius: 4px;
-            border: 1px solid #eee;
-            min-height: 38px;
-            display: flex;
-            align-items: center;
-        }
-
-        /* Documents Section */
-        .documents-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .document-item {
-            background-color: #f9f9f9;
-            border-radius: var(--border-radius);
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .document-icon {
-            margin-right: 10px;
-            color: var(--secondary-color);
-        }
-
-        .document-info {
-            flex: 1;
-        }
-
-        .document-name {
-            font-weight: 600;
-            margin-bottom: 0.2rem;
-        }
-
-        .document-status {
-            font-size: 0.8rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .status-approved {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .document-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            color: var(--secondary-color);
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: color 0.3s;
-        }
-
-        .action-btn:hover {
-            color: var(--primary-color);
-        }
-
-        /* Footer */
-        footer {
-            background-color: #222;
-            color: #fff;
-            text-align: center;
-            padding: 20px 10px;
-            width: 100%;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            font-size: 14px;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .dashboard-container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: calc(100% - 40px);
-                margin: 20px;
-                padding: 15px;
-            }
-            
-            .sidebar ul {
-                display: flex;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-            
-            .sidebar ul li {
-                display: inline-block;
-                margin: 0 5px;
-            }
-
-            .main-content {
-                margin: 0 20px 20px;
-            }
-
-            .profile-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .edit-btn {
-                margin-top: 1rem;
-            }
-
-            .profile-grid {
-                grid-template-columns: 1fr;
-            }
-
-            nav ul {
-                margin-top: 1rem;
-            }
-
-            nav ul li {
-                margin-left: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../static/user_style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -381,196 +14,202 @@
                 <img src="static/logo.png" alt="KACCIMA Logo" width="40" height="40">
                 <span class="logo-text">KACCIMA</span>
             </div>
-        <ul>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/notification">Notifications</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li class="active"><a href="/reviewedDocuments">Documents</a></li>
-            <li><a href="/sign_out">Logout</a></li>
-        </ul>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/notification">Notifications</a></li>
+                <li><a href="/profile">Profile</a></li>
+                
+                <li><a href="/sign_out">Logout</a></li>
+            </ul>
         </nav>
     </header>
 
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <h2>Dashboard</h2>
             <ul>
                 <li><a href="/dashboard">Dashboard</a></li>
+                 <li><a href="/profile">Profile</a></li>
                 <li class="active"><a href="/organization">Organization Profile</a></li>
                 <li><a href="/notification">Notifications</a></li>
-                <li><a href="/profile">Profile</a></li>
-                
+               
             </ul>
         </aside>
 
         <!-- Main Content -->
         <div class="main-content">
-  <div class="profile-container">
-                <div class="profile-header">
-                    <div class="profile-title">
-        
-                        <h1>Organization Profile</h1>
-                    </div>
-                    <button class="edit-btn" onclick="location.href='edit-profile.html'">
-                        <span class="material-icons">edit</span>
-                        Edit Profile
-                    </button>
-                </div> 
-
-                <!-- Basic Information Section -->
-                <div class="profile-section">
-                    <h2 class="section-title">Basic Information</h2>
-                    <div class="profile-grid">
-                        <div class="profile-card">
-                            <div class="profile-field">
-                                <div class="field-label">Company Name</div>
-                                <div class="field-value" id="companyName">{{.Name}}</div>
-                            </div>
-                            <div class="profile-field">
-                                <div class="field-label">Office Address</div>
-                                <div class="field-value" id="officeAddress">{{.Address}}</div>
-                            </div>
-                            <div class="profile-field">
-                                <div class="field-label">Nature of Business</div>
-                                <div class="field-value" id="businessNature">{{.NatureOfBusiness}}</div>
-                            </div>
-                             <div class="profile-field">
-                                <div class="field-label">CAC Number</div>
-                                <div class="field-value" id="businessNature">BACAYY126272</div>
-                            </div>
-                        </div>
-
-                        <div class="profile-card">
-                            <div class="profile-field">
-                                <div class="field-label">Contact Person</div>
-                                <div class="field-value" id="contactPerson">{{.ContactPerson}}</div>
-                            </div>
-                            <div class="profile-field">
-                                <div class="field-label">Representative</div>
-                                <div class="field-value" id="representative">{{.Representative}}</div>
-                            </div>
-                            <div class="profile-field">
-                                <div class="field-label">Phone Number</div>
-                                <div class="field-value" id="Phone">+2348087373872</div>
-                            </div>
-                             <div class="profile-field">
-                                <div class="field-label">Email</div>
-                                <div class="field-value" id="email">{{.Email}}</div>
-                            </div>
-                            
-                        </div>
-
-                      
-                    </div>
-                </div>
-
-              <!-- Documents Section --> 
-<div class="profile-section">
-  <h2 class="section-title">Submitted Documents</h2>
-  <div class="documents-list">
-
-    <div class="document-item">
-      <span class="material-icons document-icon">description</span>
-      <div class="document-info">
-        <div class="document-name">Covering Letter</div>
-        <span class="document-status status-approved">Approved</span>
-      </div>
-      <div class="document-actions">
-        <button class="action-btn" title="View">
-          <span class="material-icons">visibility</span>
-        </button>
-        <a href="/{{.CoverLetter}}" target="_blank" class="material-icons fileLink" download="Covering_Letter">download</a>
-      </div>
-    </div>
-
-    <div class="document-item">
-      <span class="material-icons document-icon">description</span>
-      <div class="document-info">
-        <div class="document-name">Memorandum & Articles</div>
-        <span class="document-status status-approved">Approved</span>
-      </div>
-      <div class="document-actions">
-        <button class="action-btn" title="View">
-          <span class="material-icons">visibility</span>
-        </button>
-        <a href="/{{.Memorandum}}" target="_blank" class="material-icons fileLink" download="Memorandum">download</a>
-      </div>
-    </div>
-
-    <div class="document-item">
-      <span class="material-icons document-icon">description</span>
-      <div class="document-info">
-        <div class="document-name">Business Name Certificate</div>
-        <span class="document-status status-approved">Approved</span>
-      </div>
-      <div class="document-actions">
-        <button class="action-btn" title="View">
-          <span class="material-icons">visibility</span>
-        </button>
-        <a href="/{{.BusinessCertificate}}" target="_blank" class="material-icons fileLink" download="Business_Certificate">download</a>
-      </div>
-    </div>
-
-    <div class="document-item">
-      <span class="material-icons document-icon">description</span>
-      <div class="document-info">
-        <div class="document-name">Incorporation Certificate</div>
-        <span class="document-status status-pending">Pending Review</span>
-      </div>
-      <div class="document-actions">
-        <button class="action-btn" title="View">
-          <span class="material-icons">visibility</span>
-        </button>
-        <a href="/{{.IncorporationCertificate}}" target="_blank" class="material-icons fileLink" download="Incorporation_Certificate">download</a>
-      </div>
-    </div>
-
-    <div class="document-item">
-      <span class="material-icons document-icon">description</span>
-      <div class="document-info">
-        <div class="document-name">Business Premises Certificate</div>
-        <span class="document-status status-pending">Pending Review</span>
-      </div>
-      <div class="document-actions">
-        <button class="action-btn" title="View">
-          <span class="material-icons">visibility</span>
-        </button>
-        <a href="/{{.BusinessPremiseCertificate}}" target="_blank" class="material-icons fileLink" download="Business_Premise_Certificate">download</a>
-      </div>
-    </div>
-
-
-    <div class="document-item">
-      <span class="material-icons document-icon">description</span>
-      <div class="document-info">
-        <div class="document-name">Form C07</div>
-        <span class="document-status status-pending">Pending Review</span>
-      </div>
-      <div class="document-actions">
-        <button class="action-btn" title="View">
-          <span class="material-icons">visibility</span>
-        </button>
-        <a href="/{{.FormC07}}" target="_blank" class="material-icons fileLink" download="Form_C07">download</a>
-      </div>
-    </div>
-
-    <div class="document-item">
-      <span class="material-icons document-icon">badge</span>
-      <div class="document-info">
-        <div class="document-name">ID Document</div>
-        <span class="document-status status-approved">Approved</span>
-      </div>
-      <div class="document-actions">
-        <button class="action-btn" title="View">
-          <span class="material-icons">visibility</span>
-        </button>
-        <a href="/{{.IDDocument}}" target="_blank" class="material-icons fileLink" download="ID_Document">download</a>
-      </div>
-    </div>
-
+            <div class="profile-container">
+               <div class="profile-header"> 
+  <div class="profile-title">
+    <h1>Organization Profile</h1>
+    <button class="edit-btn" onclick="location.href='edit-profile.html'">
+      <span class="material-icons">edit</span>
+      Edit Profile
+    </button>
   </div>
 </div>
+
+                
+<!-- Basic Information Section -->  
+<div class="profile-section">
+  <h2 class="section-title" style="color: #15e420;">Basic Information</h2>
+  <div class="profile-grid">
+    <div class="profile-field">
+      <div class="field-label">Company Name</div>
+      <div class="field-value" id="companyName">{{.Name}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Office Address</div>
+      <div class="field-value" id="officeAddress">{{.Address}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Nature of Business</div>
+      <div class="field-value" id="businessNature">{{.NatureOfBusiness}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">CAC Number</div>
+      <div class="field-value">BACAYY126272</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Contact Person</div>
+      <div class="field-value" id="contactPerson">{{.ContactPerson}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Representative</div>
+      <div class="field-value" id="representative">{{.Representative}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Phone Number</div>
+      <div class="field-value" id="Phone">+2348087373872</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Email</div>
+      <div class="field-value" id="email">{{.Email}}</div>
+    </div>
+  </div>
+</div>
+
+
+                <!-- Documents Section --> 
+                <div class="profile-section">
+                    <h2 class="section-title"  style="color: #15e420;">Submitted Documents</h2>
+                    <div class="documents-list">
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Covering Letter</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.CoverLetter}}" target="_blank" class="material-icons fileLink" download="Covering_Letter">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Memorandum & Articles</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.Memorandum}}" target="_blank" class="material-icons fileLink" download="Memorandum">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Business Name Certificate</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.BusinessCertificate}}" target="_blank" class="material-icons fileLink" download="Business_Certificate">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Incorporation Certificate</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.IncorporationCertificate}}" target="_blank" class="material-icons fileLink" download="Incorporation_Certificate">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Business Premises Certificate</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.BusinessPremiseCertificate}}" target="_blank" class="material-icons fileLink" download="Business_Premise_Certificate">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Form C07</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.FormC07}}" target="_blank" class="material-icons fileLink" download="Form_C07">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">badge</span>
+                            <div class="document-info">
+                                <div class="document-name">ID Document</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.IDDocument}}" target="_blank" class="material-icons fileLink" download="ID_Document">download</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="documentModal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modalTitle">Document Preview</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="watermark-container">
+                <div class="watermark">
+                    <img src="static/logo.png" alt="KACCIMA Watermark">
+                </div>
+                <div class="modal-content" id="modalContent">
+                    <!-- Document content will be loaded here -->
                 </div>
             </div>
         </div>
@@ -584,68 +223,40 @@
     </footer>
 
     <script>
- window.addEventListener('DOMContentLoaded', () => {
-    const fileLinks = document.querySelectorAll('.fileLink');
-    fileLinks.forEach(link => {
-      if (link.href.includes('%5c')) {
-        link.href = link.href.replace(/%5c/g, '/');
-      }
-    });
-  });
-
-
-        // Load data from localStorage if available
-        document.addEventListener('DOMContentLoaded', function() {
-            const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
-            const storedDocs = JSON.parse(localStorage.getItem('kaccimaUploadedDocuments'));
-
-            if (storedData) {
-                // Populate basic information
-                document.getElementById('companyName').textContent = storedData.companyName;
-                document.getElementById('officeAddress').textContent = storedData.officeAddress;
-                document.getElementById('businessNature').textContent = storedData.businessNature.join(', ');
-                document.getElementById('contactPerson').textContent = storedData.contactPerson;
-                document.getElementById('representative').textContent = storedData.representative;
-                document.getElementById('email').textContent = storedData.email;
-                document.getElementById('bankers').textContent = storedData.bankers;
-                document.getElementById('directors').textContent = `${storedData.directors.nigerian} / ${storedData.directors.nonNigerian}`;
-                document.getElementById('employees').textContent = `${storedData.employees.nigerian} / ${storedData.employees.nonNigerian}`;
-            }
-
-            if (storedDocs) {
-                // Update document statuses in the UI
-                const docItems = document.querySelectorAll('.document-item');
-                docItems.forEach(item => {
-                    const docName = item.querySelector('.document-name').textContent;
-                    const matchingDoc = storedDocs.find(doc => doc.name === docName);
-                    
-                    if (matchingDoc) {
-                        const statusElement = item.querySelector('.document-status');
-                        if (matchingDoc.approved) {
-                            statusElement.textContent = 'Approved';
-                            statusElement.className = 'document-status status-approved';
-                        } else {
-                            statusElement.textContent = 'Pending Review';
-                            statusElement.className = 'document-status status-pending';
-                        }
-                    }
-                });
-            }
-
-            // Add click handlers for document actions
-            document.querySelectorAll('.action-btn').forEach(btn => {
+        // Document modal functionality
+        document.querySelectorAll('.action-btn .material-icons').forEach(btn => {
+            if (btn.textContent === 'visibility') {
                 btn.addEventListener('click', function() {
-                    const action = this.querySelector('.material-icons').textContent;
                     const docName = this.closest('.document-item').querySelector('.document-name').textContent;
-                    
-                    if (action === 'visibility') {
-                        alert(`Viewing document: ${docName}`);
-                        // In a real app, this would open a document viewer
-                    } else if (action === 'download') {
-                        alert(`Downloading document: ${docName}`);
-                        // In a real app, this would trigger a download
-                    }
+                    document.getElementById('modalTitle').textContent = docName;
+                    document.getElementById('modalContent').innerHTML = `
+                        <p>This would display the ${docName} content in a real application.</p>
+                        <p>The actual document viewer implementation would depend on your backend system.</p>
+                    `;
+                    document.getElementById('documentModal').style.display = 'flex';
                 });
+            }
+        });
+
+        // Close modal
+        document.getElementById('modalClose').addEventListener('click', function() {
+            document.getElementById('documentModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('documentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // File link path correction
+        window.addEventListener('DOMContentLoaded', () => {
+            const fileLinks = document.querySelectorAll('.fileLink');
+            fileLinks.forEach(link => {
+                if (link.href.includes('%5c')) {
+                    link.href = link.href.replace(/%5c/g, '/');
+                }
             });
         });
     </script>
