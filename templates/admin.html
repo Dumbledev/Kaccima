@@ -98,7 +98,6 @@
               <th>Office Address</th>
               <th>Nature of Business</th>
               <th>Status</th>
-              <th>Approved</th>
               <th>Join Date</th>
               <th>Actions</th>
             </tr>
@@ -106,16 +105,15 @@
           <tbody>
             {{range .PendingOrg}}
             <tr>
-             <td>{{.OrganizationName}}</td>
+              <td>{{.Name}}</td>
               <td>{{.PhoneNumber}}</td>
               <td>{{.ContactPerson}}</td>
               <td>{{.Email}}</td>
               <td>{{.CACNumber}}</td>
-              <td>{{.OfficeAddress}}</td>
+              <td>{{.Address}}</td>
               <td>{{.NatureOfBusiness}}</td>
               <td>{{.Status}}</td>
-              <td>{{.Approved}}</td>
-              <td>{{.DateJoined}}</td>
+              <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
               <td>
                 <button onclick="viewOrg('{{.ID}}')" title="View">
                   <i class="fas fa-eye"></i>
@@ -159,20 +157,20 @@
             <tr>
               <td>{{.OrganizationName}}</td>
               <td>{{.PaymentMethod}}</td>
-              <td>{{.Amount}}</td>
-              <td>{{.Date}}</td>
+              <td>N25,000</td>
+              <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
               <td>{{.Status}}</td>
               <td>
-                <button onclick="viewOrg('{{.ID}}')" title="View">
+                <a href="/{{.RecieptFile}}" target="_blank" onclick="viewOrg('{{.ID}}')" title="View">
                   <i class="fas fa-eye
              "></i>
-                </button>
-                <button onclick="approveOrg('{{.ID}}')" title="Accept">
+                </a>
+                <a href="/accept_receipt/{{.ID}}">
                   <i class="fas fa-check-circle"></i>
-                </button>
-                <button onclick="rejectOrg('{{.ID}}')" title="Reject">
+                </a>
+                <a href="/reject_receipt/{{.ID}}">
                   <i class="fas fa-times-circle"></i>
-                </button>
+                </a>
               </td>
              
             </tr>
