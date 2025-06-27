@@ -197,3 +197,75 @@ func rejectReceipt(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(string(body))
 	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
 }
+
+func acceptOrganization(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	org := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		org = orgResp.Body[0]
+	}
+	org.Status = "Accepted"
+
+	jsonData, err := json.Marshal(&org)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+org.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	fmt.Println(string(body))
+	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+}
+
+func rejectOrganization(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	org := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		org = orgResp.Body[0]
+	}
+	org.Status = "Rejected"
+
+	jsonData, err := json.Marshal(&org)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+org.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	fmt.Println(string(body))
+	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+}

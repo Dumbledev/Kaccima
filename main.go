@@ -53,6 +53,8 @@ func main() {
 
 	http.Handle("/accept_receipt/{paymentId}", isAuthenticated(acceptReceipt))
 	http.Handle("/reject_receipt/{paymentId}", isAuthenticated(rejectReceipt))
+	http.Handle("/accept_organization/{organizationId}", isAuthenticated(acceptOrganization))
+	http.Handle("/reject_organization/{organizationId}", isAuthenticated(rejectOrganization))
 
 	// http.Handle("/profile", isAuthenticated(profile))
 	// http.Handle("/profile_update", isAuthenticated(profileUpdate))
