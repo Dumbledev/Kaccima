@@ -58,11 +58,16 @@
       <div class="field-value"><span id="countdownTimer"></span></div>
     </div>
   </div>
+
   
   <div class="button-group">
     <a href="/payment" class="btn">Renew Payment</a>
-    <a href="/certificate/download" class="btn outline" id="downloadCertificate" download>Download Certificate</a>
-    <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
+      {{if eq .Organization.Status "Accepted"}}
+        <a href="/certificate/download" class="btn outline" id="downloadCertificate" download>Download Certificate</a>          
+      {{end}}
+      {{if eq .Payment.Status "Accepted"}}
+        <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
+      {{end}}
   </div>
 </div>
 
