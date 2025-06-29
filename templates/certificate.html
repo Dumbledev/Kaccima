@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Times New Roman', serif;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+        .watermark {
+            position: absolute;
+            opacity: 0.1;
+            width: 80%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+        .certificate-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2cm;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 28pt;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        .header h2 {
+            font-size: 18pt;
+            color: #7f8c8d;
+            margin-top: 0;
+        }
+        .content {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .content p {
+            font-size: 16pt;
+            line-height: 1.6;
+        }
+        .organization-name {
+            font-size: 22pt;
+            font-weight: bold;
+            color: #2980b9;
+            margin: 1rem 0;
+        }
+        .signature-area {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 3rem;
+        }
+        .signature {
+            text-align: center;
+            width: 45%;
+        }
+        .signature-line {
+            border-top: 1px solid #2c3e50;
+            width: 200px;
+            margin: 0 auto;
+            padding-top: 10px;
+        }
+        .date {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 14pt;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-container">
+        <img src="/static/logo.png" class="watermark">
+        
+        <div class="header">
+            <h1>CERTIFICATE OF MEMBERSHIP</h1>
+            <h2>Kaduna Chamber of Commerce, Industry, Mines and Agriculture (KACCIMA)</h2>
+        </div>
+        
+        <div class="content">
+            <p>This is to certify that</p>
+            <div class="organization-name">{{.Name}}</div>
+            <p>is a duly registered member of the Kaduna Chamber of Commerce, Industry, Mines and Agriculture (KACCIMA) in good standing.</p>
+            <p>Business Nature: {{.NatureOfBusiness}}</p>
+            <p>Registration Number: {{.RegistrationNumber}}</p>
+        </div>
+        
+        <div class="signature-area">
+            <div class="signature">
+                <div class="signature-line"></div>
+                <p>President, KACCIMA</p>
+            </div>
+            <div class="signature">
+                <div class="signature-line"></div>
+                <p>Director General, KACCIMA</p>
+            </div>
+        </div>
+        
+        <div class="date">
+            <p>Issued on: {{.CurrentDate}}</p>
+            <p>Valid until: {{.ExpiryDate}}</p>
+        </div>
+    </div>
+</body>
+</html>
