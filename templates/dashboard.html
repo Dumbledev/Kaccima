@@ -373,15 +373,15 @@ drawCenter(`Membership Status: ${document.getElementById('paymentStatus').textCo
 // ——————————————————————————————
 const sigLineY = 100;
 const sigW     = 120;  // image width
-const sigH     = 60;   // image height
-const imgPad   = 5;    // gap between line and image
-const capPad   = 15;   // gap between line and caption
+const sigH     = 50;   // image height
+const imgPad   = -5;    // gap between line and image
+const capPad   = 10;   // gap between line and caption
 
 // load your signature images
 const presSigImg = await tryEmbed('/static/dgsign.png');
 const dirSigImg  = await tryEmbed('/static/pressign.png');
 
-/// left block: President
+// left block: President
 const leftX = PW/2 - sigW - 50;
 if (presSigImg) {
   // 1) signature line
@@ -393,7 +393,7 @@ if (presSigImg) {
   // 2) image above the line (reduced imgPad for closer placement)
   page.drawImage(presSigImg, {
     x: leftX,
-    y: sigLineY + 3,  // Reduced from imgPad to 3 (adjust as needed)
+    y: sigLineY + 0,  
     width:  sigW,
     height: sigH,
   });
@@ -416,7 +416,7 @@ if (dirSigImg) {
   });
   page.drawImage(dirSigImg, {
     x: rightX,
-    y: sigLineY + 3,  // Reduced from imgPad to 3 (adjust as needed)
+    y: sigLineY + 0,  
     width:  sigW,
     height: sigH,
   });
