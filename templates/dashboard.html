@@ -38,7 +38,7 @@
 
     <section class="dashboard-content">
       <div class="notification success" id="paymentStatusContainer">
-        <p>Your payment status: <span id="">{{.Payment.Status}}</span></p>
+        <p>Your payment status: <span id="paymentStatus">{{.Payment.Status}}</span></p>
       </div>
 <div class="profile-card">
   <h3 class="section-title">Membership Subscription</h3>
@@ -58,16 +58,11 @@
       <div class="field-value"><span id="countdownTimer"></span></div>
     </div>
   </div>
-
   
   <div class="button-group">
     <a href="/payment" class="btn">Renew Payment</a>
-      {{if eq .Organization.Status "Accepted"}}
-        <a href="/certificate/download" class="btn outline" id="downloadCertificate" download>Download Certificate</a>          
-      {{end}}
-      {{if eq .Payment.Status "Accepted"}}
-        <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
-      {{end}}
+    <a href="/certificate/download" class="btn outline" id="downloadCertificate" download>Download Certificate</a>
+    <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
   </div>
 </div>
 
@@ -467,6 +462,140 @@ page.drawText(dateText, {
     }
   });
 
+  document.getElementById('downloadReceipt')
+  .addEventListener('click', async (e) => {
+    e.preventDefault();
+    const btn = e.target;
+    btn.textContent = 'Generating...';
+    btn.disabled = true;
+
+    try {
+      const { PDFDocument, rgb, StandardFonts } = PDFLib;
+      const pdfDoc = await PDFDocument.create();
+      const page = pdfDoc.addPage([595, 280]);
+      const PW = page.getWidth(), PH = page.getHeight();
+
+      async function tryEmbed(url) {
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const bytes = await res.arrayBuffer();
+        try { return await pdfDoc.embedPng(bytes); }
+        catch { try { return await pdfDoc.embedJpg(bytes); } catch { return null; } }
+      }
+
+      const logoImg = await tryEmbed('/static/logo.png');
+
+      const helv = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const helvB = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+      const labelSize = 9, valueSize = 9;
+
+      const drawCenter = (txt, y, size, font = helv, color = rgb(0, 0, 0)) => {
+        const w = font.widthOfTextAtSize(txt, size);
+        page.drawText(txt, { x: (PW - w) / 2, y, size, font, color });
+      };
+
+      const drawLeft = (txt, x, y, size, font = helv, color = rgb(0, 0, 0)) => {
+        page.drawText(txt, { x, y, size, font, color });
+      };
+
+      const drawRight = (txt, x, y, size, font = helv, color = rgb(0, 0, 0)) => {
+        const w = font.widthOfTextAtSize(txt, size);
+        page.drawText(txt, { x: x - w, y, size, font, color });
+      };
+
+      // Draw watermark first
+      if (logoImg) {
+        const wmWidth = 300;
+        const wmHeight = (logoImg.height / logoImg.width) * wmWidth;
+        page.drawImage(logoImg, {
+          x: (PW - wmWidth) / 2,
+          y: (PH - wmHeight) / 2,
+          width: wmWidth,
+          height: wmHeight,
+          opacity: 0.2,
+        });
+      }
+
+      // Draw logo at top center
+      let logoHeight = 0;
+      if (logoImg) {
+        const topWidth = 80;
+        logoHeight = (logoImg.height / logoImg.width) * topWidth;
+        page.drawImage(logoImg, {
+          x: (PW - topWidth) / 2,
+          y: PH - logoHeight - 10,
+          width: topWidth,
+          height: logoHeight,
+        });
+      }
+
+      // Title
+      drawCenter('PAYMENT RECEIPT', PH - logoHeight - 25, 14, helvB);
+
+      const today = new Date();
+      const dateStr = today.toLocaleDateString();
+      const receiptNumber = `REC-${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+
+      drawLeft(`Date: ${dateStr}`, 50, PH - logoHeight - 42, 9);
+      drawRight(`Receipt No: ${receiptNumber}`, PW - 50, PH - logoHeight - 42, 9);
+
+      page.drawLine({
+        start: { x: 50, y: PH - logoHeight - 52 },
+        end: { x: PW - 50, y: PH - logoHeight - 52 },
+        thickness: 1
+      });
+
+      let y = PH - logoHeight - 65;
+      const getText = (id, fallback) => document.getElementById(id)?.textContent || fallback;
+
+      drawLeft('Received from:', 50, y, labelSize, helvB);
+      drawLeft(getText('companyName', 'Company Name'), 150, y, valueSize); y -= 16;
+
+      drawLeft('The sum of:', 50, y, labelSize, helvB);
+      drawLeft(getText('amountPaid', '20000.00'), 150, y, valueSize); y -= 16;
+
+      drawLeft('Payment method:', 50, y, labelSize, helvB);
+      drawLeft(getText('paymentMethod', 'Online Payment'), 150, y, valueSize); y -= 16;
+
+      drawLeft('For:', 50, y, labelSize, helvB);
+      drawLeft(getText('paymentFor', 'Membership Fee'), 150, y, valueSize); y -= 18;
+
+      page.drawLine({ start: { x: 50, y }, end: { x: PW - 50, y }, thickness: 1 });
+      y -= 12;
+
+      drawLeft('Amount in words:', 50, y, labelSize, helvB);
+      drawLeft(getText('amountInWords', 'twenty thousand naira only'), 150, y, valueSize);
+
+      // Footer signatures
+      const sigY = 25;
+      drawLeft('Received by:', 50, sigY, 9);
+      page.drawLine({ start: { x: 50, y: sigY - 5 }, end: { x: 200, y: sigY - 5 }, thickness: 1 });
+      drawLeft('(Signature)', 50, sigY - 15, 8);
+
+      drawRight('Date:', PW - 200, sigY, 9);
+      page.drawLine({ start: { x: PW - 200, y: sigY - 5 }, end: { x: PW - 50, y: sigY - 5 }, thickness: 1 });
+      drawRight('(Date)', PW - 50, sigY - 15, 8);
+
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `KACCIMA_Receipt_${receiptNumber}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+    } catch (err) {
+      console.error(err);
+      alert('Failed to generate receipt');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Download Receipt';
+    }
+  });
 
     document.addEventListener('DOMContentLoaded', () => {
       const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
