@@ -54,8 +54,8 @@
                     <tbody>
                         <tr>
                             <td>Business Certificate</td>
-                            <td>{{.DateJoined}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.Approved}}</span></td>
+                            <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.BusinessCertificateApproval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.BusinessCertificate}}">
@@ -72,8 +72,8 @@
                         </tr>
                         <tr>
                             <td>Cover Letter</td>
-                            <td>{{.DateJoined}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.Approved}}</span></td>
+                            <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.CoverLetterApproval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.CoverLetter}}">
@@ -91,7 +91,7 @@
                         <tr>
                             <td>Memorandum</td>
                             <td>{{.Day}}-{{.Month}}-{{.Year}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.Approved}}</span></td>
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.MemorandumApproval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.Memorandum}}"><span  class="material-icons">visibility</span>  View</a>                                    
@@ -106,8 +106,8 @@
                         </tr>
                         <tr>
                             <td>Incorporation Certificate</td>
-                            <td>{{.DateJoined}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.Approved}}</span></td>
+                            <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.IncorporationCertificateApproval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.IncorporationCertificate}}">
@@ -123,9 +123,9 @@
                             </td>                            
                         </tr>
                         <tr>
-                            <td>Passpport Photo</td>
-                            <td>{{.DateJoined}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.Approved}}</span></td>
+                            <td>Passport Photo</td>
+                            <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.PassportPhotoApproval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.PassportPhoto}}"><span  class="material-icons">visibility</span>  View</a>                                    
@@ -140,8 +140,8 @@
                         </tr>
                         <tr>
                             <td>Business Premise Certificate</td>
-                            <td>{{.DateJoined}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.Approved}}</span></td>
+                            <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.BusinessPremiseCertificateApproval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a  href="/{{.BusinessPremiseCertificate}}"><span class="material-icons">visibility</span>  View</a>                                    
@@ -156,8 +156,8 @@
                         </tr>                        
                         <tr>
                             <td>FormC07</td>
-                            <td>{{.DateJoined}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.Approved}}</span></td>
+                            <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.FormC07Approval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.FormC07}}"><span  class="material-icons">visibility</span>  View</a>                                    
@@ -172,8 +172,8 @@
                         </tr>
                         <tr>
                             <td>ID Document</td>
-                            <td>{{.DateJoined}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.Approved}}</span></td>
+                            <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.IDDocumentApproval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.IDDocument}}"><span class="material-icons">visibility</span>  View</a>                                    
