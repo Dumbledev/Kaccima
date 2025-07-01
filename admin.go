@@ -269,3 +269,579 @@ func rejectOrganization(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(string(body))
 	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
 }
+
+func approveMemorandum(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.MemorandumApproval = "Approved"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func rejectMemorandum(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.MemorandumApproval = "Rejected"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func approveCoverLetter(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.CoverLetterApproval = "Approved"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func rejectCoverLetter(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.CoverLetterApproval = "Rejected"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func approveBusinessCertificate(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.BusinessCertificateApproval = "Approved"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func rejectBusinessCertificate(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.BusinessCertificateApproval = "Rejected"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func approveIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.IncorporationCertificateApproval = "Approved"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func rejectIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.IncorporationCertificateApproval = "Rejected"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func approveBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.BusinessPremiseCertificateApproval = "Approved"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func rejectBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.BusinessPremiseCertificateApproval = "Rejected"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func approvePassportPhoto(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.PassportPhotoApproval = "Approved"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func rejectPassportPhoto(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.PassportPhotoApproval = "Rejected"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func approveFormC07(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.FormC07Approval = "Approved"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func rejectFormC07(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.FormC07Approval = "Rejected"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func approveIDDocumennt(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.IDDocumentApproval = "Approved"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func rejectIDDocument(w http.ResponseWriter, r *http.Request) {
+	organizationId := r.PathValue("organizationId")
+	organization := Organization{}
+	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) != 0 {
+		organization = orgResp.Body[0]
+	}
+	organization.IDDocumentApproval = "Rejected"
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}

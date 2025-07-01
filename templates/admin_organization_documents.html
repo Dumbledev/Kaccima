@@ -23,7 +23,7 @@
             </div>
             <div class="header-right">
                 <div class="user-profile">
-                   <img src="../static/avater.jpg" alt="Admin" class="user-avatar" />
+                   <img src="../static/avater.jpg" alt="Admin/{{.ID}}" class="user-avatar" />
                     <span class="user-name">Admin User</span>
                     <span class="material-icons">arrow_drop_down</span>
                 </div>
@@ -62,12 +62,12 @@
                                         <span class="material-icons">visibility</span>  View
                                     </a>
                                 </button>
-                                <button class="action-btn btn-approve">
-                                    <span class="material-icons">check</span> Approve
-                                </button>
-                                <button class="action-btn btn-reject">
-                                    <span class="material-icons">close</span> Reject
-                                </button>
+                                <a href="/approve_businessCert/{{.ID}}" class="action-btn btn-approve">
+                                    <span class="material-icons">check</span>  Approve
+                                </a>
+                                <a href="/reject_businessCert/{{.ID}}" class="action-btn btn-reject">
+                                    <span class="material-icons">check</span>  Reject
+                                </a>
                             </td>                            
                         </tr>
                         <tr>
@@ -80,12 +80,12 @@
                                         <span class="material-icons">visibility</span>  View
                                     </a>
                                 </button>
-                                <button class="action-btn btn-approve">
-                                    <span class="material-icons">check</span> Approve
-                                </button>
-                                <button class="action-btn btn-reject">
-                                    <span class="material-icons">close</span> Reject
-                                </button>
+                                <a href="/approve_coverLetter/{{.ID}}" class="action-btn btn-approve">
+                                    <span class="material-icons">check</span>  Approve
+                                </a>
+                                <a href="/reject_coverLetter/{{.ID}}" class="action-btn btn-reject">
+                                    <span class="material-icons">check</span>  Reject
+                                </a>
                             </td>                            
                         </tr>
                         <tr>
@@ -96,12 +96,12 @@
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.Memorandum}}"><span  class="material-icons">visibility</span>  View</a>                                    
                                 </button>
-                                <button class="action-btn btn-approve">
-                                    <span class="material-icons">check</span> Approve
-                                </button>
-                                <button class="action-btn btn-reject">
-                                    <span class="material-icons">close</span> Reject
-                                </button>
+                                <a href="/approve_memorandum/{{.ID}}" class="action-btn btn-approve">
+                                    <span class="material-icons">check</span>  Approve
+                                </a>
+                                <a href="/reject_memorandum/{{.ID}}" class="action-btn btn-reject">
+                                    <span class="material-icons">check</span>  Reject
+                                </a>
                             </td>                            
                         </tr>
                         <tr>
@@ -114,12 +114,12 @@
                                         <span class="material-icons">visibility</span>  View
                                     </a>
                                 </button>
-                                <button class="action-btn btn-approve">
-                                    <span class="material-icons">check</span> Approve
-                                </button>
-                                <button class="action-btn btn-reject">
-                                    <span class="material-icons">close</span> Reject
-                                </button>
+                                <a href="/approve_incorporationCert/{{.ID}}" class="action-btn btn-approve">
+                                    <span class="material-icons">check</span>  Approve
+                                </a>
+                                <a href="/reject_incorporationCert/{{.ID}}" class="action-btn btn-reject">
+                                    <span class="material-icons">check</span>  Reject
+                                </a>
                             </td>                            
                         </tr>
                         <tr>
@@ -130,12 +130,12 @@
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.PassportPhoto}}"><span  class="material-icons">visibility</span>  View</a>                                    
                                 </button>
-                                <button class="action-btn btn-approve">
-                                    <span class="material-icons">check</span> Approve
-                                </button>
-                                <button class="action-btn btn-reject">
-                                    <span class="material-icons">close</span> Reject
-                                </button>
+                                <a href="/approve_passportPhoto/{{.ID}}" class="action-btn btn-approve">
+                                    <span class="material-icons">check</span>  Approve
+                                </a>
+                                <a href="/reject_passportPhoto/{{.ID}}" class="action-btn btn-reject">
+                                    <span class="material-icons">check</span>  Reject
+                                </a>
                             </td>                            
                         </tr>
                         <tr>
@@ -146,12 +146,12 @@
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a  href="/{{.BusinessPremiseCertificate}}"><span class="material-icons">visibility</span>  View</a>                                    
                                 </button>
-                                <button class="action-btn btn-approve">
-                                    <span class="material-icons">check</span> Approve
-                                </button>
-                                <button class="action-btn btn-reject">
-                                    <span class="material-icons">close</span> Reject
-                                </button>
+                                <a href="/approve_businessPremiseCert/{{.ID}}" class="action-btn btn-approve">
+                                    <span class="material-icons">check</span>  Approve
+                                </a>
+                                <a href="/reject_businessPremiseCert/{{.ID}}" class="action-btn btn-reject">
+                                    <span class="material-icons">check</span>  Reject
+                                </a>
                             </td>                            
                         </tr>                        
                         <tr>
@@ -162,12 +162,12 @@
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.FormC07}}"><span  class="material-icons">visibility</span>  View</a>                                    
                                 </button>
-                                <button class="action-btn btn-approve">
-                                    <span class="material-icons">check</span> Approve
-                                </button>
-                                <button class="action-btn btn-reject">
-                                    <span class="material-icons">close</span> Reject
-                                </button>
+                                <a href="/approve_formc07/{{.ID}}" class="action-btn btn-approve">
+                                    <span class="material-icons">check</span>  Approve
+                                </a>
+                                <a href="/reject_formc07/{{.ID}}" class="action-btn btn-reject">
+                                    <span class="material-icons">check</span>  Reject
+                                </a>
                             </td>                            
                         </tr>
                         <tr>
@@ -178,12 +178,12 @@
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
                                     <a href="/{{.IDDocument}}"><span class="material-icons">visibility</span>  View</a>                                    
                                 </button>
-                                <button class="action-btn btn-approve">
-                                    <span class="material-icons">check</span> Approve
-                                </button>
-                                <button class="action-btn btn-reject">
-                                    <span class="material-icons">close</span> Reject
-                                </button>
+                                <a href="/approve_idDoc/{{.ID}}" class="action-btn btn-approve">
+                                    <span class="material-icons">check</span>  Approve
+                                </a>
+                                <a href="/reject_idDoc/{{.ID}}" class="action-btn btn-reject">
+                                    <span class="material-icons">check</span>  Reject
+                                </a>
                             </td>                            
                         </tr>                                                                                                                                                                                       
 
