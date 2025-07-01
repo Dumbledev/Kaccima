@@ -23,8 +23,8 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	http.HandleFunc("/", index)
-	http.HandleFunc("/admin_sign_up", adminSignUp)
-	http.HandleFunc("/admin_sign_up_handler", adminSignUpHandler)
+	http.HandleFunc("/kaccimanew2025", adminSignUp)
+	http.HandleFunc("/kaccimanew2025_handler", adminSignUpHandler)
 
 	http.HandleFunc("/sign_up", signUp)
 	http.HandleFunc("/sign_up_handler", signUpHandler)
