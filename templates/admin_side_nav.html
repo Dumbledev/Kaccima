@@ -1,37 +1,106 @@
 {{define "adminSideNav"}}
-   <aside class="sidebar">
-        <div class="sidebar-header">
-            <h3>ADMIN</h3>
-        </div>
-        <div class="sidebar-menu">
-            <a href="/admin" class="menu-item">
-                <span class="material-icons"></span>
-                <span>Dashboard</span>
-            </a>
-            <a href="/admin_members" class="menu-item">
-                <span class="material-icons"></span>
-                <span>Members</span>
-            </a>
-            <a href="/admin_payments" class="menu-item">
-                <span class="material-icons"></span>
-                <span>Payments</span>
-            </a>
-            <a href="/admin_documents" class="menu-item">
-                <span class="material-icons"></span>
-                <span>Documents</span>
-            </a>
-            <a href="/admin_report" class="menu-item">
-                <span class="material-icons"></span>
-                <span>Reports</span>
-            </a>
-            <a href="/sign_up" class="menu-item">
-                <span class="material-icons"></span>
-                <span>Register User</span>
-            </a>
-            <a href="/admin_settings" class="menu-item">
-                <span class="material-icons"></span>
-                <span>Settings</span>
-            </a>
-        </div>
-    </aside>
+<style>
+  /* Sidebar Styles */
+  .sidebar {
+    width: 60px; /* Collapsed width */
+    height: 100vh;
+    background-color: #47cc1f;
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .sidebar:hover {
+    width: 220px; /* Expanded width */
+  }
+
+  .sidebar-header {
+    padding: 20px;
+    color: white;
+    font-size: 18px;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .sidebar-menu {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-item {
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: background 0.3s;
+  }
+
+  .menu-item:hover {
+    background-color: #f2f5f8;
+  }
+
+  .menu-item .material-icons {
+    margin-right: 10px;
+  }
+
+  /* Hide text when collapsed */
+  .sidebar:not(:hover) .menu-item span:last-child {
+    display: none;
+  }
+
+  /* Center icons when collapsed */
+  .sidebar:not(:hover) .menu-item {
+    justify-content: center;
+  }
+
+  /* Optional: ensure body doesn't get covered */
+  body {
+    margin-left: 60px;
+    transition: margin-left 0.3s ease;
+  }
+
+  .sidebar:hover ~ main,
+  .sidebar:hover ~ .main-content {
+    margin-left: 220px;
+  }
+</style>
+
+<aside class="sidebar">
+ 
+  <div class="sidebar-menu">
+    <a href="/admin" class="menu-item">
+      <span class="material-icons">dashboard</span>
+      <span>Dashboard</span>
+    </a>
+    <a href="/admin_members" class="menu-item">
+      <span class="material-icons">group</span>
+      <span>Members</span>
+    </a>
+    <a href="/admin_payments" class="menu-item">
+      <span class="material-icons">payments</span>
+      <span>Payments</span>
+    </a>
+    <a href="/admin_documents" class="menu-item">
+      <span class="material-icons">description</span>
+      <span>Documents</span>
+    </a>
+    <a href="/admin_report" class="menu-item">
+      <span class="material-icons">assessment</span>
+      <span>Reports</span>
+    </a>
+    <a href="/sign_up" class="menu-item">
+      <span class="material-icons">person_add</span>
+      <span>Register User</span>
+    </a>
+    <a href="/admin_settings" class="menu-item">
+      <span class="material-icons">settings</span>
+      <span>Settings</span>
+    </a>
+  </div>
+</aside>
 {{end}}

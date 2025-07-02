@@ -4,9 +4,247 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KACCIMA - Admin Settings</title>
-  <link rel="stylesheet" href="/static/styles.css">
+  
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+ <style>
+    * {
+      box-sizing: border-box;
+    }
 
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-image: url('../static/bg.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+      height: 60px;
+      background-color: #f5f5f5;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      flex-shrink: 0;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .content {
+      padding: 20px;
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+      margin: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      padding: 5px;
+    }
+
+    .export-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .export-btn:hover {
+      background-color: #45a049;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 13px; /* Reduced font size */
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    /* Narrow the Actions column */
+    th:last-child, td:last-child {
+      width: 80px; /* adjust as needed */
+      text-align: center;
+    }
+
+    /* Style delete icon */
+    .fa-trash {
+      color: red;
+    }
+
+    /* Optional: space between action icons */
+    .actions a {
+      margin: 0 5px;
+    }
+    /* Container styling */
+.content form {
+  background-color: #fefefe;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Section Title */
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Form Group Layout */
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+}
+
+/* Primary Button Style */
+.btn-primary {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 5px;
+}
+
+.btn-primary:hover {
+  background-color: #45a049;
+}
+
+/* Success/Error Message Styling */
+.message {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  display: none;
+  font-size: 14px;
+}
+
+.message.success {
+  background-color: #e6f4ea;
+  color: #256029;
+  border: 1px solid #b4e0b9;
+}
+
+.message.error {
+  background-color: #fdecea;
+  color: #b71c1c;
+  border: 1px solid #f5c6cb;
+}
+@media (max-width: 600px) {
+  .content {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .content form {
+    padding: 15px;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}
+
+  </style>
 </head>
 <body>
   <!-- Sidebar Navigation -->

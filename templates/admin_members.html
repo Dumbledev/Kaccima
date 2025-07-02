@@ -2,18 +2,170 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Members - KACCIMA Admin Dashboard</title>
-  <link rel="stylesheet" href="/static/styles.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <script src="../script.js" defer></script>
+
+  <!-- Material Icons + Font Awesome -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+ <style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url('../static/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .header {
+    height: 60px;
+    background-color: #f5f5f5;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    flex-shrink: 0;
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .content {
+    padding: 20px;
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .search-box input {
+    border: none;
+    outline: none;
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .export-btn {
+    background-color:red;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  .export-btn:hover {
+    background-color: #388e3c;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: auto;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+    word-wrap: break-word;
+  }
+
+  th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+
+  /* Widen Contact Person column */
+  th:nth-child(3), td:nth-child(3) {
+    min-width: 160px;
+  }
+
+  th:last-child, td:last-child {
+    width: 80px;
+    text-align: center;
+  }
+
+  .fa-trash {
+    color: red;
+  }
+
+  .actions a {
+    margin: 0 5px;
+  }
+
+  @media (max-width: 768px) {
+    .table-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .search-box {
+      width: 100%;
+    }
+  }
+</style>
 
 </head>
 <body>
-  <!-- Sidebar -->
-  {{template "adminSideNav"}}
-
-
+ {{template "adminSideNav"}}
   <!-- Main Content -->
   <main class="main-content">
     <!-- Header -->
@@ -30,51 +182,127 @@
       </div>
     </header>
 
-    <!-- Members Section -->
+    <!-- Content -->
     <div class="content">
-      <div class="page-header">
-        <h2>Members</h2>
-      </div>
+      <div class="table-header">
+        <h3 class="table-title">All Registered Members</h3>
+        <div style="display: flex; align-items: center; gap: 10px;">
+<button onclick="exportToExcel()" class="export-btn" title="Exports all columns except Actions">Export Excel</button>
+<button onclick="exportToPDF()" class="export-btn" title="Exports all columns except Actions">Export PDF</button>
 
-      <div class="table-container">
-        <div class="table-header">
-          <h3 class="table-title">All Registered Members</h3>
           <div class="search-box">
             <span class="material-icons">search</span>
             <input type="text" id="searchMembers" placeholder="Search members..." />
           </div>
         </div>
-
-        <table id="membersTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Example rows (to be dynamically loaded via JS or backend integration) -->
-             {{range .}}
-              <tr>
-                <td>{{.Name}}</td>
-                <td>{{.Email}}</td>
-               <td>
-                {{if eq .Status "Pending"}}
-                  <span class="status non-active">Non-Active</span>
-                {{else if eq .Status "Approved"}}
-                  <span class="status active">Active</span>
-                {{else}}
-                  <span class="status non-active">Non-Active</span>
-                {{end}}
-              </td>
-              </tr>
-            {{end}}
-            <!-- More rows can be dynamically inserted here -->
-          </tbody>
-        </table>
       </div>
+
+      <table id="membersTable">
+        <thead>
+          <tr>
+            <th>Company Name</th>
+            <th>Phone Number</th>
+            <th>Contact Person</th>
+            <th>Email</th>
+            <th>CAC Number</th>
+            <th>Office Address</th>
+            <th>Nature of Business</th>
+            <th>Status</th>
+            <th>Join Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{range .}}
+          <tr>
+            <td>{{.Name}}</td>
+            <td>{{.PhoneNumber}}</td>
+            <td>{{.ContactPerson}}</td>
+            <td>{{.Email}}</td>
+            <td>{{.CACNumber}}</td>
+            <td>{{.Address}}</td>
+            <td>{{.NatureOfBusiness}}</td>
+            <td>{{.Status}}</td>
+            <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
+            <td class="actions">
+              <a href="/"><i class="fas fa-trash"></i></a>
+              <a href="/"><i class="fas fa-times-circle"></i></a>
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
     </div>
   </main>
+
+  <!-- Export Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+  async function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('landscape');
+    const table = document.getElementById("membersTable");
+
+    let data = [];
+
+    for (let row of table.rows) {
+      let rowData = [];
+      for (let i = 0; i < row.cells.length - 1; i++) { // Exclude last column (Actions)
+        rowData.push(row.cells[i].innerText);
+      }
+      data.push(rowData);
+    }
+
+    // Define custom column widths (index 2 is Contact Person)
+    const columnStyles = {
+      2: { cellWidth: 60 } // Increase width of 3rd column
+    };
+
+    doc.autoTable({
+      head: [data[0]],
+      body: data.slice(1),
+      columnStyles: columnStyles,
+    });
+
+    doc.save("kaccima_members.pdf");
+  }
+   function exportToExcel() {
+    const table = document.getElementById("membersTable");
+    const wb = XLSX.utils.table_to_book(table, {
+      sheet: "Members",
+      raw: true
+    });
+
+    // Remove Actions column from the sheet
+    const ws = wb.Sheets["Members"];
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let row = range.s.r; row <= range.e.r; row++) {
+      const cellAddress = XLSX.utils.encode_cell({ c: range.e.c, r: row });
+      delete ws[cellAddress];
+    }
+    range.e.c -= 1; // Reduce column count
+    ws["!ref"] = XLSX.utils.encode_range(range);
+
+    // Set wider column width for Contact Person (3rd column = index 2)
+    ws["!cols"] = [
+      { wch: 20 }, // Company Name
+      { wch: 15 }, // Phone
+      { wch: 25 }, // Contact Person (wider)
+      { wch: 25 }, // Email
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 15 },
+      { wch: 15 }
+    ];
+
+    XLSX.writeFile(wb, "kaccima_members.xlsx");
+  }
+</script>
+
+
 </body>
 </html>
