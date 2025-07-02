@@ -121,6 +121,8 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	contactPerson := r.FormValue("contactPerson")
 	rep := r.FormValue("representative")
 	dateJoined := time.Now().Local()
+	cacNumber := r.FormValue("cacNumber")
+	phoneNumber := r.FormValue("phoneNumber")
 
 	orgResp, err := findOrganization(dbFindUrl, email)
 	if err != nil {
@@ -297,6 +299,8 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		Bankers:                            bankers,
 		ContactPerson:                      contactPerson,
 		Representative:                     rep,
+		CACNumber:                          cacNumber,
+		PhoneNumber:                        phoneNumber,
 		CoverLetter:                        temp1.Name(),
 		CoverLetterApproval:                "Pending",
 		Memorandum:                         temp2.Name(),
