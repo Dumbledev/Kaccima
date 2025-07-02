@@ -170,9 +170,8 @@
   <main class="main-content">
     <!-- Header -->
     <header class="header">
-      <div class="header-left">
-        <span class="material-icons" id="sidebarToggle" style="cursor: pointer;">menu</span>
-      </div>
+      
+      
       <div class="header-right">
         <div class="user-profile">
           <img src="../static/avater.jpg" alt="Admin" class="user-avatar" />
@@ -195,38 +194,6 @@
             <input type="text" id="searchMembers" placeholder="Search members..." />
           </div>
         </div>
-<<<<<<< HEAD
-=======
-
-        <table id="membersTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Example rows (to be dynamically loaded via JS or backend integration) -->
-             {{range .}}
-              <tr>
-                <td>{{.Name}}</td>
-                <td>{{.Email}}</td>
-               <td>
-                {{if eq .Status "Pending"}}
-                  <span class="status non-active">Pending</span>
-                {{else if eq .Status "Approved"}}
-                  <span class="status active">Active</span>
-                {{else}}
-                  <span class="status non-active">Non-Active</span>
-                {{end}}
-              </td>
-              </tr>
-            {{end}}
-            <!-- More rows can be dynamically inserted here -->
-          </tbody>
-        </table>
->>>>>>> 7b6bb59b3f545285c76c149102cedac23a40e303
       </div>
 
       <table id="membersTable">
