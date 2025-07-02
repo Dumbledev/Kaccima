@@ -422,7 +422,7 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 		payment = paymentResp.Body[0]
 		if payment.Year == year {
 			http.Redirect(w, r, "/payment", http.StatusPermanentRedirect)
-			fmt.Println("Already Paid For Current Year")
+			// fmt.Println("Already Paid For Current Year")
 			return
 		}
 	}

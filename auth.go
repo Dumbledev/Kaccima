@@ -141,7 +141,7 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(userResponse.Body) == 0 {
-		fmt.Println("Invalid Username or Password")
+		// fmt.Println("Invalid Username or Password")
 		http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
 		return
 	}
