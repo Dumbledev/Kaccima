@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // delete member
@@ -97,7 +98,7 @@ func organization(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	organization := orgResp.Body[0]
-	tmpl.ExecuteTemplate(w, "organization_profile.html", organization)
+	tmpl.ExecuteTemplate(w, "organization_org.html", organization)
 }
 
 func notification(w http.ResponseWriter, r *http.Request) {
@@ -128,7 +129,7 @@ func reviewedDocuments(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "reviewedDocuments.html", organization)
 }
 
-func profile(w http.ResponseWriter, r *http.Request) {
+func org(w http.ResponseWriter, r *http.Request) {
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
@@ -139,9 +140,9 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	organization := orgResp.Body[0]
-	organization.PassportPhoto = strings.ReplaceAll(organization.PassportPhoto, "\\", "/")
+	organization.CompanyLogo = strings.ReplaceAll(organization.CompanyLogo, "\\", "/")
 
-	tmpl.ExecuteTemplate(w, "profile.html", organization)
+	tmpl.ExecuteTemplate(w, "org.html", organization)
 }
 
 func organizationRegister(w http.ResponseWriter, r *http.Request) {
@@ -184,18 +185,18 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer coverLetter.Close()
-	temp1, err2 := os.CreateTemp("static", "file-*.pdf")
+	coverLetterTemp, err2 := os.CreateTemp("static", "file-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
 	}
-	defer temp1.Close()
-	fileBytes, err3 := io.ReadAll(coverLetter)
+	defer coverLetterTemp.Close()
+	coverLetterBytes, err3 := io.ReadAll(coverLetter)
 	if err3 != nil {
 		log.Fatal(err3)
 		return
 	}
-	temp1.Write(fileBytes)
+	coverLetterTemp.Write(coverLetterBytes)
 
 	memorandum, _, err := r.FormFile("memorandum")
 	if err != nil {
@@ -203,18 +204,18 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer memorandum.Close()
-	temp2, err2 := os.CreateTemp("static", "file-*.pdf")
+	memorandumTemp, err2 := os.CreateTemp("static", "file-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
 	}
-	defer temp2.Close()
-	fileBytes1, err3 := io.ReadAll(memorandum)
+	defer memorandumTemp.Close()
+	memorandumBytes, err3 := io.ReadAll(memorandum)
 	if err3 != nil {
 		log.Fatal(err3)
 		return
 	}
-	temp2.Write(fileBytes1)
+	memorandumTemp.Write(memorandumBytes)
 
 	businessCertificate, _, err := r.FormFile("registrationCert")
 	if err != nil {
@@ -222,18 +223,18 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer businessCertificate.Close()
-	temp3, err2 := os.CreateTemp("static", "file-*.pdf")
+	businessCertificateTemp, err2 := os.CreateTemp("static", "file-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
 	}
-	defer temp3.Close()
-	fileBytes2, err3 := io.ReadAll(businessCertificate)
+	defer businessCertificateTemp.Close()
+	businessCertificateBytes, err3 := io.ReadAll(businessCertificate)
 	if err3 != nil {
 		log.Fatal(err3)
 		return
 	}
-	temp2.Write(fileBytes2)
+	memorandumTemp.Write(businessCertificateBytes)
 
 	incorporationCertificate, _, err := r.FormFile("incorporationCert")
 	if err != nil {
@@ -241,37 +242,37 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer incorporationCertificate.Close()
-	temp4, err2 := os.CreateTemp("static", "file-*.pdf")
+	incorporationCertTemp, err2 := os.CreateTemp("static", "file-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
 	}
-	defer temp4.Close()
-	fileBytes3, err3 := io.ReadAll(incorporationCertificate)
+	defer incorporationCertTemp.Close()
+	incorporationCertBytes, err3 := io.ReadAll(incorporationCertificate)
 	if err3 != nil {
 		log.Fatal(err3)
 		return
 	}
-	temp2.Write(fileBytes3)
+	memorandumTemp.Write(incorporationCertBytes)
 
-	passportPhoto, _, err := r.FormFile("passportPhotos")
+	companyLogo, _, err := r.FormFile("companyLogo")
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	defer passportPhoto.Close()
-	temp5, err2 := os.CreateTemp("static", "file-*.png")
+	defer companyLogo.Close()
+	companyLogoTemp, err2 := os.CreateTemp("static", "file-*.png")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
 	}
-	defer temp5.Close()
-	fileBytes4, err3 := io.ReadAll(passportPhoto)
+	defer companyLogoTemp.Close()
+	companyLogoBytes, err3 := io.ReadAll(companyLogo)
 	if err3 != nil {
 		log.Fatal(err3)
 		return
 	}
-	temp5.Write(fileBytes4)
+	companyLogoTemp.Write(companyLogoBytes)
 
 	businessPremiseCertificate, _, err := r.FormFile("premisesCert")
 	if err != nil {
@@ -279,18 +280,18 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer businessPremiseCertificate.Close()
-	temp6, err2 := os.CreateTemp("static", "file-*.pdf")
+	businessPremiseCertificateTemp, err2 := os.CreateTemp("static", "file-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
 	}
-	defer temp6.Close()
-	fileBytes5, err3 := io.ReadAll(businessPremiseCertificate)
+	defer businessPremiseCertificateTemp.Close()
+	businessPremiseCertificateBytes, err3 := io.ReadAll(businessPremiseCertificate)
 	if err3 != nil {
 		log.Fatal(err3)
 		return
 	}
-	temp6.Write(fileBytes5)
+	businessPremiseCertificateTemp.Write(businessPremiseCertificateBytes)
 
 	formC07, _, err := r.FormFile("formC07")
 	if err != nil {
@@ -298,18 +299,18 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer formC07.Close()
-	temp7, err2 := os.CreateTemp("static", "file-*.pdf")
+	formC07Temp, err2 := os.CreateTemp("static", "file-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
 	}
-	defer temp7.Close()
-	fileBytes6, err3 := io.ReadAll(formC07)
+	defer formC07Temp.Close()
+	formC07Bytes, err3 := io.ReadAll(formC07)
 	if err3 != nil {
 		log.Fatal(err3)
 		return
 	}
-	temp7.Write(fileBytes6)
+	formC07Temp.Write(formC07Bytes)
 
 	idDocument, _, err := r.FormFile("nationalId")
 	if err != nil {
@@ -317,18 +318,18 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer idDocument.Close()
-	temp8, err2 := os.CreateTemp("static", "file-*.pdf")
+	idDocumentTemp, err2 := os.CreateTemp("static", "file-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
 	}
-	defer temp8.Close()
-	fileBytes7, err3 := io.ReadAll(idDocument)
+	defer idDocumentTemp.Close()
+	idDocumentBytes, err3 := io.ReadAll(idDocument)
 	if err3 != nil {
 		log.Fatal(err3)
 		return
 	}
-	temp5.Write(fileBytes7)
+	idDocumentTemp.Write(idDocumentBytes)
 
 	var org = Organization{
 		ID:                                 uuid.NewString(),
@@ -345,21 +346,21 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		Representative:                     rep,
 		CACNumber:                          cacNumber,
 		PhoneNumber:                        phoneNumber,
-		CoverLetter:                        temp1.Name(),
+		CoverLetter:                        coverLetterTemp.Name(),
 		CoverLetterApproval:                "Pending",
-		Memorandum:                         temp2.Name(),
+		Memorandum:                         memorandumTemp.Name(),
 		MemorandumApproval:                 "Pending",
-		BusinessCertificate:                temp3.Name(),
+		BusinessCertificate:                businessCertificateTemp.Name(),
 		BusinessCertificateApproval:        "Pending",
-		IncorporationCertificate:           temp4.Name(),
+		IncorporationCertificate:           incorporationCertTemp.Name(),
 		IncorporationCertificateApproval:   "Pending",
-		PassportPhoto:                      temp5.Name(),
-		PassportPhotoApproval:              "Pending",
-		BusinessPremiseCertificate:         temp6.Name(),
+		CompanyLogo:                        companyLogoTemp.Name(),
+		CompanyLogoApproval:                "Pending",
+		BusinessPremiseCertificate:         businessPremiseCertificateTemp.Name(),
 		BusinessPremiseCertificateApproval: "Pending",
-		FormC07:                            temp7.Name(),
+		FormC07:                            formC07Temp.Name(),
 		FormC07Approval:                    "Pending",
-		IDDocument:                         temp8.Name(),
+		IDDocument:                         idDocumentTemp.Name(),
 		IDDocumentApproval:                 "Pending",
 		Year:                               year,
 		Month:                              month.String(),
@@ -479,4 +480,82 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+}
+
+func updateRejectedDocuments(w http.ResponseWriter, r *http.Request) {
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	tmpl.ExecuteTemplate(w, "update_rejected_documents.html", organization)
+}
+
+func updateMemorandum(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateMemorandumHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateCoverLetter(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateCoverLetterHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateBusinessCertificate(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateBusinessCertificateHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateIncorporationCertificateHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateBusinessPremiseCertificateHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updatePassportPhoto(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updatePassportPhotoHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateFormC07(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateFormC07Handler(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateIDDocument(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateIDDocumentHandler(w http.ResponseWriter, r *http.Request) {
+
 }

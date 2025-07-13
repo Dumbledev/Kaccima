@@ -641,7 +641,7 @@ func approvePassportPhoto(w http.ResponseWriter, r *http.Request) {
 	if len(orgResp.Body) != 0 {
 		organization = orgResp.Body[0]
 	}
-	organization.PassportPhotoApproval = "Approved"
+	organization.CompanyLogo = "Approved"
 
 	jsonData, err := json.Marshal(&organization)
 	if err != nil {
@@ -677,7 +677,7 @@ func rejectPassportPhoto(w http.ResponseWriter, r *http.Request) {
 	if len(orgResp.Body) != 0 {
 		organization = orgResp.Body[0]
 	}
-	organization.PassportPhotoApproval = "Rejected"
+	organization.CompanyLogo = "Rejected"
 
 	jsonData, err := json.Marshal(&organization)
 	if err != nil {

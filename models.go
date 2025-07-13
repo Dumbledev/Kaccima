@@ -54,12 +54,14 @@ type Organization struct {
 	IncorporationCertificateApproval   string `json:"incorporationCertificateApproval"`
 	BusinessPremiseCertificate         string `json:"businessPremiseCertificate"`
 	BusinessPremiseCertificateApproval string `json:"businessPremiseCertificateApproval"`
-	PassportPhoto                      string `json:"passportPhoto"`
-	PassportPhotoApproval              string `json:"passportPhotoApproval"`
+	CompanyLogo                        string `json:"companyLogo"`
+	CompanyLogoApproval                string `json:"companyLogoApproval"`
 	FormC07                            string `json:"formC07"`
 	FormC07Approval                    string `json:"formC07Approval"`
 	IDDocument                         string `json:"idDocument"`
 	IDDocumentApproval                 string `json:"idDocumentApproval"`
+	PersonalId                         string `json:"personalId"`
+	PersonalIdType                     string `json:"personalIdType"`
 	Year                               int    `json:"year"`
 	Month                              string `json:"month"`
 	Day                                int    `json:"day"`
@@ -68,6 +70,23 @@ type Organization struct {
 	UserId                             string `json:"userId"`
 	Rev                                string `json:"_rev,omitempty"`
 	Doctype                            string `json:"doctype"`
+}
+
+type Referee struct {
+	ID               string `json:"_id"`
+	PhoneNumber      string `json:"phoneNumber"`
+	BusinessName     string `json:"businessName"`
+	ChamberRegNumber string `json:"chamberRegNumber"`
+	OrganizationId   string `json:"organizationId"`
+	Doctype          string `json:"doctype"`
+	Rev              string `json:"_rev,omitempty"`
+}
+
+type RefereeResponse struct {
+	Status   string    `json:"status"`
+	Body     []Referee `json:"body"`
+	Bookmark string    `json:"bookmark"`
+	Warning  string    `json:"warning"`
 }
 
 type OrganizationResponse struct {
