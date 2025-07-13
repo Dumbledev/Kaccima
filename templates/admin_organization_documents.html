@@ -121,12 +121,12 @@
                             </td>                            
                         </tr>
                         <tr>
-                            <td>Passport Photo</td>
+                            <td>Company Logo</td>
                             <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
-                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.PassportPhotoApproval}}</span></td>
+                            <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.CompanyLogoApproval}}</span></td>
                             <td>
                                 <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
-                                    <a href="/{{.PassportPhoto}}"><span  class="material-icons">visibility</span>  View</a>                                    
+                                    <a href="/{{.CompanyLogo}}"><span  class="material-icons">visibility</span>  View</a>                                    
                                 </button>
                                 <a href="/approve_passportPhoto/{{.ID}}" class="action-btn btn-approve">
                                     <span class="material-icons">check</span>  Approve

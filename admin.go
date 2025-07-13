@@ -630,7 +630,7 @@ func rejectBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
 }
 
-func approvePassportPhoto(w http.ResponseWriter, r *http.Request) {
+func approveCompanyLogo(w http.ResponseWriter, r *http.Request) {
 	organizationId := r.PathValue("organizationId")
 	organization := Organization{}
 	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
@@ -666,7 +666,7 @@ func approvePassportPhoto(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
 }
 
-func rejectPassportPhoto(w http.ResponseWriter, r *http.Request) {
+func rejectCompanyLogo(w http.ResponseWriter, r *http.Request) {
 	organizationId := r.PathValue("organizationId")
 	organization := Organization{}
 	orgResp, err := findOrganizationById(dbFindUrl, organizationId)
