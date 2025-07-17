@@ -110,7 +110,8 @@
   input[type="email"],
   input[type="number"],
   input[type="tel"],
-  textarea {
+  textarea,
+  select {
     width: 100%;
     padding: var(--input-padding);
     font-size: 15px;
@@ -120,23 +121,36 @@
   }
 
   input:focus,
-  textarea:focus {
+  textarea:focus,
+  select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 5px rgba(21, 228, 32, 0.4);
   }
 
   input[type="file"] {
-    border: 1px solid #ccc;
+    width: 100%;
+    border: 1px dashed #ccc;
     border-radius: var(--border-radius);
-    padding: 9px;
+    padding: 15px;
     font-size: 15px;
     background-color: #f9f9f9;
     cursor: pointer;
+    transition: all 0.3s ease;
   }
 
   input[type="file"]:hover {
     background-color: #f0f0f0;
+    border-color: var(--primary-color);
+  }
+
+  input[type="file"]::file-selector-button {
+    padding: 8px 12px;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 4px;
+    margin-right: 10px;
+    cursor: pointer;
   }
 
   .form-navigation {
@@ -207,6 +221,28 @@
     margin-right: 8px;
   }
 
+  .form-section {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: var(--border-radius);
+    background-color: #f9f9f9;
+  }
+
+  .form-section h3 {
+    margin-bottom: 15px;
+    color: var(--dark-color);
+  }
+
+  .inline-inputs {
+    display: flex;
+    gap: 10px;
+  }
+
+  .inline-inputs input {
+    flex: 1;
+  }
+
   @media (max-width: 768px) {
     .form-group {
       flex: 1 1 100%;
@@ -214,6 +250,30 @@
 
     .business-options label {
       flex: 1 1 100%;
+    }
+
+    .inline-inputs {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .form-section {
+      padding: 10px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .form-group {
+      flex: 1 1 100%;
+    }
+    
+    .inline-inputs {
+      flex-direction: column;
+      gap: 10px;
     }
   }
 </style>
@@ -228,7 +288,7 @@
           <span class="logo-text">KACCIMA</span>
         </div>
         <ul>
-          <li><a href="/">Home</a></li><li><a href="/">About</a></li><li><a href="/">Contact</a></li>
+          <li><a href="/">Home</a></li><li><a href="https://kaccima.ng/about-kaccima/">About</a></li><li><a href="https://kaccima.ng/templates/contact/">Contact</a></li>
         </ul>
       </nav>
     </header>
@@ -339,10 +399,32 @@
             <div class="form-group"><label for="premisesCert">Business Premises Certificate</label><input type="file" id="premisesCert" name="premisesCert" accept=".pdf" required></div>
             <div class="form-group"><label for="companyLogo">Company Logo</label><input type="file" id="companyLogo" name="companyLogo" accept=".jpg,.jpeg,.png" multiple required></div>
           </div>
-          <div class="form-row">
-            <div class="form-group"><label for="formC07">Form C07</label><input type="file" id="formC07" name="formC07" accept=".pdf" required></div>
-            <div class="form-group"><label for="nationalId">ID Document</label><input type="file" id="nationalId" name="nationalId" accept=".pdf" required></div>
-          </div>
+         <div class="form-section">
+  <h3>Means of Identification</h3>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Select Identification Type</label>
+      <select name="idType" required>
+        <option value="">-- Select One --</option>
+        <option value="national_id">National ID</option>
+        <option value="driver_license">Driver's License</option>
+        <option value="voter_card">Voter's Card</option>
+        <option value="international_passport">International Passport</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="form-row">
+    <div class="form-group">
+      <label for="formC07">Form C07</label>
+      <input type="file" id="formC07" name="formC07" accept=".pdf" required>
+    </div>
+    <div class="form-group">
+      <label for="idDocument">ID Document</label>
+      <input type="file" id="idDocument" name="idDocument" accept=".pdf" required>
+    </div>
+  </div>
+</div>
           <div class="form-navigation">
             <button type="button" class="btn prev-step">Previous</button>
             <button type="submit" class="btn submit">Submit Registration</button>
@@ -370,16 +452,39 @@
   }
 
   nextBtns.forEach(btn => btn.addEventListener('click', () => {
-    // If moving from Step 2 to Step 3, validate password
+    const currentStepForm = steps[currentStep];
+    const inputs = currentStepForm.querySelectorAll('input[required], select[required]');
+    let isValid = true;
 
-    if (currentStep < steps.length - 1) showStep(++currentStep);
+    inputs.forEach(input => {
+      if (!input.value) {
+        input.style.borderColor = 'red';
+        isValid = false;
+      } else {
+        input.style.borderColor = '#ccc';
+      }
+    });
+
+    if (isValid && currentStep < steps.length - 1) {
+      showStep(++currentStep);
+    } else if (!isValid) {
+      alert('Please fill all required fields before proceeding');
+    }
   }));
 
   prevBtns.forEach(btn => btn.addEventListener('click', () => {
     if (currentStep > 0) showStep(--currentStep);
   }));
 
+  // Reset input borders when user starts typing
+  document.querySelectorAll('input, select').forEach(input => {
+    input.addEventListener('input', () => {
+      input.style.borderColor = '#ccc';
+    });
+  });
+
   showStep(currentStep);
+  
 </script>
 
 </body>
