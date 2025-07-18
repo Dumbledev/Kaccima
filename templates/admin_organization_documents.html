@@ -22,7 +22,7 @@
             <div class="header-right">
                 <div class="user-profile">
                    <img src="../static/avater.jpg" alt="Admin/{{.ID}}" class="user-avatar" />
-                    <span class="user-name">Admin User</span>
+                    <span class="user-name">Admin</span>
                     <span class="material-icons">arrow_drop_down</span>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                             <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
                             <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.BusinessCertificateApproval}}</span></td>
                             <td>
-                                <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
+                                <button class="action-btn btn-view" onclick="viewDocument('Business Certificate')">
                                     <a href="/{{.BusinessCertificate}}">
                                         <span class="material-icons">visibility</span>  View
                                     </a>
@@ -73,11 +73,11 @@
                             <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
                             <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.CoverLetterApproval}}</span></td>
                             <td>
-                                <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
-                                    <a href="/{{.CoverLetter}}">
-                                        <span class="material-icons">visibility</span>  View
-                                    </a>
-                                </button>
+                               <button class="action-btn btn-view" onclick="viewDocument('Cover Letter')">
+    <a href="/{{.CoverLetter}}">
+        <span class="material-icons">visibility</span> View
+    </a>
+</button>
                                 <a href="/approve_coverLetter/{{.ID}}" class="action-btn btn-approve">
                                     <span class="material-icons">check</span>  Approve
                                 </a>
@@ -91,9 +91,11 @@
                             <td>{{.Day}}-{{.Month}}-{{.Year}}</td>                        
                             <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.MemorandumApproval}}</span></td>
                             <td>
-                                <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
-                                    <a href="/{{.Memorandum}}"><span  class="material-icons">visibility</span>  View</a>                                    
-                                </button>
+                               <button class="action-btn btn-view" onclick="viewDocument('Memorandum')">
+    <a href="/{{.Memorandum}}">
+        <span class="material-icons">visibility</span> View
+    </a>
+</button>
                                 <a href="/approve_memorandum/{{.ID}}" class="action-btn btn-approve">
                                     <span class="material-icons">check</span>  Approve
                                 </a>
@@ -107,7 +109,7 @@
                             <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
                             <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.IncorporationCertificateApproval}}</span></td>
                             <td>
-                                <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
+                                <button class="action-btn btn-view" onclick="viewDocument('Incorporation Certificate')">
                                     <a href="/{{.IncorporationCertificate}}">
                                         <span class="material-icons">visibility</span>  View
                                     </a>
@@ -125,7 +127,7 @@
                             <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
                             <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.CompanyLogoApproval}}</span></td>
                             <td>
-                                <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
+                                <button class="action-btn btn-view" onclick="viewDocument('Company Logo')">
                                     <a href="/{{.CompanyLogo}}"><span  class="material-icons">visibility</span>  View</a>                                    
                                 </button>
                                 <a href="/approve_passportPhoto/{{.ID}}" class="action-btn btn-approve">
@@ -141,7 +143,7 @@
                             <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
                             <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.BusinessPremiseCertificateApproval}}</span></td>
                             <td>
-                                <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
+                                <button class="action-btn btn-view" onclick="viewDocument('Business Premise Certificate')">
                                     <a  href="/{{.BusinessPremiseCertificate}}"><span class="material-icons">visibility</span>  View</a>                                    
                                 </button>
                                 <a href="/approve_businessPremiseCert/{{.ID}}" class="action-btn btn-approve">
@@ -157,7 +159,7 @@
                             <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
                             <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.FormC07Approval}}</span></td>
                             <td>
-                                <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
+                                <button class="action-btn btn-view" onclick="viewDocument('FormC07')">
                                     <a href="/{{.FormC07}}"><span  class="material-icons">visibility</span>  View</a>                                    
                                 </button>
                                 <a href="/approve_formc07/{{.ID}}" class="action-btn btn-approve">
@@ -173,7 +175,7 @@
                             <td>{{.Year}}-{{.Month}}-{{.Day}}</td>                        
                             <td><span class="status-badge status-${doc.status.toLowerCase()}">{{.IDDocumentApproval}}</span></td>
                             <td>
-                                <button class="action-btn btn-view" onclick="viewDocument('${doc.name}')">
+                                <button class="action-btn btn-view" onclick="viewDocument('ID Documents')">
                                     <a href="/{{.IDDocument}}"><span class="material-icons">visibility</span>  View</a>                                    
                                 </button>
                                 <a href="/approve_idDoc/{{.ID}}" class="action-btn btn-approve">
@@ -214,20 +216,49 @@
         </div>
     </div>
 
-    <script>
+<script>
+    // Fix URL paths when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select all relevant links
+        const links = document.querySelectorAll('.action-btn.btn-view a[href]');
 
+        // Fix URLs in one pass
+        links.forEach(link => {
+            try {
+                const correctedHref = decodeURIComponent(link.href).replace(/\\/g, '/');
+                link.href = correctedHref;
+                console.debug('URL corrected:', correctedHref); // Silent debug log
+            } catch (e) {
+                console.warn('Failed to correct URL:', link.href, e);
+            }
+        });
 
-        function viewDocument(docName) {
-            document.getElementById('modalDocTitle').innerText = `Viewing: ${docName}`;
-            document.getElementById('documentViewer').innerHTML = `<p>Preview of <strong>${docName}</strong> would appear here.</p>`;
-            document.getElementById('documentModal').style.display = 'block';
-        }
+        // Initialize table if function exists
+        typeof populateDocumentsTable === 'function' && populateDocumentsTable();
+    });
 
-        function closeModal() {
-            document.getElementById('documentModal').style.display = 'none';
-        }
+    // Modal functions
+    function viewDocument(docName) {
+        document.getElementById('modalDocTitle').textContent = `Viewing: ${docName}`;
+        document.getElementById('documentViewer').innerHTML = 
+            `<p>Preview of <strong>${escapeHtml(docName)}</strong> would appear here.</p>`;
+        document.getElementById('documentModal').style.display = 'block';
+    }
 
-        document.addEventListener('DOMContentLoaded', populateDocumentsTable);
-    </script>
+    function closeModal() {
+        document.getElementById('documentModal').style.display = 'none';
+    }
+
+    // Basic HTML escaping for security
+    function escapeHtml(unsafe) {
+        return unsafe.replace(/[&<"'>]/g, m => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[m]));
+    }
+</script>
 </body>
 </html>

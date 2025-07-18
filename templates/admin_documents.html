@@ -284,8 +284,7 @@
                                 <td>{{.Name}}</td>
                                <td>{{.CACNumber}}</td>
                                 <td>
-                               <a href="/admin_organization_documents/{{.ID}}" target="_blank" class="btn view-btn">View</a>
-
+                                <a href="/admin_organization_documents/{{.ID}}" class="btn view-btn">View</a>
                                 <!-- <button class="btn accept-btn">Accept</button>
                                 <button class="btn reject-btn">Reject</button> -->
                                 </td>
@@ -316,54 +315,19 @@
             </div>
         </div>
     </div>
-<script>
-  function viewDocumentInModal(docName) {
-    document.getElementById('modalDocTitle').innerText = `Viewing: ${docName}`;
-    document.getElementById('documentViewer').innerHTML = `<p>Preview of <strong>${docName}</strong> would appear here.</p>`;
-    document.getElementById('documentModal').style.display = 'block';
-  }
 
- function viewDocumentInNewTab(docPath) {
-  const cleanedPath = decodeURIComponent(docPath).replace(/\\/g, '/');
-  const url = `http://localhost:8000${cleanedPath}`;
-  window.open(url, '_blank');
-}
-
-
-  function closeModal() {
-    document.getElementById('documentModal').style.display = 'none';
-  }
-
-  document.addEventListener('DOMContentLoaded', populateDocumentsTable);
-</script>
-
-
-
-
-    <!-- <script>
+    <script>
         function viewDocument(docName) {
             document.getElementById('modalDocTitle').innerText = `Viewing: ${docName}`;
             document.getElementById('documentViewer').innerHTML = `<p>Preview of <strong>${docName}</strong> would appear here.</p>`;
             document.getElementById('documentModal').style.display = 'block';
         }
-        function viewDocument(docPath) {
-  // Decode URI and replace backslashes with forward slashes
-  const cleanedPath = decodeURIComponent(docPath).replace(/\\/g, '/');
-
-  // Construct the full URL
-  const url = `http://localhost:8000/${cleanedPath}`;
-
-  // Open the document in a new tab
-  window.open(url, '_blank');
-}
-
 
         function closeModal() {
             document.getElementById('documentModal').style.display = 'none';
         }
 
         document.addEventListener('DOMContentLoaded', populateDocumentsTable);
-    </script> -->
-    
+    </script>
 </body>
 </html>
