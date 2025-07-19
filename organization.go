@@ -150,7 +150,8 @@ func organizationRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "applicaton/json")
+	var referee1 Referee1
+	var referee2 Referee2
 	year, month, day := time.Now().Date()
 	r.ParseMultipartForm(10 * 1024 * 1024)
 	name := r.FormValue("companyName")
@@ -169,13 +170,25 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	dateJoined := time.Now().Local()
 
+	referee1.ID = uuid.NewString()
+	referee1.Name = r.FormValue("referee1Name")
+	referee1.BusinessName = r.FormValue("referee1Business")
+	referee1.PhoneNumber = r.FormValue("referee1Phone")
+	referee1.ChamberRegNumber = r.FormValue("referee1RegNumber")
+
+	referee2.ID = uuid.NewString()
+	referee2.Name = r.FormValue("referee2Name")
+	referee2.BusinessName = r.FormValue("referee2Business")
+	referee2.PhoneNumber = r.FormValue("referee2Phone")
+	referee2.ChamberRegNumber = r.FormValue("referee2RegNumber")
+
 	orgResp, err := findOrganization(dbFindUrl, email)
 	if err != nil {
 		fmt.Println("err", err)
 		return
 	}
 	if len(orgResp.Body) != 0 {
-		tmpl.ExecuteTemplate(w, "organization_register.html", "Organization Already Registered, Please Choose Another one.")
+		tmpl.ExecuteTemplate(w, "organization_register.html", "An Organization is Already Using This Email, Please Choose Another one.")
 		return
 	}
 
@@ -312,24 +325,25 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	formC07Temp.Write(formC07Bytes)
 
-	idDocument, _, err := r.FormFile("nationalId")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	defer idDocument.Close()
-	idDocumentTemp, err2 := os.CreateTemp("static", "file-*.pdf")
-	if err2 != nil {
-		log.Fatal(err2)
-		return
-	}
-	defer idDocumentTemp.Close()
-	idDocumentBytes, err3 := io.ReadAll(idDocument)
-	if err3 != nil {
-		log.Fatal(err3)
-		return
-	}
-	idDocumentTemp.Write(idDocumentBytes)
+	idDocument := r.FormValue("idType")
+	// idDocument, _, err := r.FormFile("nationalId")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// 	return
+	// }
+	// defer idDocument.Close()
+	// idDocumentTemp, err2 := os.CreateTemp("static", "file-*.pdf")
+	// if err2 != nil {
+	// 	log.Fatal(err2)
+	// 	return
+	// }
+	// defer idDocumentTemp.Close()
+	// idDocumentBytes, err3 := io.ReadAll(idDocument)
+	// if err3 != nil {
+	// 	log.Fatal(err3)
+	// 	return
+	// }
+	// idDocumentTemp.Write(idDocumentBytes)
 
 	var org = Organization{
 		ID:                                 uuid.NewString(),
@@ -360,13 +374,15 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		BusinessPremiseCertificateApproval: "Pending",
 		FormC07:                            formC07Temp.Name(),
 		FormC07Approval:                    "Pending",
-		IDDocument:                         idDocumentTemp.Name(),
+		IDDocument:                         idDocument,
 		IDDocumentApproval:                 "Pending",
 		Year:                               year,
 		Month:                              month.String(),
 		Day:                                day,
 		DateJoined:                         dateJoined.String(),
 		UserId:                             currentUser.ID,
+		Referee1:                           referee1,
+		Referee2:                           referee2,
 		Status:                             "Pending",
 		Doctype:                            "organization",
 	}
