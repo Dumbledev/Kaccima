@@ -9,52 +9,45 @@ import (
 )
 
 func admin(w http.ResponseWriter, r *http.Request) {
-	var totalMembers int
 	type PageResult struct {
 		UserCount          int
 		PendingOrgCount    int
 		PendingOrg         []Organization
 		PendingBankPayment []BankTransfer
 	}
-	var pendingBankTransfer []BankTransfer
+	pendingBankTransfer := []BankTransfer{}
+	pendingOrg := []Organization{}
+	users := []User{}
 	userResponse, err := findUsers(dbFindUrl)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	if len(userResponse.Body) == 0 {
-		fmt.Println("No Record Found")
-		return
+	if len(userResponse.Body) != 0 {
+		users = userResponse.Body
 	}
-	totalMembers = len(userResponse.Body)
-
 	orgPendingStatusResponse, err := findOrganizationApprovalStatus(dbFindUrl, "Pending")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	if len(userResponse.Body) == 0 {
-		fmt.Println("No Record Found")
-		return
+	if len(orgPendingStatusResponse.Body) != 0 {
+		pendingOrg = orgPendingStatusResponse.Body
 	}
-	pendingOrg := len(orgPendingStatusResponse.Body)
 
 	bankTransferPendingStatusResponse, err := findBankPaymentApprovalStatus(dbFindUrl, "Pending")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	if len(bankTransferPendingStatusResponse.Body) == 0 {
-		pendingBankTransfer = []BankTransfer{}
-		fmt.Println("No Record Found")
-	} else {
+	if len(bankTransferPendingStatusResponse.Body) != 0 {
 		pendingBankTransfer = bankTransferPendingStatusResponse.Body
 	}
 
 	p := PageResult{
-		UserCount:          totalMembers,
-		PendingOrgCount:    pendingOrg,
-		PendingOrg:         orgPendingStatusResponse.Body,
+		UserCount:          len(users),
+		PendingOrgCount:    len(pendingOrg),
+		PendingOrg:         pendingOrg,
 		PendingBankPayment: pendingBankTransfer,
 	}
 	tmpl.ExecuteTemplate(w, "admin.html", p)
