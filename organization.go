@@ -155,7 +155,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	year, month, day := time.Now().Date()
 	r.ParseMultipartForm(10 * 1024 * 1024)
 	name := r.FormValue("companyName")
-	email := r.FormValue("email")
+	email := strings.ToLower(r.FormValue("email"))
 	address := r.FormValue("officeAddress")
 	employeesNo := r.FormValue("employeesNo")
 	nonNigerianEmployees := r.FormValue("nonNigerianEmployees")
@@ -198,7 +198,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer coverLetter.Close()
-	coverLetterTemp, err2 := os.CreateTemp("static", "file-*.pdf")
+	coverLetterTemp, err2 := os.CreateTemp("static/Cover_Letters", name+" Cover Letter-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
@@ -217,7 +217,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer memorandum.Close()
-	memorandumTemp, err2 := os.CreateTemp("static", "file-*.pdf")
+	memorandumTemp, err2 := os.CreateTemp("static/Memorandums", name+" Memorandum-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
@@ -236,7 +236,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer businessCertificate.Close()
-	businessCertificateTemp, err2 := os.CreateTemp("static", "file-*.pdf")
+	businessCertificateTemp, err2 := os.CreateTemp("static/Business_Name_Certs", name+" Business Name Cert-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
@@ -247,7 +247,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err3)
 		return
 	}
-	memorandumTemp.Write(businessCertificateBytes)
+	businessCertificateTemp.Write(businessCertificateBytes)
 
 	incorporationCertificate, _, err := r.FormFile("incorporationCert")
 	if err != nil {
@@ -255,7 +255,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer incorporationCertificate.Close()
-	incorporationCertTemp, err2 := os.CreateTemp("static", "file-*.pdf")
+	incorporationCertTemp, err2 := os.CreateTemp("static/Incorporation_Certs", name+" Incorporation Cert-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
@@ -266,7 +266,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err3)
 		return
 	}
-	memorandumTemp.Write(incorporationCertBytes)
+	incorporationCertTemp.Write(incorporationCertBytes)
 
 	companyLogo, _, err := r.FormFile("companyLogo")
 	if err != nil {
@@ -274,7 +274,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer companyLogo.Close()
-	companyLogoTemp, err2 := os.CreateTemp("static", "file-*.png")
+	companyLogoTemp, err2 := os.CreateTemp("static/Company_Logos", name+" Company Logo-*.png")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
@@ -293,7 +293,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer businessPremiseCertificate.Close()
-	businessPremiseCertificateTemp, err2 := os.CreateTemp("static", "file-*.pdf")
+	businessPremiseCertificateTemp, err2 := os.CreateTemp("static/Premise_Certs", name+" Premise Cert-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
@@ -312,7 +312,7 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer formC07.Close()
-	formC07Temp, err2 := os.CreateTemp("static", "file-*.pdf")
+	formC07Temp, err2 := os.CreateTemp("static/FormC07s", name+" FormC07-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return
@@ -325,25 +325,26 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	formC07Temp.Write(formC07Bytes)
 
-	idDocument := r.FormValue("idType")
-	// idDocument, _, err := r.FormFile("nationalId")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// 	return
-	// }
-	// defer idDocument.Close()
-	// idDocumentTemp, err2 := os.CreateTemp("static", "file-*.pdf")
-	// if err2 != nil {
-	// 	log.Fatal(err2)
-	// 	return
-	// }
-	// defer idDocumentTemp.Close()
-	// idDocumentBytes, err3 := io.ReadAll(idDocument)
-	// if err3 != nil {
-	// 	log.Fatal(err3)
-	// 	return
-	// }
-	// idDocumentTemp.Write(idDocumentBytes)
+	// idDocument := r.FormValue("idType")
+	idDocument, _, err := r.FormFile("idDocument")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer idDocument.Close()
+	idDocumentTemp, err2 := os.CreateTemp("static/ID_Documents", name+" ID_Document-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer idDocumentTemp.Close()
+	idDocumentBytes, err3 := io.ReadAll(idDocument)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	idDocumentTemp.Write(idDocumentBytes)
+	idType := r.FormValue("idType")
 
 	var org = Organization{
 		ID:                                 uuid.NewString(),
@@ -374,8 +375,9 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		BusinessPremiseCertificateApproval: "Pending",
 		FormC07:                            formC07Temp.Name(),
 		FormC07Approval:                    "Pending",
-		IDDocument:                         idDocument,
+		IDDocument:                         idDocumentTemp.Name(),
 		IDDocumentApproval:                 "Pending",
+		IDDocumentType:                     idType,
 		Year:                               year,
 		Month:                              month.String(),
 		Day:                                day,
@@ -513,65 +515,474 @@ func updateRejectedDocuments(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateMemorandum(w http.ResponseWriter, r *http.Request) {
-
+	tmpl.ExecuteTemplate(w, "update_memorandum.html", nil)
 }
 
 func updateMemorandumHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "404.html", "Organization Not Found")
+		return
+	}
+	organization := orgResp.Body[0]
+	memorandum, _, err := r.FormFile("memorandum")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer memorandum.Close()
+	memorandumTemp, err2 := os.CreateTemp("static/Memorandums", organization.Name+" Memorandum-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer memorandumTemp.Close()
+	memorandumBytes, err3 := io.ReadAll(memorandum)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	memorandumTemp.Write(memorandumBytes)
 
+	organization.Memorandum = memorandumTemp.Name()
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func updateCoverLetter(w http.ResponseWriter, r *http.Request) {
-
+	tmpl.ExecuteTemplate(w, "update_cover_letter.html", nil)
 }
 
 func updateCoverLetterHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "400.html", "Organization Not Found")
+		return
+	}
+	organization := orgResp.Body[0]
+	coverLetter, _, err := r.FormFile("coverLetter")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer coverLetter.Close()
+	coverLetterTemp, err2 := os.CreateTemp("static/Cover_Letters", organization.Name+" Cover Letter-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer coverLetterTemp.Close()
+	coverLetterBytes, err3 := io.ReadAll(coverLetter)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	coverLetterTemp.Write(coverLetterBytes)
 
+	organization.CoverLetter = coverLetterTemp.Name()
+
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func updateBusinessCertificate(w http.ResponseWriter, r *http.Request) {
-
+	tmpl.ExecuteTemplate(w, "update_business_certificate.html", nil)
 }
 
 func updateBusinessCertificateHandler(w http.ResponseWriter, r *http.Request) {
-
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "404.html", "Organization Not Found")
+		return
+	}
+	organization := orgResp.Body[0]
+	businessCertificate, _, err := r.FormFile("registrationCert")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer businessCertificate.Close()
+	businessCertificateTemp, err2 := os.CreateTemp("static/Business_Name_Certs", organization.Name+" Business Name Cert-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer businessCertificateTemp.Close()
+	businessCertificateBytes, err3 := io.ReadAll(businessCertificate)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	businessCertificateTemp.Write(businessCertificateBytes)
+	organization.BusinessCertificate = businessCertificateTemp.Name()
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func updateIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
-
+	tmpl.ExecuteTemplate(w, "update_incorporation_certificate.html", nil)
 }
 
 func updateIncorporationCertificateHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "404.html", "Organization Not Found")
+		return
+	}
+	organization := orgResp.Body[0]
+	incorporationCertificate, _, err := r.FormFile("incorporationCert")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer incorporationCertificate.Close()
+	incorporationCertTemp, err2 := os.CreateTemp("static/Incorporation_Certs", organization.Name+" Incorporation Cert-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer incorporationCertTemp.Close()
+	incorporationCertBytes, err3 := io.ReadAll(incorporationCertificate)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	incorporationCertTemp.Write(incorporationCertBytes)
 
+	organization.IncorporationCertificate = incorporationCertTemp.Name()
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func updateBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
-
+	tmpl.ExecuteTemplate(w, "update_business_premise_certificate.html", nil)
 }
 
 func updateBusinessPremiseCertificateHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "404.html", "Organization Not Found")
+		return
+	}
+	organization := orgResp.Body[0]
+	businessPremiseCertificate, _, err := r.FormFile("premisesCert")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer businessPremiseCertificate.Close()
+	businessPremiseCertificateTemp, err2 := os.CreateTemp("static/Premise_Certs", organization.Name+" Premise Cert-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer businessPremiseCertificateTemp.Close()
+	businessPremiseCertificateBytes, err3 := io.ReadAll(businessPremiseCertificate)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	businessPremiseCertificateTemp.Write(businessPremiseCertificateBytes)
 
+	organization.BusinessPremiseCertificate = businessPremiseCertificateTemp.Name()
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
-func updatePassportPhoto(w http.ResponseWriter, r *http.Request) {
-
+func updateCompanyLogo(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "update_company_logo.html", nil)
 }
 
-func updatePassportPhotoHandler(w http.ResponseWriter, r *http.Request) {
+func updateCompanyLogoHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "404.html", "Organization Not Found")
+		return
+	}
+	organization := orgResp.Body[0]
+	companyLogo, _, err := r.FormFile("companyLogo")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer companyLogo.Close()
+	companyLogoTemp, err2 := os.CreateTemp("static/Company_Logos", organization.Name+" Company Logo-*.png")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer companyLogoTemp.Close()
+	companyLogoBytes, err3 := io.ReadAll(companyLogo)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	companyLogoTemp.Write(companyLogoBytes)
 
+	organization.CompanyLogo = companyLogoTemp.Name()
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func updateFormC07(w http.ResponseWriter, r *http.Request) {
-
+	tmpl.ExecuteTemplate(w, "update_formco7.html", nil)
 }
 
 func updateFormC07Handler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "404.html", "Organization Not Found")
+		return
+	}
+	organization := orgResp.Body[0]
+	formC07, _, err := r.FormFile("formC07")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer formC07.Close()
+	formC07Temp, err2 := os.CreateTemp("static/FormC07s", organization.Name+" FormC07-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer formC07Temp.Close()
+	formC07Bytes, err3 := io.ReadAll(formC07)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	formC07Temp.Write(formC07Bytes)
 
+	organization.FormC07 = formC07Temp.Name()
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func updateIDDocument(w http.ResponseWriter, r *http.Request) {
-
+	tmpl.ExecuteTemplate(w, "update_idDocument.html", nil)
 }
 
 func updateIDDocumentHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "404.html", "Organization Not Found")
+		return
+	}
+	organization := orgResp.Body[0]
+	idDocument, _, err := r.FormFile("idType")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer idDocument.Close()
+	idDocumentTemp, err2 := os.CreateTemp("static/ID_Documents", organization.Name+" ID_Document-*.pdf")
+	if err2 != nil {
+		log.Fatal(err2)
+		return
+	}
+	defer idDocumentTemp.Close()
+	idDocumentBytes, err3 := io.ReadAll(idDocument)
+	if err3 != nil {
+		log.Fatal(err3)
+		return
+	}
+	idDocumentTemp.Write(idDocumentBytes)
 
+	organization.IDDocument = idDocumentTemp.Name()
+	jsonData, err := json.Marshal(&organization)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+organization.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
