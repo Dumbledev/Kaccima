@@ -37,7 +37,7 @@ func admin(w http.ResponseWriter, r *http.Request) {
 
 	bankTransferPendingStatusResponse, err := findBankPaymentApprovalStatus(dbFindUrl, "Pending")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err, "Err")
 		return
 	}
 	if len(bankTransferPendingStatusResponse.Body) != 0 {
