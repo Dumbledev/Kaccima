@@ -430,6 +430,7 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 	year, month, day := time.Now().Date()
 	r.ParseMultipartForm(10 * 1024 * 1024)
 	organizationId := r.FormValue("organizationId")
+	organizationName := r.FormValue("organizationName")
 	name := r.FormValue("name")
 
 	paymentResp, err := findOrganizationPayment(dbFindUrl, organizationId)
@@ -453,7 +454,7 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer reciept.Close()
-	temp, err2 := os.CreateTemp("static", "payment-*.pdf")
+	temp, err2 := os.CreateTemp("static/Payments", organizationName+" payment-*.pdf")
 	if err2 != nil {
 		log.Fatal(err2)
 		return

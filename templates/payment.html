@@ -492,7 +492,7 @@
                     
                     <form id="bankPaymentForm" method="post" enctype="multipart/form-data" action="/bank_transfer_handler">
                         <input type="text" hidden name="organizationId" value="{{.ID}}">
-                        <input type="text" hidden name="name" value="{{.Name}}">
+                        <input type="text" hidden name="organizationName" value="{{.Name}}">
                         <div class="form-group">
                             <label for="paymentReceipt" class="form-label">Payment Receipt</label>
                             <input type="file" id="paymentReceipt" class="form-control" name="receiptFile" accept=".jpg,.jpeg,.png,.pdf" required>
