@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/google/uuid"
 )
 
 func admin(w http.ResponseWriter, r *http.Request) {
@@ -110,7 +112,69 @@ func adminPayment(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminReport(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "admin_report.html", nil)
+	id := r.PathValue("organizationId")
+	orgResp, err := findOrganizationById(dbFindUrl, id)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/404", http.StatusNotFound)
+		return
+	}
+	organization := orgResp.Body[0]
+	tmpl.ExecuteTemplate(w, "admin_report.html", organization)
+}
+
+func adminReportHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.FormValue("organizationId")
+	reportType := r.FormValue("type")
+	reason := r.FormValue("type")
+	date := r.FormValue("date")
+	if id == "" {
+		http.Error(w, "Missing member ID", http.StatusBadRequest)
+		return
+	}
+
+	// Fetch organization
+	orgResp, err := findOrganization(dbFindUrl, id)
+	if err != nil || len(orgResp.Body) == 0 {
+		http.Error(w, "Member not found", http.StatusNotFound)
+		return
+	}
+
+	org := orgResp.Body[0]
+	report := Report{
+		ID:               uuid.NewString(),
+		Type:             reportType,
+		Reason:           reason,
+		Date:             date,
+		OrganizationId:   id,
+		OrganizationName: org.Name,
+	}
+	// org.Status = "Reported"
+
+	jsonData, err := json.Marshal(report)
+	if err != nil {
+		http.Error(w, "Failed to encode data", http.StatusInternalServerError)
+		return
+	}
+
+	req, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
+	if err != nil {
+		http.Error(w, "Failed to create update request", http.StatusInternalServerError)
+		return
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil || res.StatusCode != http.StatusOK {
+		http.Error(w, "Failed to update status", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/admin_members", http.StatusSeeOther)
 }
 
 func adminSettings(w http.ResponseWriter, r *http.Request) {

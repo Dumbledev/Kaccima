@@ -132,3 +132,12 @@ type BankTransferResponse struct {
 	Bookmark string         `json:"bookmark"`
 	Warning  string         `json:"warning"`
 }
+
+type Report struct {
+	ID               string `json:"_id"`
+	Type             string `json:"type"`
+	Reason           string `json:"reason"`
+	OrganizationId   string `json:"organizationId"`
+	OrganizationName string `json:"organizationName"`
+	Date             string `json:"data"`
+}

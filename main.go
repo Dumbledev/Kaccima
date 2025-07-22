@@ -49,12 +49,15 @@ func main() {
 	http.Handle("/admin_members", isAuthenticated(adminMembers))
 	http.Handle("/admin_payments", isAuthenticated(adminPayment))
 	http.Handle("/admin_report", isAuthenticated(adminReport))
+	http.Handle("/admin_report_handler", isAuthenticated(adminReportHandler))
 	http.Handle("/admin_settings", isAuthenticated(adminSettings))
 
 	http.Handle("/accept_receipt/{paymentId}", isAuthenticated(acceptReceipt))
 	http.Handle("/reject_receipt/{paymentId}", isAuthenticated(rejectReceipt))
 	http.Handle("/accept_organization/{organizationId}", isAuthenticated(acceptOrganization))
 	http.Handle("/reject_organization/{organizationId}", isAuthenticated(rejectOrganization))
+
+	// http.Handle("/report_member/{organizationId}", isAuthenticated(reportMember))
 
 	http.Handle("/approve_memorandum/{organizationId}", isAuthenticated(approveMemorandum))
 	http.Handle("/reject_memorandum/{organizationId}", isAuthenticated(rejectMemorandum))

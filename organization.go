@@ -14,47 +14,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// delete member
-func reportMemberHandler(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
-	if id == "" {
-		http.Error(w, "Missing member ID", http.StatusBadRequest)
-		return
-	}
-
-	// Fetch organization
-	orgResp, err := findOrganization(dbFindUrl, id)
-	if err != nil || len(orgResp.Body) == 0 {
-		http.Error(w, "Member not found", http.StatusNotFound)
-		return
-	}
-
-	org := orgResp.Body[0]
-	org.Status = "Reported"
-
-	jsonData, err := json.Marshal(org)
-	if err != nil {
-		http.Error(w, "Failed to encode data", http.StatusInternalServerError)
-		return
-	}
-
-	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/%s", dbUrl, org.ID), bytes.NewBuffer(jsonData))
-	if err != nil {
-		http.Error(w, "Failed to create update request", http.StatusInternalServerError)
-		return
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil || res.StatusCode != http.StatusOK {
-		http.Error(w, "Failed to update status", http.StatusInternalServerError)
-		return
-	}
-
-	http.Redirect(w, r, "/admin_members", http.StatusSeeOther)
-}
-
 func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 	type PageResult struct {
 		Organization Organization
