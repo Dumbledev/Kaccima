@@ -297,30 +297,6 @@ textarea {
     </div>
   </div>
 </div>
-
   </main>
-
-  <script>
-    document.getElementById('reportForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      // Example submission logic
-      const form = event.target;
-      const reportData = {
-        type: form.reportType.value,
-        member: form.memberName.value,
-        reason: form.reportReason.value,
-        date: form.reportDate.value,
-      };
-
-      console.log('Report submitted:', reportData);
-
-      // Show success message
-      document.getElementById('reportSuccess').style.display = 'block';
-
-      // Clear form
-      form.reset();
-    });
-  </script>
 </body>
 </html>

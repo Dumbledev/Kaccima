@@ -170,11 +170,17 @@
 
     <section class="dashboard-content">
       <h3>Notifications</h3>
-      <div id="notificationsList"></div>
+      <div id="notificationsList"> 
+        {{range .}}
+          <p>{{.Reason}}</p>
+          <p>{{.Type}}</p>
+          <hr />
+        {{end}}
+      </div>
     </section>
   </main>
 
-  <script>
+  <!-- <script>
     document.addEventListener("DOMContentLoaded", () => {
       const notifications = [
         {
@@ -283,6 +289,6 @@
         alert("Please select a file first.");
       }
     }
-  </script>
+  </script> -->
 </body>
 </html>

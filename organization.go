@@ -61,6 +61,7 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 // }
 
 func notification(w http.ResponseWriter, r *http.Request) {
+	reports := []Report{}
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
@@ -71,7 +72,17 @@ func notification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	organization := orgResp.Body[0]
-	tmpl.ExecuteTemplate(w, "notification.html", organization)
+	reportResp, err := findOrganizationReports(dbFindUrl, organization.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	reports = reportResp.Body
+	tmpl.ExecuteTemplate(w, "notification.html", reports)
 }
 
 func reviewedDocuments(w http.ResponseWriter, r *http.Request) {

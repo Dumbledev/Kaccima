@@ -127,19 +127,20 @@ func adminReport(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminReportHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
 	id := r.FormValue("organizationId")
 	reportType := r.FormValue("reportType")
 	reason := r.FormValue("reportReason")
 	date := r.FormValue("reportDate")
-	if id == "" {
-		http.Error(w, "Missing member ID", http.StatusBadRequest)
+	fmt.Println(id, "id")
+	orgResp, err := findOrganizationById(dbFindUrl, id)
+	fmt.Println(orgResp.Body)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
 		return
 	}
-
-	// Fetch organization
-	orgResp, err := findOrganization(dbFindUrl, id)
-	if err != nil || len(orgResp.Body) == 0 {
-		http.Error(w, "Member not found", http.StatusNotFound)
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/404", http.StatusNotFound)
 		return
 	}
 
@@ -153,29 +154,28 @@ func adminReportHandler(w http.ResponseWriter, r *http.Request) {
 		OrganizationName: org.Name,
 		Doctype:          "report",
 	}
-	// org.Status = "Reported"
 
 	jsonData, err := json.Marshal(report)
 	if err != nil {
-		http.Error(w, "Failed to encode data", http.StatusInternalServerError)
+		fmt.Println(err)
 		return
 	}
-
-	req, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
+	// fmt.Println(string(jUser))
+	request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
 	if err != nil {
-		http.Error(w, "Failed to create update request", http.StatusInternalServerError)
+		tmpl.ExecuteTemplate(w, "500.html", "Server Error(1)")
 		return
 	}
-	req.Header.Set("Content-Type", "application/json")
-
+	request.Header.Set("Content-type", "application/json")
 	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil || res.StatusCode != http.StatusOK {
-		http.Error(w, "Failed to update status", http.StatusInternalServerError)
+	res, error := client.Do(request)
+	if error != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Server Error(2)")
 		return
 	}
+	defer res.Body.Close()
 
-	http.Redirect(w, r, "/admin_members", http.StatusSeeOther)
+	http.Redirect(w, r, "/admin_members", http.StatusPermanentRedirect)
 }
 
 func adminSettings(w http.ResponseWriter, r *http.Request) {

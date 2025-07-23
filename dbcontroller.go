@@ -327,3 +327,29 @@ func findOrganizationPayments(url string) (BankTransferResponse, error) {
 	}
 	return response, error
 }
+
+func findOrganizationReports(url, id string) (ReportResponse, error) {
+	var response ReportResponse
+	jsonData := map[string]map[string]any{"selector": {"organizationId": id, "doctype": "report"}}
+	data, error := json.Marshal(jsonData)
+	if error != nil {
+		log.Fatalln("Marshal", error)
+	}
+	request, error := http.NewRequest("POST", url, bytes.NewBuffer(data))
+	if error != nil {
+		fmt.Println("Byte Error", error)
+	}
+	request.Header.Set("Content-type", "application/json")
+	client := &http.Client{}
+	res, error := client.Do(request)
+	if error != nil {
+		fmt.Println("Req Err", error)
+	}
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	error = json.Unmarshal(body, &response)
+	if error != nil {
+		log.Fatalln("UnMarshal Err: ", error)
+	}
+	return response, error
+}
