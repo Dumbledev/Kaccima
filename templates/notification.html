@@ -1,24 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KACCIMA - Notifications</title>
-<link rel="stylesheet" href="../static/user_style.css">
+  <link rel="stylesheet" href="../static/user_style.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    .notification-box {
+      background: #f5f5f5;
+      border-left: 5px solid #007bff;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .notification-box.rejected {
+      border-left-color: #dc3545;
+    }
+
+    .notification-box.warning {
+      border-left-color: #ffc107;
+    }
+
+    .notification-box.success {
+      border-left-color: #28a745;
+    }
+
+    .notification-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .notification-time {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 5px;
+    }
+
+    .document-preview {
+      background-color: #e9ecef;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .rejection-reason {
+      color: #dc3545;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .upload-area {
+      margin-top: 10px;
+      padding: 10px;
+      border: 2px dashed #ced4da;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav ul li {
+      display: inline-block;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-text {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .dashboard-container {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 200px;
+      padding: 15px;
+      background-color: #f8f9fa;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin: 10px 0;
+    }
+
+    .sidebar ul li.active a {
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .dashboard-content {
+      flex: 1;
+      padding: 20px;
+    }
+  </style>
 </head>
 
 <body>
   <header>
     <nav>
       <div class="logo">
-        <img src="/static/logo.png" alt="KACCIMA Logo" width="40" height="40">
+        <img src="/static/logo.png" alt="KACCIMA Logo" width="40" height="40" />
         <span class="logo-text">KACCIMA</span>
       </div>
       <ul>
         <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/notification">Notifications</a></li>
         <li><a href="/profile">Profile</a></li>
-        
         <li><a href="/sign_out">Logout</a></li>
       </ul>
     </nav>
@@ -28,12 +162,9 @@
     <aside class="sidebar">
       <ul>
         <li><a href="/dashboard">Dashboard</a></li>
-  
         <li><a href="/profile">Profile</a></li>
-         <li ><a href="/organization">Organization Profile</a></li>
+        <li><a href="/organization">Organization Profile</a></li>
         <li class="active"><a href="/notification">Notifications</a></li>
-
-       
       </ul>
     </aside>
 
@@ -45,10 +176,41 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const notifications = JSON.parse(localStorage.getItem("kaccimaNotifications")) || [
-        { title: "Payment Received", message: "Your payment has been successfully recorded." },
-        { title: "Document Approved", message: "Your registration documents have been approved." },
-        { title: "Renewal Reminder", message: "Your membership will expire soon. Please renew." }
+      const notifications = [
+        {
+          id: 1,
+          title: "Payment Received",
+          message: "Your payment has been successfully recorded.",
+          type: "success",
+          date: "2023-05-15T10:30:00Z",
+        },
+        {
+          id: 2,
+          title: "Document Approved",
+          message: "Your registration documents have been approved.",
+          type: "success",
+          date: "2023-05-14T14:15:00Z",
+        },
+        {
+          id: 3,
+          title: "Document Rejected",
+          message: "Your Incorporation Certificate needs correction.",
+          type: "rejected",
+          document: "Incorporation Certificate",
+          currentFile: "inc_certificate_old.pdf",
+          rejectionReason: "The document is not clear. Please upload a higher quality scan.",
+          date: "2023-05-14T09:45:00Z",
+        },
+        {
+          id: 4,
+          title: "Document Rejected",
+          message: "Your Memorandum Certificate needs correction.",
+          type: "rejected",
+          document: "Memorandum Certificate",
+          currentFile: "memorandum_certificate_old.pdf",
+          rejectionReason: "Text is unreadable. Submit a clearer copy.",
+          date: "2023-05-13T09:30:00Z",
+        },
       ];
 
       const container = document.getElementById("notificationsList");
@@ -56,23 +218,71 @@
       if (notifications.length === 0) {
         container.innerHTML = "<p>No notifications available.</p>";
       } else {
-        notifications.forEach(note => {
+        notifications.forEach((note) => {
           const div = document.createElement("div");
-          div.className = "notification-box";
-          div.innerHTML = `<h4>${note.title}</h4><p>${note.message}</p>`;
+          div.className = `notification-box ${note.type}`;
+
+          let html = `
+            <h4>${note.title}</h4>
+            <p>${note.message}</p>
+            <div class="notification-time">${formatDate(note.date)}</div>
+          `;
+
+          if (note.type === "rejected") {
+            html += `
+              <div class="document-preview">
+                <strong>Document:</strong> ${note.document}<br />
+                <div class="rejection-reason">Reason: ${note.rejectionReason}</div>
+              </div>
+              <div class="notification-actions">
+                <button class="btn btn-primary" onclick="showUploadForm(${note.id})">Re-upload Document</button>
+                <a href="/uploads/${note.currentFile}" class="btn" download>Download Current</a>
+              </div>
+              <div id="uploadForm-${note.id}" class="upload-area hidden">
+                <input type="file" id="fileInput-${note.id}" />
+                <button class="btn btn-success" onclick="submitDocument(${note.id})">Submit</button>
+                <button class="btn btn-danger" onclick="hideUploadForm(${note.id})">Cancel</button>
+              </div>
+            `;
+          }
+
+          div.innerHTML = html;
           container.appendChild(div);
         });
       }
     });
-  </script>
 
-  <style>
-    .notification-box {
-      background: #f5f5f5;
-      border-left: 5px solid #007bff;
-      padding: 10px;
-      margin-bottom: 15px;
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString() + " " + date.toLocaleTimeString();
     }
-  </style>
+
+    function showUploadForm(notificationId) {
+      document.getElementById(`uploadForm-${notificationId}`).classList.remove("hidden");
+    }
+
+    function hideUploadForm(notificationId) {
+      document.getElementById(`uploadForm-${notificationId}`).classList.add("hidden");
+    }
+
+    function submitDocument(notificationId) {
+      const fileInput = document.getElementById(`fileInput-${notificationId}`);
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        alert(`Document "${fileName}" will be uploaded for review.`);
+        hideUploadForm(notificationId);
+
+        const notificationBox = fileInput.closest(".notification-box");
+        notificationBox.innerHTML += `
+          <div class="document-preview" style="background-color: #d4edda; margin-top: 10px;">
+            <strong>New version submitted:</strong> ${fileName}<br />
+            <em>Pending review</em>
+          </div>
+        `;
+      } else {
+        alert("Please select a file first.");
+      }
+    }
+  </script>
 </body>
 </html>
