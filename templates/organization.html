@@ -3,103 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KACCIMA - Profile</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <title>KACCIMA - Organization Profile</title>
+    <link rel="stylesheet" href="../static/user_style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-     <header>
+    <header>
         <nav>
             <div class="logo">
-                <img src="images/logo.png" alt="KACCIMA Logo" width="40" height="40">           
+                <img src="static/logo.png" alt="KACCIMA Logo" width="40" height="40">
                 <span class="logo-text">KACCIMA</span>
             </div>
-        <ul>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/notification">Notifications</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li class="active"><a href="/reviewedDocuments">Documents</a></li>
-            <li><a href="/sign_out">Logout</a></li>
-        </ul>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/notification">Notifications</a></li>
+                <li><a href="/profile">Profile</a></li>
+                
+                <li><a href="/sign_out">Logout</a></li>
+            </ul>
         </nav>
     </header>
 
-    <main class="dashboard-container">
+    <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <ul>
                 <li><a href="/dashboard">Dashboard</a></li>
+                 <li><a href="/profile">Profile</a></li>
+                <li class="active"><a href="/organization">Organization Profile</a></li>
                 <li><a href="/notification">Notifications</a></li>
-                <li class="active"><a href="/profile">Profile</a></li>
-                <li><a href="#">Documents</a></li>
+               
             </ul>
         </aside>
 
-        <!-- Profile Content -->
-        <section class="dashboard-content">
-            <div class="profile-info">
-                <h3>Profile Information</h3>
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="profile-container">
+               <div class="profile-header"> 
+  <div class="profile-title">
+    <h1>Organization Profile</h1>
+    <button class="edit-btn" onclick="location.href='edit-profile.html'">
+      <span class="material-icons">edit</span>
+      Edit Profile
+    </button>
+  </div>
+</div>
+
                 
-                <!-- User Photo -->
-                <div class="photo-container">
-                  <img id="passportPhoto" src="default-avatar.png" alt="User Photo" class="profile-photo" width="70px" height="70px">
+<!-- Basic Information Section -->  
+<div class="profile-section">
+  <h2 class="section-title" style="color: #15e420;">Basic Information</h2>
+  <div class="profile-grid">
+    <div class="profile-field">
+      <div class="field-label">Company Name</div>
+      <div class="field-value" id="companyName">{{.Name}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Office Address</div>
+      <div class="field-value" id="officeAddress">{{.Address}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Nature of Business</div>
+      <div class="field-value" id="businessNature">{{.NatureOfBusiness}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">CAC Number</div>
+      <div class="field-value">{{.CACNumber}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Contact Person</div>
+      <div class="field-value" id="contactPerson">{{.ContactPerson}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Representative</div>
+      <div class="field-value" id="representative">{{.Representative}}</div>
+    </div>
+ <div class="profile-field">
+  <div class="field-label">Phone Number</div>
+  <div class="field-value" id="Phone">{{.PhoneNumber}}</div>
+</div>
+    <div class="profile-field">
+      <div class="field-label">Email</div>
+      <div class="field-value" id="email">{{.Email}}</div>
+    </div>
+  </div>
+</div>
 
+
+                <!-- Documents Section --> 
+                <div class="profile-section">
+                    <h2 class="section-title"  style="color: #15e420;">Submitted Documents</h2>
+                    <div class="documents-list">
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Covering Letter</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.CoverLetter}}" target="_blank" class="material-icons fileLink" download="Covering_Letter">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Memorandum & Articles</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.Memorandum}}" target="_blank" class="material-icons fileLink" download="Memorandum">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Business Name Certificate</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.BusinessCertificate}}" target="_blank" class="material-icons fileLink" download="Business_Certificate">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Incorporation Certificate</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.IncorporationCertificate}}" target="_blank" class="material-icons fileLink" download="Incorporation_Certificate">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Business Premises Certificate</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.BusinessPremiseCertificate}}" target="_blank" class="material-icons fileLink" download="Business_Premise_Certificate">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">description</span>
+                            <div class="document-info">
+                                <div class="document-name">Form C07</div>
+                                <span class="document-status status-pending">Pending Review</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.FormC07}}" target="_blank" class="material-icons fileLink" download="Form_C07">download</a>
+                            </div>
+                        </div>
+
+                        <div class="document-item">
+                            <span class="material-icons document-icon">badge</span>
+                            <div class="document-info">
+                                <div class="document-name">ID Document</div>
+                                <span class="document-status status-approved">Approved</span>
+                            </div>
+                            <div class="document-actions">
+                                <button class="action-btn" title="View">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <a href="/{{.IDDocument}}" target="_blank" class="material-icons fileLink" download="ID_Document">download</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-               <div class="info-item">
-    <span class="label">Company Name:</span>
-    <span class="value" id="companyName">{{.Name}}</span>
-</div>
-<div class="info-item">
-    <span class="label">Representative:</span>
-    <span class="value" id="representative">{{.Representative}}</span>
-</div>
-<div class="info-item">
-    <span class="label">Contact Person:</span>
-    <span class="value" id="contactPerson">{{.ContactPerson}}</span>
-</div>
-<div class="info-item">
-    <span class="label">Email:</span>
-    <span class="value" id="email">{{.Email}}</span>
-</div>
-<div class="info-item">
-    <span class="label">Office Address:</span>
-    <span class="value" id="officeAddress">{{.Address}}</span>
-</div>
-
-                <div class="info-item">
-                    <span class="label">Membership Status:</span>
-                    <span class="value active">{{.Status}}</span>
-                </div>
-
-                <button class="btn outline" id="editProfile">Edit Profile</button>
             </div>
-        </section>
-    </main>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+        </div>
+    </div>
 
-    if (!storedData) return;
+    <!-- Modal Structure -->
+    <div id="documentModal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modalTitle">Document Preview</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="watermark-container">
+                <div class="watermark">
+                    <img src="static/logo.png" alt="KACCIMA Watermark">
+                </div>
+                <div class="modal-content" id="modalContent">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
 
-    const setField = (id, value) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = value || '';
-    };
+   <footer>
+    <div class="footer-content">
+        <p>&copy; 2025 KACCIMA. All rights reserved.</p>
+        <p>Contact us: info@kaccima.ng | +2347063174462</p>
+    </div>
+</footer>
 
-    setField('companyName', storedData.companyName);
-    setField('representative', storedData.representative);
-    setField('contactPerson', storedData.contactPerson);
-    setField('email', storedData.email);
-    setField('officeAddress', storedData.officeAddress);
+    <script>
+        // Document modal functionality
+        document.querySelectorAll('.action-btn .material-icons').forEach(btn => {
+            if (btn.textContent === 'visibility') {
+                btn.addEventListener('click', function() {
+                    const docName = this.closest('.document-item').querySelector('.document-name').textContent;
+                    document.getElementById('modalTitle').textContent = docName;
+                    document.getElementById('modalContent').innerHTML = `
+                        <p>This would display the ${docName} content in a real application.</p>
+                        <p>The actual document viewer implementation would depend on your backend system.</p>
+                    `;
+                    document.getElementById('documentModal').style.display = 'flex';
+                });
+            }
+        });
 
-    // Load passport photo if available
-    const passportImg = document.getElementById('passportPhoto');
-    if (storedData.passportPhotoBase64 && passportImg) {
-      passportImg.src = storedData.passportPhotoBase64;
-    }
-  });
-</script>
+        // Close modal
+        document.getElementById('modalClose').addEventListener('click', function() {
+            document.getElementById('documentModal').style.display = 'none';
+        });
 
-  
+        // Close modal when clicking outside
+        document.getElementById('documentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // File link path correction
+        window.addEventListener('DOMContentLoaded', () => {
+            const fileLinks = document.querySelectorAll('.fileLink');
+            fileLinks.forEach(link => {
+                if (link.href.includes('%5c')) {
+                    link.href = link.href.replace(/%5c/g, '/');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
