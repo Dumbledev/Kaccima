@@ -98,13 +98,18 @@
                             <span class="material-icons document-icon">description</span>
                             <div class="document-info">
                                 <div class="document-name">Covering Letter</div>
-                                <span class="document-status status-approved">Approved</span>
+                                <span class="document-status status-approved">{{.CoverLetterApproval}}</span>
                             </div>
                             <div class="document-actions">
                                 <button class="action-btn" title="View">
                                     <span class="material-icons">visibility</span>
                                 </button>
                                 <a href="/{{.CoverLetter}}" target="_blank" class="material-icons fileLink" download="Covering_Letter">download</a>
+                                {{if eq .CoverLetterApproval "Rejected"}}
+                                    <button class="action-btn" title="View">
+                                        <a href="/update_coverLetter" class="material-icons">Update</a>
+                                    </button>
+                                {{end}}                            
                             </div>
                         </div>
 
@@ -112,13 +117,18 @@
                             <span class="material-icons document-icon">description</span>
                             <div class="document-info">
                                 <div class="document-name">Memorandum & Articles</div>
-                                <span class="document-status status-approved">Approved</span>
+                                <span class="document-status status-approved">{{.MemorandumApproval}}</span>
                             </div>
                             <div class="document-actions">
                                 <button class="action-btn" title="View">
                                     <span class="material-icons">visibility</span>
                                 </button>
                                 <a href="/{{.Memorandum}}" target="_blank" class="material-icons fileLink" download="Memorandum">download</a>
+                                {{if eq .MemorandumApproval "Rejected"}}
+                                    <button class="action-btn" title="View">
+                                        <a href="/update_memorandum" class="material-icons">Update</a>
+                                    </button>
+                                {{end}}                            
                             </div>
                         </div>
 
@@ -126,13 +136,18 @@
                             <span class="material-icons document-icon">description</span>
                             <div class="document-info">
                                 <div class="document-name">Business Name Certificate</div>
-                                <span class="document-status status-approved">Approved</span>
+                                <span class="document-status status-approved">{{.BusinessCertificateApproval}}</span>
                             </div>
                             <div class="document-actions">
                                 <button class="action-btn" title="View">
                                     <span class="material-icons">visibility</span>
                                 </button>
                                 <a href="/{{.BusinessCertificate}}" target="_blank" class="material-icons fileLink" download="Business_Certificate">download</a>
+                                {{if eq .BusinessCertificateApproval "Rejected"}}
+                                    <button class="action-btn" title="View">
+                                        <a href="/update_businessCert" class="material-icons">Update</a>
+                                    </button>
+                                {{end}}
                             </div>
                         </div>
 
@@ -140,13 +155,18 @@
                             <span class="material-icons document-icon">description</span>
                             <div class="document-info">
                                 <div class="document-name">Incorporation Certificate</div>
-                                <span class="document-status status-pending">Pending Review</span>
+                                <span class="document-status status-pending">{{.IncorporationCertificateApproval}}</span>
                             </div>
                             <div class="document-actions">
                                 <button class="action-btn" title="View">
                                     <span class="material-icons">visibility</span>
                                 </button>
                                 <a href="/{{.IncorporationCertificate}}" target="_blank" class="material-icons fileLink" download="Incorporation_Certificate">download</a>
+                                {{if eq .IncorporationCertificateApproval "Rejected"}}
+                                    <button class="action-btn" title="View">
+                                        <a href="/update_incorporationCert" class="material-icons">Update</a>
+                                    </button>
+                                {{end}}                            
                             </div>
                         </div>
 
@@ -154,13 +174,18 @@
                             <span class="material-icons document-icon">description</span>
                             <div class="document-info">
                                 <div class="document-name">Business Premises Certificate</div>
-                                <span class="document-status status-pending">Pending Review</span>
+                                <span class="document-status status-pending">{{.BusinessPremiseCertificateApproval}}</span>
                             </div>
                             <div class="document-actions">
                                 <button class="action-btn" title="View">
                                     <span class="material-icons">visibility</span>
                                 </button>
                                 <a href="/{{.BusinessPremiseCertificate}}" target="_blank" class="material-icons fileLink" download="Business_Premise_Certificate">download</a>
+                                {{if eq .BusinessPremiseCertificateApproval "Rejected"}}
+                                    <button class="action-btn" title="View">
+                                        <a href="/update_businessPremiseCert" class="material-icons">Update</a>
+                                    </button>
+                                {{end}}                            
                             </div>
                         </div>
 
@@ -168,13 +193,18 @@
                             <span class="material-icons document-icon">description</span>
                             <div class="document-info">
                                 <div class="document-name">Form C07</div>
-                                <span class="document-status status-pending">Pending Review</span>
+                                <span class="document-status status-pending">{{.FormC07Approval}}</span>
                             </div>
                             <div class="document-actions">
                                 <button class="action-btn" title="View">
                                     <span class="material-icons">visibility</span>
                                 </button>
                                 <a href="/{{.FormC07}}" target="_blank" class="material-icons fileLink" download="Form_C07">download</a>
+                                {{if eq .FormC07Approval "Rejected"}}
+                                    <button class="action-btn" title="View">
+                                        <a href="/update_formc07" class="material-icons">Update</a>
+                                    </button>
+                                {{end}}                            
                             </div>
                         </div>
 
@@ -182,13 +212,18 @@
                             <span class="material-icons document-icon">badge</span>
                             <div class="document-info">
                                 <div class="document-name">ID Document</div>
-                                <span class="document-status status-approved">Approved</span>
+                                <span class="document-status status-approved">{{.IDDocumentApproval}}</span>
                             </div>
                             <div class="document-actions">
                                 <button class="action-btn" title="View">
                                     <span class="material-icons">visibility</span>
                                 </button>
                                 <a href="/{{.IDDocument}}" target="_blank" class="material-icons fileLink" download="ID_Document">download</a>
+                                {{if eq .IDDocumentApproval "Rejected"}}
+                                    <button class="action-btn" title="View">
+                                        <a href="/update_idDoc" class="material-icons">Update</a>
+                                    </button>
+                                {{end}}                            
                             </div>
                         </div>
                     </div>
