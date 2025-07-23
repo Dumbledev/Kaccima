@@ -259,7 +259,9 @@ textarea {
       <p>Use this form to report issues related to members, payments, or documents.</p>
     </div>
 
-    <form id="reportForm" class="form-container">
+    <form id="reportForm" class="form-container" method="post" action="/admin_report_member_handler">
+      <input type="text" hidden name="organizationId" value="{{.ID}}">
+      <input type="text" hidden name="organizationName" value="{{.Name}}">
       <div class="form-group">
         <label for="reportType">Report Type</label>
         <select id="reportType" name="reportType" required>
@@ -272,7 +274,7 @@ textarea {
 
       <div class="form-group">
         <label for="memberName">Member Name or Email</label>
-        <input type="text" id="memberName" name="memberName" placeholder="Enter member's name or email" required />
+        <input type="text" id="memberName" name="memberName" placeholder="Enter member's name or email" value="{{.Email}}" required />
       </div>
 
       <div class="form-group">

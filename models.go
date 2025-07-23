@@ -139,5 +139,14 @@ type Report struct {
 	Reason           string `json:"reason"`
 	OrganizationId   string `json:"organizationId"`
 	OrganizationName string `json:"organizationName"`
-	Date             string `json:"data"`
+	Date             string `json:"date"`
+	Doctype          string `json:"doctype"`
+	Rev              string `json:"_rev,omitempty"`
+}
+
+type ReportResponse struct {
+	Status   string
+	Body     []Report `json:"docs"`
+	Bookmark string   `json:"bookmark"`
+	Warning  string   `json:"warning"`
 }

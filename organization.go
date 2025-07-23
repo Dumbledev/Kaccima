@@ -46,19 +46,19 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "dashboard.html", p)
 }
 
-func organization(w http.ResponseWriter, r *http.Request) {
-	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
-	if err != nil {
-		tmpl.ExecuteTemplate(w, "500.html", "Error")
-		return
-	}
-	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
-		return
-	}
-	organization := orgResp.Body[0]
-	tmpl.ExecuteTemplate(w, "organization_org.html", organization)
-}
+// func organization(w http.ResponseWriter, r *http.Request) {
+// 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+// 	if err != nil {
+// 		tmpl.ExecuteTemplate(w, "500.html", "Error")
+// 		return
+// 	}
+// 	if len(orgResp.Body) == 0 {
+// 		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+// 		return
+// 	}
+// 	organization := orgResp.Body[0]
+// 	tmpl.ExecuteTemplate(w, "organization_org.html", organization)
+// }
 
 func notification(w http.ResponseWriter, r *http.Request) {
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
@@ -88,7 +88,7 @@ func reviewedDocuments(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "reviewedDocuments.html", organization)
 }
 
-func org(w http.ResponseWriter, r *http.Request) {
+func organization(w http.ResponseWriter, r *http.Request) {
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
@@ -101,7 +101,23 @@ func org(w http.ResponseWriter, r *http.Request) {
 	organization := orgResp.Body[0]
 	organization.CompanyLogo = strings.ReplaceAll(organization.CompanyLogo, "\\", "/")
 
-	tmpl.ExecuteTemplate(w, "org.html", organization)
+	tmpl.ExecuteTemplate(w, "organization.html", organization)
+}
+
+func profile(w http.ResponseWriter, r *http.Request) {
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	organization.CompanyLogo = strings.ReplaceAll(organization.CompanyLogo, "\\", "/")
+
+	tmpl.ExecuteTemplate(w, "profile.html", organization)
 }
 
 func organizationRegister(w http.ResponseWriter, r *http.Request) {

@@ -128,9 +128,9 @@ func adminReport(w http.ResponseWriter, r *http.Request) {
 
 func adminReportHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("organizationId")
-	reportType := r.FormValue("type")
-	reason := r.FormValue("type")
-	date := r.FormValue("date")
+	reportType := r.FormValue("reportType")
+	reason := r.FormValue("reportReason")
+	date := r.FormValue("reportDate")
 	if id == "" {
 		http.Error(w, "Missing member ID", http.StatusBadRequest)
 		return
@@ -151,6 +151,7 @@ func adminReportHandler(w http.ResponseWriter, r *http.Request) {
 		Date:             date,
 		OrganizationId:   id,
 		OrganizationName: org.Name,
+		Doctype:          "report",
 	}
 	// org.Status = "Reported"
 
