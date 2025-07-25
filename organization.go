@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -435,7 +436,7 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(10 * 1024 * 1024)
 	organizationId := r.FormValue("organizationId")
 	organizationName := r.FormValue("organizationName")
-	name := r.FormValue("name")
+	// name := r.FormValue("name")
 
 	paymentResp, err := findOrganizationPayment(dbFindUrl, organizationId)
 	if err != nil {
@@ -452,28 +453,34 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// payment := paymentResp.Body[0]
 
-	reciept, _, err := r.FormFile("receiptFile")
+	reciept, file, err := r.FormFile("receiptFile")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "payment.html", "Error Uploading Payment Proof")
 		return
 	}
 	defer reciept.Close()
-	temp, err2 := os.CreateTemp("static/Payments", organizationName+" payment-*.pdf")
+	fileExtension := filepath.Ext(file.Filename)
+	var temp *os.File
+	var err2 error
+	if fileExtension == ".pdf" {
+		temp, err2 = os.CreateTemp("static/Payments", organizationName+" payment-*.pdf")
+	} else if fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".jpeg" {
+		temp, err2 = os.CreateTemp("static/Payments", organizationName+" payment-*.jpg")
+	}
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "payment.html", "Error Uploading Payment Proof")
 		return
 	}
-	defer temp.Close()
 	fileBytes, err3 := io.ReadAll(reciept)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "payment.html", "Error Uploading Payment Proof")
 		return
 	}
 	temp.Write(fileBytes)
 	bankTranfer := BankTransfer{
 		ID:               uuid.NewString(),
 		UserId:           currentUser.ID,
-		OrganizationName: name,
+		OrganizationName: organizationName,
 		OrganizationId:   organizationId,
 		PaymentMethod:    "Bank Transfer",
 		Status:           "Pending",
