@@ -62,7 +62,7 @@ func main() {
 	http.Handle("/admin_report_member_handler", isAuthenticated(adminReportHandler))
 	http.Handle("/admin_settings", isAuthenticated(adminSettings))
 
-	http.Handle("/super_admin", isAuthenticated(superAdmin))
+	http.Handle("/approval_admin", isAuthenticated(approvalAdmin))
 
 	http.Handle("/accept_receipt/{paymentId}", isAuthenticated(acceptReceipt))
 	http.Handle("/reject_receipt/{paymentId}", isAuthenticated(rejectReceipt))

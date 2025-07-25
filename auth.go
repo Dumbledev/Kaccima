@@ -236,7 +236,7 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/dashboard", http.StatusPermanentRedirect)
 		return
 	} else if user.Role == "superAdmin" {
-		http.Redirect(w, r, "/super_admin", http.StatusSeeOther)
+		http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
 		return
 	}
 }

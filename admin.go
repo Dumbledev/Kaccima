@@ -297,7 +297,7 @@ func acceptOrganization(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 	fmt.Println(string(body))
-	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approvval_admin", http.StatusPermanentRedirect)
 }
 
 func rejectOrganization(w http.ResponseWriter, r *http.Request) {
@@ -333,7 +333,7 @@ func rejectOrganization(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 	fmt.Println(string(body))
-	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusPermanentRedirect)
 }
 
 func approveMemorandum(w http.ResponseWriter, r *http.Request) {
@@ -912,7 +912,7 @@ func rejectIDDocument(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
 }
 
-func superAdmin(w http.ResponseWriter, r *http.Request) {
+func approvalAdmin(w http.ResponseWriter, r *http.Request) {
 	type PageResult struct {
 		UserCount          int
 		PendingOrgCount    int
@@ -954,5 +954,5 @@ func superAdmin(w http.ResponseWriter, r *http.Request) {
 		PendingOrg:         pendingOrg,
 		PendingBankPayment: pendingBankTransfer,
 	}
-	tmpl.ExecuteTemplate(w, "superAdmin.html", p)
+	tmpl.ExecuteTemplate(w, "approval_admin.html", p)
 }
