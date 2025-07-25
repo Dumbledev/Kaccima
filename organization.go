@@ -62,7 +62,7 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 // }
 
 func notification(w http.ResponseWriter, r *http.Request) {
-	reports := []Report{}
+	var reports []Report
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
