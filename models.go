@@ -9,19 +9,28 @@ type User struct {
 	Doctype  string `json:"doctype"`
 }
 
-// type UserProfile struct {
-// 	ID        string
-// 	FirstName string
-// 	LastName  string
-// 	Image     string
-// }
+type UserResponse struct {
+	Status   string `json:"status"`
+	Body     []User `json:"docs"`
+	Bookmark string `json:"bookmark"`
+	Warning  string `json:"warning"`
+}
 
-// type UserProfileResponse struct {
-// 	Status   string
-// 	Body     []UserProfile `json:"docs"`
-// 	Bookmark string        `json:"bookmark"`
-// 	Warning  string        `json:"warning"`
-// }
+type PasswordResetQuestion struct {
+	ID       string `json:"_id"`
+	Question string `json:"question"`
+	Answer   string `json:"answer"`
+	UserId   string `json:"userId"`
+	Rev      string `json:"_rev,omitempty"`
+	Doctype  string `json:"doctype"`
+}
+
+type PasswordResetQuestionResponse struct {
+	Status   string                  `json:"status"`
+	Body     []PasswordResetQuestion `json:"docs"`
+	Bookmark string                  `json:"bookmark"`
+	Warning  string                  `json:"warning"`
+}
 
 type AdminProfile struct {
 }
@@ -81,9 +90,9 @@ type Referee1 struct {
 	ChamberRegNumber string `json:"chamberRegNumber"`
 }
 
-type RefereeResponse struct {
+type Referee1Response struct {
 	Status   string     `json:"status"`
-	Body     []Referee1 `json:"body"`
+	Body     []Referee1 `json:"docs"`
 	Bookmark string     `json:"bookmark"`
 	Warning  string     `json:"warning"`
 }
@@ -98,7 +107,7 @@ type Referee2 struct {
 
 type Referee2Response struct {
 	Status   string     `json:"status"`
-	Body     []Referee2 `json:"body"`
+	Body     []Referee2 `json:"docs"`
 	Bookmark string     `json:"bookmark"`
 	Warning  string     `json:"warning"`
 }

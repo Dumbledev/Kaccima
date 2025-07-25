@@ -9,15 +9,8 @@ import (
 	"net/http"
 )
 
-type UserResponse struct {
-	Status   string
-	Body     []User `json:"docs"`
-	Bookmark string `json:"bookmark"`
-	Warning  string `json:"warning"`
-}
-
-func findUser(url, email string) (UserResponse, error) {
-	var userResponse UserResponse
+func findUserByEmail(url, email string) (UserResponse, error) {
+	var response UserResponse
 	jsonData := map[string]map[string]any{"selector": {"email": email, "doctype": "user"}}
 	data, error := json.Marshal(jsonData)
 	if error != nil {
@@ -35,15 +28,16 @@ func findUser(url, email string) (UserResponse, error) {
 	}
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
-	error = json.Unmarshal(body, &userResponse)
+	// fmt.Println(string(body))
+	error = json.Unmarshal(body, &response)
 	if error != nil {
 		log.Fatalln("UnMarshal Err: ", error)
 	}
-	return userResponse, error
+	return response, error
 }
 
 func findUsers(url string) (UserResponse, error) {
-	var userResponse UserResponse
+	var response UserResponse
 	jsonData := map[string]map[string]any{"selector": {"doctype": "user", "role": "user"}}
 	data, error := json.Marshal(jsonData)
 	if error != nil {
@@ -61,15 +55,15 @@ func findUsers(url string) (UserResponse, error) {
 	}
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
-	error = json.Unmarshal(body, &userResponse)
+	error = json.Unmarshal(body, &response)
 	if error != nil {
 		log.Fatalln("UnMarshal Err: ", error)
 	}
-	return userResponse, error
+	return response, error
 }
 
 func findUserById(url string, userId string) (UserResponse, error) {
-	var userResponse UserResponse
+	var response UserResponse
 	jsonData := map[string]map[string]any{"selector": {"_id": userId, "doctype": "user"}}
 	data, error := json.Marshal(jsonData)
 	if error != nil {
@@ -87,11 +81,37 @@ func findUserById(url string, userId string) (UserResponse, error) {
 	}
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
-	error = json.Unmarshal(body, &userResponse)
+	error = json.Unmarshal(body, &response)
 	if error != nil {
 		log.Fatalln("UnMarshal Err: ", error)
 	}
-	return userResponse, error
+	return response, error
+}
+
+func findSecurityQAByUser(url string, userId string) (PasswordResetQuestionResponse, error) {
+	var response PasswordResetQuestionResponse
+	jsonData := map[string]map[string]any{"selector": {"userId": userId, "doctype": "securityQa"}}
+	data, error := json.Marshal(jsonData)
+	if error != nil {
+		log.Fatalln("Marshal", error)
+	}
+	request, error := http.NewRequest("POST", url, bytes.NewBuffer(data))
+	if error != nil {
+		fmt.Println("Byte Error", error)
+	}
+	request.Header.Set("Content-type", "application/json")
+	client := &http.Client{}
+	res, error := client.Do(request)
+	if error != nil {
+		fmt.Println("Req Err", error)
+	}
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+	error = json.Unmarshal(body, &response)
+	if error != nil {
+		log.Fatalln("UnMarshal Err: ", error)
+	}
+	return response, error
 }
 
 // func findUserProfile(url string, userId string) (UserProfileResponse, error) {

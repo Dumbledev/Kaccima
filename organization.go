@@ -116,6 +116,10 @@ func organization(w http.ResponseWriter, r *http.Request) {
 }
 
 func profile(w http.ResponseWriter, r *http.Request) {
+	type PageResult struct {
+		Organization Organization
+		User         User
+	}
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
@@ -128,7 +132,21 @@ func profile(w http.ResponseWriter, r *http.Request) {
 	organization := orgResp.Body[0]
 	organization.CompanyLogo = strings.ReplaceAll(organization.CompanyLogo, "\\", "/")
 
-	tmpl.ExecuteTemplate(w, "profile.html", organization)
+	userResp, err := findUserById(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(userResp.Body) == 0 {
+		http.Redirect(w, r, "/sign_up", http.StatusPermanentRedirect)
+		return
+	}
+	user := userResp.Body[0]
+	p := PageResult{
+		Organization: organization,
+		User:         user,
+	}
+	tmpl.ExecuteTemplate(w, "profile.html", p)
 }
 
 func organizationRegister(w http.ResponseWriter, r *http.Request) {
@@ -180,133 +198,133 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	coverLetter, _, err := r.FormFile("coverLetter")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Cover Letter")
 		return
 	}
 	defer coverLetter.Close()
 	coverLetterTemp, err2 := os.CreateTemp("static/Cover_Letters", name+" Cover Letter-*.pdf")
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Cover Letter")
 		return
 	}
 	defer coverLetterTemp.Close()
 	coverLetterBytes, err3 := io.ReadAll(coverLetter)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Cover Letter")
 		return
 	}
 	coverLetterTemp.Write(coverLetterBytes)
 
 	memorandum, _, err := r.FormFile("memorandum")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Memorandum")
 		return
 	}
 	defer memorandum.Close()
 	memorandumTemp, err2 := os.CreateTemp("static/Memorandums", name+" Memorandum-*.pdf")
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Memorandum")
 		return
 	}
 	defer memorandumTemp.Close()
 	memorandumBytes, err3 := io.ReadAll(memorandum)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Memorandum")
 		return
 	}
 	memorandumTemp.Write(memorandumBytes)
 
 	businessCertificate, _, err := r.FormFile("registrationCert")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Business Certificate")
 		return
 	}
 	defer businessCertificate.Close()
 	businessCertificateTemp, err2 := os.CreateTemp("static/Business_Name_Certs", name+" Business Name Cert-*.pdf")
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Business Certificate")
 		return
 	}
 	defer businessCertificateTemp.Close()
 	businessCertificateBytes, err3 := io.ReadAll(businessCertificate)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Business Certificate")
 		return
 	}
 	businessCertificateTemp.Write(businessCertificateBytes)
 
 	incorporationCertificate, _, err := r.FormFile("incorporationCert")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Incorporation Certificate")
 		return
 	}
 	defer incorporationCertificate.Close()
 	incorporationCertTemp, err2 := os.CreateTemp("static/Incorporation_Certs", name+" Incorporation Cert-*.pdf")
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Incorporation Certificate")
 		return
 	}
 	defer incorporationCertTemp.Close()
 	incorporationCertBytes, err3 := io.ReadAll(incorporationCertificate)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Incorporation Certificate")
 		return
 	}
 	incorporationCertTemp.Write(incorporationCertBytes)
 
 	companyLogo, _, err := r.FormFile("companyLogo")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Company Logo")
 		return
 	}
 	defer companyLogo.Close()
 	companyLogoTemp, err2 := os.CreateTemp("static/Company_Logos", name+" Company Logo-*.png")
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Company Logo")
 		return
 	}
 	defer companyLogoTemp.Close()
 	companyLogoBytes, err3 := io.ReadAll(companyLogo)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Company Logo")
 		return
 	}
 	companyLogoTemp.Write(companyLogoBytes)
 
 	businessPremiseCertificate, _, err := r.FormFile("premisesCert")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Business Premise Certificate")
 		return
 	}
 	defer businessPremiseCertificate.Close()
 	businessPremiseCertificateTemp, err2 := os.CreateTemp("static/Premise_Certs", name+" Premise Cert-*.pdf")
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Business Premise Certificate")
 		return
 	}
 	defer businessPremiseCertificateTemp.Close()
 	businessPremiseCertificateBytes, err3 := io.ReadAll(businessPremiseCertificate)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Business Premise Certificate")
 		return
 	}
 	businessPremiseCertificateTemp.Write(businessPremiseCertificateBytes)
 
 	formC07, _, err := r.FormFile("formC07")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Formc07")
 		return
 	}
 	defer formC07.Close()
 	formC07Temp, err2 := os.CreateTemp("static/FormC07s", name+" FormC07-*.pdf")
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Formc07")
 		return
 	}
 	defer formC07Temp.Close()
 	formC07Bytes, err3 := io.ReadAll(formC07)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading Formc07")
 		return
 	}
 	formC07Temp.Write(formC07Bytes)
@@ -314,19 +332,19 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	// idDocument := r.FormValue("idType")
 	idDocument, _, err := r.FormFile("idDocument")
 	if err != nil {
-		log.Fatal(err)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading ID Document")
 		return
 	}
 	defer idDocument.Close()
 	idDocumentTemp, err2 := os.CreateTemp("static/ID_Documents", name+" ID_Document-*.pdf")
 	if err2 != nil {
-		log.Fatal(err2)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading ID Document")
 		return
 	}
 	defer idDocumentTemp.Close()
 	idDocumentBytes, err3 := io.ReadAll(idDocument)
 	if err3 != nil {
-		log.Fatal(err3)
+		tmpl.ExecuteTemplate(w, "organization_register.html", "Error Uploading ID Document")
 		return
 	}
 	idDocumentTemp.Write(idDocumentBytes)
