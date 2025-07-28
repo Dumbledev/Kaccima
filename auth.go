@@ -30,7 +30,7 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(userResponse.Body) != 0 {
-		tmpl.ExecuteTemplate(w, "sign_in.html", "Organization Already Registered, Please Choose Another one.")
+		tmpl.ExecuteTemplate(w, "sign_up.html", "User Already Registered, Please Register With Other Credentials.")
 		return
 	}
 	hashedPassword, hashedErr := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -52,7 +52,6 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	// fmt.Println(string(jUser))
 	request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(1)")
@@ -65,7 +64,6 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(2)")
 	}
 	defer res.Body.Close()
-
 	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
 }
 
