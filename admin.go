@@ -297,7 +297,7 @@ func acceptOrganization(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 	fmt.Println(string(body))
-	http.Redirect(w, r, "/approvval_admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusPermanentRedirect)
 }
 
 func rejectOrganization(w http.ResponseWriter, r *http.Request) {
