@@ -84,6 +84,7 @@ func adminOrganizationDocuments(w http.ResponseWriter, r *http.Request) {
 
 func adminMembers(w http.ResponseWriter, r *http.Request) {
 	organizations := []Organization{}
+	accceptedOrganizations := []Organization{}
 	orgResp, err := findAllOrganizations(dbFindUrl)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
@@ -92,7 +93,14 @@ func adminMembers(w http.ResponseWriter, r *http.Request) {
 	if len(orgResp.Body) != 0 {
 		organizations = orgResp.Body
 	}
-	tmpl.ExecuteTemplate(w, "admin_members.html", organizations)
+	for _, v := range organizations {
+		if v.Status == "Pending" {
+			continue
+		} else {
+			accceptedOrganizations = append(accceptedOrganizations, v)
+		}
+	}
+	tmpl.ExecuteTemplate(w, "admin_members.html", accceptedOrganizations)
 }
 
 func adminPayment(w http.ResponseWriter, r *http.Request) {
@@ -289,7 +297,7 @@ func acceptOrganization(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 	fmt.Println(string(body))
-	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approvval_admin", http.StatusPermanentRedirect)
 }
 
 func rejectOrganization(w http.ResponseWriter, r *http.Request) {
@@ -325,7 +333,7 @@ func rejectOrganization(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 	fmt.Println(string(body))
-	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusPermanentRedirect)
 }
 
 func approveMemorandum(w http.ResponseWriter, r *http.Request) {
@@ -902,4 +910,49 @@ func rejectIDDocument(w http.ResponseWriter, r *http.Request) {
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
 	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+}
+
+func approvalAdmin(w http.ResponseWriter, r *http.Request) {
+	type PageResult struct {
+		UserCount          int
+		PendingOrgCount    int
+		PendingOrg         []Organization
+		PendingBankPayment []BankTransfer
+	}
+	pendingBankTransfer := []BankTransfer{}
+	pendingOrg := []Organization{}
+	users := []User{}
+	userResponse, err := findUsers(dbFindUrl)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(userResponse.Body) != 0 {
+		users = userResponse.Body
+	}
+	orgPendingStatusResponse, err := findOrganizationApprovalStatus(dbFindUrl, "Pending")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(orgPendingStatusResponse.Body) != 0 {
+		pendingOrg = orgPendingStatusResponse.Body
+	}
+
+	bankTransferPendingStatusResponse, err := findBankPaymentApprovalStatus(dbFindUrl, "Pending")
+	if err != nil {
+		fmt.Println(err, "Err")
+		return
+	}
+	if len(bankTransferPendingStatusResponse.Body) != 0 {
+		pendingBankTransfer = bankTransferPendingStatusResponse.Body
+	}
+
+	p := PageResult{
+		UserCount:          len(users),
+		PendingOrgCount:    len(pendingOrg),
+		PendingOrg:         pendingOrg,
+		PendingBankPayment: pendingBankTransfer,
+	}
+	tmpl.ExecuteTemplate(w, "approval_admin.html", p)
 }

@@ -24,7 +24,7 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	email := strings.ToLower(r.FormValue("email"))
 	password := r.FormValue("password")
 
-	userResponse, err := findUser(dbFindUrl, email)
+	userResponse, err := findUserByEmail(dbFindUrl, email)
 	if err != nil {
 		fmt.Println("err", err)
 		return
@@ -79,7 +79,7 @@ func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 	email := strings.ToLower(r.FormValue("email"))
 	password := r.FormValue("password")
 
-	userResponse, err := findUser(dbFindUrl, email)
+	userResponse, err := findUserByEmail(dbFindUrl, email)
 	if err != nil {
 		fmt.Println("err", err)
 		return
@@ -126,7 +126,7 @@ func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func superAdminSignUp(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "super_admin_sign_up.html", nil)
+	tmpl.ExecuteTemplate(w, "super_admin_signup.html", nil)
 }
 
 func superAdminSignUpHandler(w http.ResponseWriter, r *http.Request) {
@@ -135,18 +135,18 @@ func superAdminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 	email := strings.ToLower(r.FormValue("email"))
 	password := r.FormValue("password")
 
-	userResponse, err := findUser(dbFindUrl, email)
+	userResponse, err := findUserByEmail(dbFindUrl, email)
 	if err != nil {
 		fmt.Println("err", err)
 		return
 	}
 	if len(userResponse.Body) != 0 {
-		tmpl.ExecuteTemplate(w, "super_admin_sign_up.html", "Email Already Registered, Please Choose Another one.")
+		tmpl.ExecuteTemplate(w, "super_admin_signup.html", "Email Already Registered, Please Choose Another one.")
 		return
 	}
 	hashedPassword, hashedErr := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if hashedErr != nil {
-		tmpl.ExecuteTemplate(w, "super_admin_sign_up.html", "Error")
+		tmpl.ExecuteTemplate(w, "super_admin_signup.html", "Error")
 		return
 	}
 
@@ -166,14 +166,14 @@ func superAdminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println(string(jUser))
 	request, err := http.NewRequest("POST", dbUrl, bytes.NewBuffer(jsonData))
 	if err != nil {
-		tmpl.ExecuteTemplate(w, "super_admin_sign_up.html", "Server Error(1)")
+		tmpl.ExecuteTemplate(w, "super_admin_signup.html", "Server Error(1)")
 		return
 	}
 	request.Header.Set("Content-type", "application/json")
 	client := &http.Client{}
 	res, error := client.Do(request)
 	if error != nil {
-		tmpl.ExecuteTemplate(w, "super_admin_sign_up.html", "Server Error(2)")
+		tmpl.ExecuteTemplate(w, "super_admin_signup.html", "Server Error(2)")
 		return
 	}
 	defer res.Body.Close()
@@ -191,13 +191,12 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 	email := strings.ToLower(r.FormValue("email"))
 	password := r.FormValue("password")
 
-	userResponse, err := findUser(dbFindUrl, email)
+	userResponse, err := findUserByEmail(dbFindUrl, email)
 	if err != nil {
 		fmt.Println("err", err)
 		return
 	}
 	if len(userResponse.Body) == 0 {
-		// fmt.Println("Invalid Username or Password")
 		http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
 		return
 	}
@@ -237,13 +236,9 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/dashboard", http.StatusPermanentRedirect)
 		return
 	} else if user.Role == "superAdmin" {
-		http.Redirect(w, r, "/super_admin", http.StatusSeeOther)
+		http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
 		return
 	}
-	// else if user.Role == "superAdmin" {
-	// 	http.Redirect(w, r, "/suoer_admin", http.StatusPermanentRedirect)
-	// 	return
-	// }
 }
 
 func signOut(w http.ResponseWriter, r *http.Request) {
@@ -259,6 +254,104 @@ func forgotPassword(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "forgot-password.html", nil)
 }
 
+func forgotPasswordHandler(w http.ResponseWriter, r *http.Request) {
+	email := strings.ToLower(r.FormValue("email"))
+	userResp, err := findUserByEmail(dbFindUrl, email)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(userResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "forgot-password.html", "Invalid or Wrong Email")
+		return
+	}
+	user := userResp.Body[0]
+	http.Redirect(w, r, "/password_reset_qa/"+user.Email, http.StatusSeeOther)
+}
+
+func passwordResetQa(w http.ResponseWriter, r *http.Request) {
+	email := strings.ToLower(r.PathValue("email"))
+	tmpl.ExecuteTemplate(w, "password_reset_qa.html", email)
+}
+
+func passwordResetQaHandler(w http.ResponseWriter, r *http.Request) {
+	var securityQa PasswordResetQuestion
+	r.ParseForm()
+	question := r.FormValue("security_question")
+	answer := strings.ToLower(r.FormValue("security_answer"))
+	email := strings.ToLower(r.FormValue("email"))
+	fmt.Println(email, question, answer)
+	userResp, err := findUserByEmail(dbFindUrl, email)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(userResp.Body) == 0 {
+		tmpl.ExecuteTemplate(w, "forgot-password.html", "Invalid or Wrong Email")
+		return
+	}
+	user := userResp.Body[0]
+	secQaResp, err := findSecurityQAByUser(dbFindUrl, user.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(secQaResp.Body) == 0 {
+		securityQa = PasswordResetQuestion{}
+	} else {
+		securityQa = secQaResp.Body[0]
+	}
+	if question == securityQa.Question && answer == securityQa.Answer {
+		http.Redirect(w, r, "/reset_password/"+email, http.StatusSeeOther)
+	} else {
+		tmpl.ExecuteTemplate(w, "forgot-password.html", "Try Again")
+	}
+}
+
+func resetPassword(w http.ResponseWriter, r *http.Request) {
+	email := r.PathValue("email")
+	tmpl.ExecuteTemplate(w, "reset_password.html", email)
+}
+
+func resetPasswordHandler(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	newPassword := r.FormValue("newPassword")
+	userResp, err := findUserByEmail(dbFindUrl, email)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	user := userResp.Body[0]
+
+	hashedPassword, hashedErr := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if hashedErr != nil {
+		tmpl.ExecuteTemplate(w, "reset_password.html", "Error Adding New Password")
+		return
+	}
+	user.Password = string(hashedPassword)
+	jsonData, err := json.Marshal(user)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+user.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	// fmt.Println(string(body))
+	http.Redirect(w, r, "/sign_in", http.StatusSeeOther)
+}
+
 func isAuthenticated(endpoint func(http.ResponseWriter, *http.Request)) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "kaccima_session")
@@ -268,7 +361,7 @@ func isAuthenticated(endpoint func(http.ResponseWriter, *http.Request)) http.Han
 			return
 		}
 
-		userResp, err := findUser(dbFindUrl, fmt.Sprint(email))
+		userResp, err := findUserByEmail(dbFindUrl, fmt.Sprint(email))
 		if err != nil {
 			fmt.Println(err)
 			return

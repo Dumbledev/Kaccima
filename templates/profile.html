@@ -43,37 +43,48 @@
                 
                 <!-- User Photo -->
                 <div class="photo-container">
-                  <img id="passportPhoto" src="/{{.CompanyLogo}}" alt="logo" class="profile-photo" width="70px" height="70px">
+                  <img id="passportPhoto" src="/{{.Organization.CompanyLogo}}" alt="logo" class="profile-photo" width="70px" height="70px">
 
 
                 </div>
 
                <div class="info-item">
-    <span class="label">Company Name:</span>
-    <span class="value" id="companyName">{{.Name}}</span>
-</div>
-
-<div class="info-item">
-    <span class="label">Email:</span>
-    <span class="value" id="email">{{.Email}}</span>
-</div>
-<div class="info-item">
-    <span class="label">Office Address:</span>
-    <span class="value" id="officeAddress">{{.Address}}</span>
-</div>
-<div class="info-item">
-    <span class="label">Phone Number:</span>
-    <span class="value" id="phoneNumber">{{.PhoneNumber}}</span>
-</div>
-
+                    <span class="label">Company Name:</span>
+                    <span class="value" id="companyName">{{.Organization.Name}}</span>
+                </div>
 
                 <div class="info-item">
-                    <span class="label">Membership Status:</span>
-                    <span class="value active">{{.Status}}</span>
+                    <span class="label">Email:</span>
+                    <span class="value" id="email">{{.Organization.Email}}</span>
                 </div>
-                
+                <div class="info-item">
+                    <span class="label">Office Address:</span>
+                    <span class="value" id="officeAddress">{{.Organization.Address}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Phone Number:</span>
+                    <span class="value" id="phoneNumber">{{.Organization.PhoneNumber}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Membership Status:</span>
+                    <span class="value active">{{.Organization.Status}}</span>
+                </div>  
 
-                <button class="btn outline" id="editProfile">Edit Profile</button>
+                <a href="/update_organization" class="btn outline" id="editProfile">Edit Organization Profile</a>
+
+                <div class="profile-info">
+                    <h3>User Profile And Security</h3>   
+                    <div class="info-item">
+                        <span class="label">User Email:</span>
+                        <span class="value" id="companyName">{{.User.Email}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Password Security Pin:</span>
+                        <span class="value" id="officeAddress">What is *****</span>
+                    </div>   
+                    <a href="/profile_update" class="btn outline" id="editProfile">Edit User Profile</a>              
+                </div>            
+
             </div>
         </section>
     </main>
