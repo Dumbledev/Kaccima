@@ -19,7 +19,6 @@ func signUp(w http.ResponseWriter, r *http.Request) {
 }
 
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "applicaton/json")
 	r.ParseMultipartForm(10 * 1024 * 1024)
 	email := strings.ToLower(r.FormValue("email"))
 	password := r.FormValue("password")
@@ -72,7 +71,6 @@ func adminSignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "applicaton/json")
 	r.ParseMultipartForm(10 * 1024 * 1024)
 	email := strings.ToLower(r.FormValue("email"))
 	password := r.FormValue("password")
@@ -128,7 +126,6 @@ func superAdminSignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 func superAdminSignUpHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "applicaton/json")
 	r.ParseMultipartForm(10 * 1024 * 1024)
 	email := strings.ToLower(r.FormValue("email"))
 	password := r.FormValue("password")
