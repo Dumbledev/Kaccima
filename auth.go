@@ -81,7 +81,7 @@ func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(userResponse.Body) != 0 {
-		tmpl.ExecuteTemplate(w, "admin_sign_in.html", "Email Already Registered, Please Choose Another one.")
+		tmpl.ExecuteTemplate(w, "admin_sign_up.html", "Email Already Registered, Please Choose Another one.")
 		return
 	}
 	hashedPassword, hashedErr := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
