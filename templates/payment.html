@@ -396,8 +396,8 @@
             </div>
             
             <div class="summary-item">
-                <span class="summary-label">Registration Number:</span>
-                <span class="summary-value" id="registrationNumber">{{.ID}}</span>
+                <span class="summary-label">CAC Number:</span>
+                <span class="summary-value" id="registrationNumber">{{.CACNumber}}</span>
             </div>
             
             <div class="summary-item">
@@ -429,45 +429,11 @@
             
             <div class="payment-methods">
                 <div class="method-tabs">
-                    <div class="method-tab active" data-tab="card">Credit/Debit Card</div>
+            
                     <div class="method-tab" data-tab="bank">Bank Transfer</div>
                 </div>
                 
-                <!-- Card Payment Form -->
-                <form id="cardPaymentForm" class="card-form">
-                    <div class="form-group">
-                        <label for="cardNumber" class="form-label">Card Number</label>
-                        <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" required>
-                        <div style="margin-top: 5px;">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg" class="card-icon" alt="Visa">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mastercard/mastercard-original.svg" class="card-icon" alt="Mastercard">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" class="card-icon" alt="Apple Pay">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="cardName" class="form-label">Name on Card</label>
-                        <input type="text" id="cardName" class="form-control" placeholder="John Doe" required>
-                    </div>
-                    
-                    <div class="card-row">
-                        <div class="form-group">
-                            <label for="expiryDate" class="form-label">Expiry Date</label>
-                            <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" id="cvv" class="form-control" placeholder="123" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" style="margin-top: 2rem;">
-                        <button type="submit" class="btn btn-primary">
-                            Pay ₦25,000.00
-                        </button>
-                    </div>
-                </form>
-                
+    
                 <!-- Bank Transfer Form -->
                 <div id="bankTransferForm" class="bank-transfer-form">
                     <div class="bank-details">
