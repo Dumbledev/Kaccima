@@ -191,7 +191,7 @@
 
           <div class="search-box">
             <span class="material-icons">search</span>
-            <input type="text" id="searchMembers" placeholder="Search members..." />
+            <input type="text" id="searchMembers" placeholder="Search members..." onkeyup="searchTable()" />
           </div>
         </div>
       </div>
@@ -206,6 +206,8 @@
             <th>CAC Number</th>
             <th>Office Address</th>
             <th>Nature of Business</th>
+            <th>Referee Name</th>
+            <th>Referee Number</th>
             <th>Status</th>
             <th>Join Date</th>
             <th>Actions</th>
@@ -221,6 +223,8 @@
             <td>{{.CACNumber}}</td>
             <td>{{.Address}}</td>
             <td>{{.NatureOfBusiness}}</td>
+            <td>{{.RefereeName}}</td>
+            <td>{{.RefereeNumber}}</td>
             <td>{{.Status}}</td>
             <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
             <td class="actions">
@@ -231,7 +235,6 @@
                 <i class="fas fa-times-circle"></i>
               </a>
             </td>
-
           </tr>
           {{end}}
         </tbody>
@@ -245,6 +248,35 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
 <script>
+  // Search functionality
+  function searchTable() {
+    const input = document.getElementById("searchMembers");
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById("membersTable");
+    const tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows (except header)
+    for (let i = 1; i < tr.length; i++) {
+      let found = false;
+      const td = tr[i].getElementsByTagName("td");
+      
+      // Loop through all table columns (except actions)
+      for (let j = 0; j < td.length - 1; j++) {
+        const cell = td[j];
+        if (cell) {
+          const txtValue = cell.textContent || cell.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            found = true;
+            break; // No need to check other columns if found in one
+          }
+        }
+      }
+      
+      // Show/hide row based on search match
+      tr[i].style.display = found ? "" : "none";
+    }
+  }
+
   async function exportToPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('landscape');
@@ -252,17 +284,34 @@
 
     let data = [];
 
-    for (let row of table.rows) {
-      let rowData = [];
-      for (let i = 0; i < row.cells.length - 1; i++) { // Exclude last column (Actions)
-        rowData.push(row.cells[i].innerText);
+    // Get all rows (including hidden ones from search)
+    const allRows = table.querySelectorAll('tr');
+    
+    // Add header row
+    const headerRow = [];
+    const headerCells = allRows[0].querySelectorAll('th');
+    for (let i = 0; i < headerCells.length - 1; i++) { // Exclude Actions column
+      headerRow.push(headerCells[i].innerText);
+    }
+    data.push(headerRow);
+
+    // Add data rows
+    for (let i = 1; i < allRows.length; i++) {
+      if (allRows[i].style.display !== 'none') { // Only include visible rows
+        let rowData = [];
+        const cells = allRows[i].querySelectorAll('td');
+        for (let j = 0; j < cells.length - 1; j++) { // Exclude Actions column
+          rowData.push(cells[j].innerText);
+        }
+        data.push(rowData);
       }
-      data.push(rowData);
     }
 
-    // Define custom column widths (index 2 is Contact Person)
+    // Define custom column widths
     const columnStyles = {
-      2: { cellWidth: 60 } // Increase width of 3rd column
+      2: { cellWidth: 60 }, // Contact Person
+      7: { cellWidth: 25 }, // Referee Name
+      8: { cellWidth: 25 }  // Referee Number
     };
 
     doc.autoTable({
@@ -273,7 +322,8 @@
 
     doc.save("kaccima_members.pdf");
   }
-   function exportToExcel() {
+  
+  function exportToExcel() {
     const table = document.getElementById("membersTable");
     const wb = XLSX.utils.table_to_book(table, {
       sheet: "Members",
@@ -290,23 +340,24 @@
     range.e.c -= 1; // Reduce column count
     ws["!ref"] = XLSX.utils.encode_range(range);
 
-    // Set wider column width for Contact Person (3rd column = index 2)
+    // Set column widths
     ws["!cols"] = [
       { wch: 20 }, // Company Name
       { wch: 15 }, // Phone
-      { wch: 25 }, // Contact Person (wider)
+      { wch: 25 }, // Contact Person
       { wch: 25 }, // Email
-      { wch: 20 },
-      { wch: 25 },
-      { wch: 25 },
-      { wch: 15 },
-      { wch: 15 }
+      { wch: 20 }, // CAC Number
+      { wch: 25 }, // Address
+      { wch: 25 }, // Nature of Business
+      { wch: 20 }, // Referee Name
+      { wch: 20 }, // Referee Number
+      { wch: 15 }, // Status
+      { wch: 15 }  // Join Date
     ];
 
     XLSX.writeFile(wb, "kaccima_members.xlsx");
   }
 </script>
-
 
 </body>
 </html>

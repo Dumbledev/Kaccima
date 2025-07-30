@@ -175,11 +175,7 @@
             color: var(--dark-color);
         }
 
-        /* Card Payment Form */
-        .card-form {
-            display: block; /* Default shown */
-        }
-
+        /* Form Styles */
         .form-group {
             margin-bottom: 1.2rem;
         }
@@ -207,24 +203,9 @@
             box-shadow: 0 0 0 2px rgba(21, 228, 32, 0.2);
         }
 
-        .card-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .card-row .form-group {
-            flex: 1;
-        }
-
-        .card-icon {
-            height: 24px;
-            margin-left: 10px;
-            vertical-align: middle;
-        }
-
-        /* Bank Transfer Form (hidden by default) */
+        /* Bank Transfer Form */
         .bank-transfer-form {
-            display: none;
+            display: block;
         }
 
         .bank-details {
@@ -406,7 +387,7 @@
             </div>
             
             <div class="summary-item">
-                <span class="summary-label">Subsription Fee:</span>
+                <span class="summary-label">Subscription Fee:</span>
                 <span class="summary-value">₦15,000.00</span>
             </div>
             
@@ -428,12 +409,6 @@
             <h2 class="section-title">Payment Method</h2>
             
             <div class="payment-methods">
-                <div class="method-tabs">
-            
-                    <div class="method-tab" data-tab="bank">Bank Transfer</div>
-                </div>
-                
-    
                 <!-- Bank Transfer Form -->
                 <div id="bankTransferForm" class="bank-transfer-form">
                     <div class="bank-details">
@@ -446,9 +421,6 @@
                         </div>
                         <div class="bank-info">
                             <strong>Account Number:</strong> 0000374891
-                        </div>
-                        <div class="bank-info">
-                           
                         </div>
                     </div>
                     
@@ -463,8 +435,6 @@
                             <label for="paymentReceipt" class="form-label">Payment Receipt</label>
                             <input type="file" id="paymentReceipt" class="form-control" name="receiptFile" accept=".jpg,.jpeg,.png,.pdf" required>
                         </div>
-                        
-                     
                         
                         <div class="form-group" style="margin-top: 2rem;">
                             <button type="submit" class="btn btn-primary">
@@ -492,12 +462,12 @@
         </div>
     </div>
 
- <footer>
-    <div class="footer-content">
-        <p>&copy; 2025 KACCIMA. All rights reserved.</p>
-        <p>Contact us: info@kaccima.ng | +2347063174462</p>
-    </div>
-</footer>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 KACCIMA. All rights reserved.</p>
+            <p>Contact us: info@kaccima.ng | +2347063174462</p>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -511,74 +481,8 @@
                     `KAN/${new Date().getFullYear()}/${Math.floor(10000 + Math.random() * 90000)}`;
             }
 
-            // Payment method tabs
-            const tabs = document.querySelectorAll('.method-tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-                    
-                    // Show corresponding form
-                    const tabName = this.getAttribute('data-tab');
-                    document.querySelector('.card-form').style.display = 'none';
-                    document.querySelector('.bank-transfer-form').style.display = 'none';
-                    
-                    if (tabName === 'card') {
-                        document.querySelector('.card-form').style.display = 'block';
-                    } else {
-                        document.querySelector('.bank-transfer-form').style.display = 'block';
-                    }
-                });
-            });
-
-            // Format card number input
-            const cardNumber = document.getElementById('cardNumber');
-            cardNumber.addEventListener('input', function(e) {
-                // Remove all non-digit characters
-                let value = this.value.replace(/\D/g, '');
-                // Add space after every 4 digits
-                value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
-                this.value = value;
-            });
-
-            // Format expiry date input
-            const expiryDate = document.getElementById('expiryDate');
-            expiryDate.addEventListener('input', function(e) {
-                // Remove all non-digit characters
-                let value = this.value.replace(/\D/g, '');
-                // Add slash after 2 digits
-                if (value.length > 2) {
-                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
-                }
-                this.value = value;
-            });
-
-            // Form submission
-            const cardForm = document.getElementById('cardPaymentForm');
-            const bankForm = document.getElementById('bankPaymentForm');
             const modal = document.getElementById('paymentModal');
             const modalBtn = document.getElementById('modalBtn');
-            
-            cardForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                // In a real app, you would process payment here
-                // For demo, we'll just show success modal
-                document.getElementById('modalMessage').textContent = 
-                    `Your payment of ₦52,500.00 has been processed successfully. 
-                    Your KACCIMA membership is being activated.`;
-                modal.style.display = 'flex';
-            });
-            
-            // bankForm.addEventListener('submit', function(e) {
-            //     e.preventDefault();
-            //     // In a real app, you would upload receipt and verify payment
-            //     document.getElementById('modalMessage').textContent = 
-            //         `Your payment receipt has been submitted for verification. 
-            //         We'll notify you once your payment is confirmed.`;
-            //     modal.style.display = 'flex';
-            // });
             
             modalBtn.addEventListener('click', function() {
                 modal.style.display = 'none';
