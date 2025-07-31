@@ -48,6 +48,8 @@ func main() {
 	http.Handle("/notification", isAuthenticated(notification))
 	http.Handle("/payment", isAuthenticated(payment))
 	http.Handle("/bank_transfer_handler", isAuthenticated(bankTransferHandler))
+	http.Handle("/update_bank_transfer", isAuthenticated(updateBankPayment))
+	http.Handle("/update_bank_transfer_handler", isAuthenticated(updateBankPaymentHandler))
 	http.Handle("/reviewedDocuments", isAuthenticated(reviewedDocuments))
 	http.Handle("/organization", isAuthenticated(organization))
 	http.Handle("/organization_register", isAuthenticated(organizationRegister))

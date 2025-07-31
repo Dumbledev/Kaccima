@@ -42,7 +42,7 @@
 
     <section class="dashboard-content">
       <div class="notification success" id="paymentStatusContainer">
-        <p>Your payment status: <span id="paymentStatus">{{.Payment.Status}}</span></p>
+        <p>Your payment status: <span id="">{{.Payment.Status}}</span></p>
       </div>
       
       <div class="profile-card">
@@ -58,6 +58,7 @@
             <div class="field-value">January 1, {{.Payment.Year}}</div>
           </div>
 
+<<<<<<< HEAD
           <div class="profile-field"></div>
         </div>
         
@@ -68,10 +69,31 @@
           <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
         </div>
       </div>
+=======
+    <div class="profile-field">
+    
+    </div>
+  </div>
+  
+  <div class="button-group">
+    <a href="/payment" class="btn">Renew Payment</a>
+    {{if eq .Organization.Status "Accepted"}}
+      <a href="/certificate/download" class="btn outline" id="downloadCertificate" download>Download Certificate</a>
+    {{end}}
+
+    {{if eq .Payment.Status "Accepted"}}
+      <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
+    {{else if eq .Payment.Status "Rejected" }}
+      <a href="/update_bank_transfer" class="btn outline" id="">Update Receipt</a>
+    {{end}}
+  </div>
+</div>
+>>>>>>> ff7ce04 (update payment update)
 
       <div class="profile-section"> 
         <h2 class="section-title">Profile Information</h2>
 
+<<<<<<< HEAD
         <div class="profile-grid">
           <div class="profile-field">
             <div class="field-label">Company Name</div>
@@ -109,6 +131,47 @@
         </div>
       </div>
       
+=======
+  <div class="profile-grid">
+    <div class="profile-field">
+      <div class="field-label">Company Name</div>
+      <div class="field-value" id="companyName">{{.Organization.Name}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Office Address</div>
+      <div class="field-value" id="officeAddress">{{.Organization.Address}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Business Nature</div>
+      <div class="field-value" id="businessNature">{{.Organization.NatureOfBusiness}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Bankers</div>
+      <div class="field-value" id="bankers">{{.Organization.Bankers}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Email</div>
+      <div class="field-value" id="email">{{.Organization.Email}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Registration Date</div>
+      <div class="field-value" id="registrationDate">{{.Payment.Day}}-{{.Payment.Month}}-{{.Payment.Year}}</div>
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Membership Status</div>
+      <div class="field-value" id="">{{.Payment.Status}}</div>
+    </div>
+    <div class="profile-field">
+    
+    </div>
+    <div class="profile-field">
+      <div class="field-label">Edit</div>
+      <button class="btn edit-btn" id="editProfile">Edit Profile</button>
+    </div>
+  </div>
+  
+</div>
+>>>>>>> ff7ce04 (update payment update)
       <div class="profile-info">
         <h3 class="section-title">Membership Information</h3>
         <p>As a member of KACCIMA, you are entitled to various benefits including access to business resources, networking opportunities, and support for your business growth.</p>
