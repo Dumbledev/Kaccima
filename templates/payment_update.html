@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KACCIMA - Membership Payment</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #15e420;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --white: #ffffff;
+            --border-radius: 5px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+             background-image: url(../static/bg.jpg);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text {
+            margin-left: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            color: var(--dark-color);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Payment Container */
+        .payment-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .payment-summary {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            height: fit-content;
+        }
+
+        .payment-form {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Summary Styles */
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .summary-value {
+            font-weight: 500;
+        }
+
+        .total-amount {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        /* Payment Method Tabs */
+        .payment-methods {
+            margin-bottom: 1.5rem;
+        }
+
+        .method-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .method-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .method-tab:hover:not(.active) {
+            color: var(--dark-color);
+        }
+
+        /* Card Payment Form */
+        .card-form {
+            display: block; /* Default shown */
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(21, 228, 32, 0.2);
+        }
+
+        .card-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .card-row .form-group {
+            flex: 1;
+        }
+
+        .card-icon {
+            height: 24px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        /* Bank Transfer Form (hidden by default) */
+        .bank-transfer-form {
+            display: none;
+        }
+
+        .bank-details {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+
+        .bank-info {
+            margin-bottom: 0.8rem;
+        }
+
+        .bank-info strong {
+            color: var(--dark-color);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: var(--box-shadow);
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #12c21e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 20px 10px;
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 14px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .payment-container {
+                flex-direction: column;
+            }
+
+            .payment-summary, .payment-form {
+                min-width: 100%;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+            }
+
+            nav ul li {
+                margin-left: 1rem;
+            }
+        }
+
+        /* Payment Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--success-color);
+        }
+
+        .modal-message {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .modal-btn:hover {
+            background-color: #12c21e;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/static/logo.png" alt="KACCIMA Logo" width="40" height="40">
+                <span class="logo-text">KACCIMA</span>
+            </div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="payment-container">
+        <!-- Payment Summary Section -->
+        <section class="payment-summary">
+            <h2 class="section-title">Membership Summary</h2>
+            
+            <div class="summary-item">
+                <span class="summary-label">Membership Type:</span>
+                <span class="summary-value" id="membershipType">Corporate Membership</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Company Name:</span>
+                <span class="summary-value" id="summaryCompanyName">{{.Organization.Name}}</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">CAC Number(Not Real CAC no. js issue):</span>
+                <span class="summary-value" id="registrationNumber">{{.Organization.CACNumber}}</span>
+            </div>
+            
+            
+            <div class="summary-item">
+                <span class="summary-label">Membership Registration Fee:</span>
+                <span class="summary-value">10,000</span>
+            </div>
+            
+            <div class="summary-item">
+                <span class="summary-label">Subsription Fee:</span>
+                <span class="summary-value">₦15,000.00</span>
+            </div>
+            
+            <div class="summary-item total-amount">
+                <span class="summary-label">Total Amount Due:</span>
+                <span class="summary-value">₦25,000.00</span>
+            </div>
+            
+            <div class="payment-instructions">
+                <h3>Payment Instructions</h3>
+                <p>Complete your membership registration by making payment through any of the available payment methods.</p>
+                <p>Your membership will be activated within 24-48 hours after payment verification.</p>
+                <p>For Rewal payment the Amouth to pay is 15,000.</p>
+            </div>
+        </section>
+
+        <!-- Payment Form Section -->
+        <section class="payment-form">
+            <h2 class="section-title">Payment Method</h2>
+            
+            <div class="payment-methods">
+                <div class="method-tabs">
+                    <div class="method-tab active" data-tab="card">Credit/Debit Card</div>
+                    <div class="method-tab" data-tab="bank">Bank Transfer</div>
+                </div>
+                
+                <!-- Card Payment Form -->
+                <form id="cardPaymentForm" class="card-form">
+                    <div class="form-group">
+                        <label for="cardNumber" class="form-label">Card Number</label>
+                        <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" required>
+                        <div style="margin-top: 5px;">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg" class="card-icon" alt="Visa">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mastercard/mastercard-original.svg" class="card-icon" alt="Mastercard">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" class="card-icon" alt="Apple Pay">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cardName" class="form-label">Name on Card</label>
+                        <input type="text" id="cardName" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="card-row">
+                        <div class="form-group">
+                            <label for="expiryDate" class="form-label">Expiry Date</label>
+                            <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" id="cvv" class="form-control" placeholder="123" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary">
+                            Pay ₦25,000.00
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Bank Transfer Form -->
+                <div id="bankTransferForm" class="bank-transfer-form">
+                    <div class="bank-details">
+                        <h3>KACCIMA Bank Details</h3>
+                        <div class="bank-info">
+                            <strong>Bank Name:</strong> Jaiz Bank 
+                        </div>
+                        <div class="bank-info">
+                            <strong>Account Name:</strong> KANO CHAMBER OF COMMERCE, INDUSTRY, MINES AND AGRICULTURE
+                        </div>
+                        <div class="bank-info">
+                            <strong>Account Number:</strong> 0000374891
+                        </div>
+                        <div class="bank-info">
+                            <strong>Amount:</strong> ₦25,000.00
+                        </div>
+                    </div>
+                    
+                    <p style="margin-bottom: 1.5rem;">
+                        After making your payment, please upload your payment receipt below for verification.
+                    </p>
+                    
+                    <form id="bankPaymentForm" method="post" enctype="multipart/form-data" action="/update_bank_transfer_handler">
+                        <input type="text" hidden name="organizationId" value="{{.Organization.ID}}">
+                        <input type="text" hidden name="organizationName" value="{{.Organization.Name}}">
+                        <div class="form-group">
+                            <label for="paymentReceipt" class="form-label">Payment Receipt</label>
+                            <input type="file" id="paymentReceipt" class="form-control" name="receiptFile" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                        
+                     
+                        
+                        <div class="form-group" style="margin-top: 2rem;">
+                            <button type="submit" class="btn btn-primary">
+                                Update Payment Proof
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Payment Success Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <span class="material-icons">check_circle</span>
+            </div>
+            <h2 class="modal-title">Payment Successful!</h2>
+            <p class="modal-message" id="modalMessage">
+                Your payment of ₦25,000.00 has been processed successfully. 
+                Your KACCIMA membership is being activated.
+            </p>
+            <button class="modal-btn" id="modalBtn">Continue to Dashboard</button>
+        </div>
+    </div>
+
+ <footer>
+    <div class="footer-content">
+        <p>&copy; 2025 KACCIMA. All rights reserved.</p>
+        <p>Contact us: info@kaccima.ng | +2347063174462</p>
+    </div>
+</footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load registration data from localStorage
+            const storedData = JSON.parse(localStorage.getItem('kaccimaRegistration'));
+            
+            if (storedData) {
+                document.getElementById('summaryCompanyName').textContent = storedData.companyName;
+                // Generate a mock registration number
+                document.getElementById('registrationNumber').textContent = 
+                    `KAN/${new Date().getFullYear()}/${Math.floor(10000 + Math.random() * 90000)}`;
+            }
+
+            // Payment method tabs
+            const tabs = document.querySelectorAll('.method-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding form
+                    const tabName = this.getAttribute('data-tab');
+                    document.querySelector('.card-form').style.display = 'none';
+                    document.querySelector('.bank-transfer-form').style.display = 'none';
+                    
+                    if (tabName === 'card') {
+                        document.querySelector('.card-form').style.display = 'block';
+                    } else {
+                        document.querySelector('.bank-transfer-form').style.display = 'block';
+                    }
+                });
+            });
+
+            // Format card number input
+            const cardNumber = document.getElementById('cardNumber');
+            cardNumber.addEventListener('input', function(e) {
+                // Remove all non-digit characters
+                let value = this.value.replace(/\D/g, '');
+                // Add space after every 4 digits
+                value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+                this.value = value;
+            });
+
+            // Format expiry date input
+            const expiryDate = document.getElementById('expiryDate');
+            expiryDate.addEventListener('input', function(e) {
+                // Remove all non-digit characters
+                let value = this.value.replace(/\D/g, '');
+                // Add slash after 2 digits
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                this.value = value;
+            });
+
+            // Form submission
+            const cardForm = document.getElementById('cardPaymentForm');
+            const bankForm = document.getElementById('bankPaymentForm');
+            const modal = document.getElementById('paymentModal');
+            const modalBtn = document.getElementById('modalBtn');
+            
+            cardForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, you would process payment here
+                // For demo, we'll just show success modal
+                document.getElementById('modalMessage').textContent = 
+                    `Your payment of ₦52,500.00 has been processed successfully. 
+                    Your KACCIMA membership is being activated.`;
+                modal.style.display = 'flex';
+            });
+            
+            // bankForm.addEventListener('submit', function(e) {
+            //     e.preventDefault();
+            //     // In a real app, you would upload receipt and verify payment
+            //     document.getElementById('modalMessage').textContent = 
+            //         `Your payment receipt has been submitted for verification. 
+            //         We'll notify you once your payment is confirmed.`;
+            //     modal.style.display = 'flex';
+            // });
+            
+            modalBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            });
+        });
+    </script>
+</body>
+</html>
