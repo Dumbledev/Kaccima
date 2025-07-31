@@ -547,7 +547,6 @@ func updateBankPaymentHandler(w http.ResponseWriter, r *http.Request) {
 	organizationId := r.FormValue("organizationId")
 	organizationName := r.FormValue("organizationName")
 	// name := r.FormValue("name")
-	fmt.Println("Update")
 	paymentResp, err := findOrganizationPayment(dbFindUrl, organizationId)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
