@@ -512,6 +512,104 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
+func updateBankPayment(w http.ResponseWriter, r *http.Request) {
+	type PageResult struct {
+		Organization Organization
+		Payment      BankTransfer
+	}
+	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(orgResp.Body) == 0 {
+		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		return
+	}
+	organization := orgResp.Body[0]
+	paymentResp, err := findOrganizationPayment(dbFindUrl, organization.ID)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	payment := paymentResp.Body[0]
+	p := PageResult{
+		Organization: organization,
+		Payment:      payment,
+	}
+	tmpl.ExecuteTemplate(w, "payment_update.html", p)
+}
+
+func updateBankPaymentHandler(w http.ResponseWriter, r *http.Request) {
+	payment := BankTransfer{}
+	year, month, day := time.Now().Date()
+	r.ParseMultipartForm(10 * 1024 * 1024)
+	organizationId := r.FormValue("organizationId")
+	organizationName := r.FormValue("organizationName")
+	// name := r.FormValue("name")
+	paymentResp, err := findOrganizationPayment(dbFindUrl, organizationId)
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "500.html", "Error")
+		return
+	}
+	if len(paymentResp.Body) != 0 {
+		payment = paymentResp.Body[0]
+	}
+	// payment := paymentResp.Body[0]
+
+	reciept, file, err := r.FormFile("receiptFile")
+	if err != nil {
+		tmpl.ExecuteTemplate(w, "payment.html", "Error Updating Payment Proof")
+		return
+	}
+	defer reciept.Close()
+	fileExtension := filepath.Ext(file.Filename)
+	var temp *os.File
+	var err2 error
+	if fileExtension == ".pdf" {
+		temp, err2 = os.CreateTemp("static/Payments", organizationName+" payment-*.pdf")
+	} else if fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".jpeg" {
+		temp, err2 = os.CreateTemp("static/Payments", organizationName+" payment-*.jpg")
+	}
+	if err2 != nil {
+		tmpl.ExecuteTemplate(w, "payment.html", "Error Uploading Payment Proof")
+		return
+	}
+	fileBytes, err3 := io.ReadAll(reciept)
+	if err3 != nil {
+		tmpl.ExecuteTemplate(w, "payment.html", "Error Uploading Payment Proof")
+		return
+	}
+	temp.Write(fileBytes)
+	payment.RecieptFile = temp.Name()
+	payment.Date = time.Now().String()
+	payment.Day = day
+	payment.Month = month.String()
+	payment.Year = year
+	payment.Status = "Pending"
+
+	jsonData, err := json.Marshal(payment)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request, err := http.NewRequest("PUT", dbUrl+"/"+payment.ID, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	request.Header.Set("content-type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(request)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	// body, _ := io.ReadAll(res.Body)
+	http.Redirect(w, r, "/dashboard", http.StatusPermanentRedirect)
+}
+
 func updateRejectedDocuments(w http.ResponseWriter, r *http.Request) {
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {

@@ -42,7 +42,7 @@
 
     <section class="dashboard-content">
       <div class="notification success" id="paymentStatusContainer">
-        <p>Your payment status: <span id="paymentStatus">{{.Payment.Status}}</span></p>
+        <p>Your payment status: <span id="">{{.Payment.Status}}</span></p>
       </div>
       
       <div class="profile-card">
@@ -58,20 +58,30 @@
             <div class="field-value">January 1, {{.Payment.Year}}</div>
           </div>
 
-          <div class="profile-field"></div>
+          <div class="profile-field">
+            
+          </div>          
         </div>
-        
-        <div class="button-group">
-          <a href="/payment" class="btn">Renew Payment</a>
-          <a href="/certificate/download" class="btn outline" id="downloadCertificate" 
-             data-status="{{.Payment.Status}}" download>Download Certificate</a>
-          <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
-        </div>
+  <div class="button-group">
+    <!-- <a href="/payment" class="btn">Renew Payment</a> -->
+    {{if eq .Organization.Status "Accepted"}}
+      <a href="/certificate/download" class="btn outline" id="downloadCertificate" download>Download Certificate</a>
+    {{end}}
+
+    {{if eq .Payment.Status "Accepted"}}
+      <a href="/receipt/download" class="btn outline" id="downloadReceipt" download>Download Receipt</a>
+    {{else if eq .Payment.Status "Rejected" }}
+      <a href="/update_bank_transfer" class="btn outline" id="">Renew Receipt</a>
+    {{end}}
+  </div>
+</div>        
       </div>
+  
+
+
 
       <div class="profile-section"> 
         <h2 class="section-title">Profile Information</h2>
-
         <div class="profile-grid">
           <div class="profile-field">
             <div class="field-label">Company Name</div>
@@ -99,16 +109,15 @@
           </div>
           <div class="profile-field">
             <div class="field-label">Membership Status</div>
-            <div class="field-value" id="paymentStatusValue">{{.Payment.Status}}</div>
+            <div class="" id="">{{.Organization.Status}}</div>
           </div>
-          <div class="profile-field"></div>
           <div class="profile-field">
             <div class="field-label">Edit</div>
             <button class="btn edit-btn" id="editProfile">Edit Profile</button>
           </div>
         </div>
       </div>
-      
+
       <div class="profile-info">
         <h3 class="section-title">Membership Information</h3>
         <p>As a member of KACCIMA, you are entitled to various benefits including access to business resources, networking opportunities, and support for your business growth.</p>
@@ -154,7 +163,6 @@
       setField('businessNature', Array.isArray(storedData.businessNature) ? storedData.businessNature.join(', ') : '');
       setField('bankers', storedData.bankers);
       setField('email', storedData.email);
-      setField('paymentStatusValue', storedData.paymentStatus || 'Pending');
 
       const regDate = storedData.registrationDate || new Date().toISOString();
       const regDateObj = new Date(regDate);

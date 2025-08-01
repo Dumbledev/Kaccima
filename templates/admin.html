@@ -324,6 +324,7 @@
           </thead>
           <tbody>
             {{range .PendingOrg}}
+<<<<<<< HEAD
             <tr>
               <td>{{.Name}}</td>
               <td>{{.PhoneNumber}}</td>
@@ -336,6 +337,27 @@
               <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
              
             </tr>
+=======
+              <tr>
+                <td>{{.Name}}</td>
+                <td>{{.PhoneNumber}}</td>
+                <td>{{.ContactPerson}}</td>
+                <td>{{.Email}}</td>
+                <td>{{.CACNumber}}</td>
+                <td>{{.Address}}</td>
+                <td>{{.NatureOfBusiness}}</td>
+                <td>{{.Status}}</td>
+                <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
+                <td>
+                  <!-- <a href="/accept_organization/{{.ID}}" onclick="approveOrg('{{.ID}}')" title="Accept">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                  <a href="/reject_organization/{{.ID}}" onclick="rejectOrg('{{.ID}}')" title="Reject">
+                    <i class="fas fa-times-circle"></i>
+                  </a> -->
+                </td>
+              </tr>
+>>>>>>> 09ec6fa43591f310cafb3d28be05d761fafb4863
             {{end}}
           </tbody>
         </table>
