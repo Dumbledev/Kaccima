@@ -319,7 +319,7 @@
               <th>Nature of Business</th>
               <th>Status</th>
               <th>Join Date</th>
-              <th>Actions</th>
+             
             </tr>
           </thead>
           <tbody>
@@ -334,14 +334,7 @@
               <td>{{.NatureOfBusiness}}</td>
               <td>{{.Status}}</td>
               <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
-              <td>
-                <a href="/accept_organization/{{.ID}}" onclick="approveOrg('{{.ID}}')" title="Accept">
-                  <i class="fas fa-eye"></i>
-                </a>
-                <a href="/reject_organization/{{.ID}}" onclick="rejectOrg('{{.ID}}')" title="Reject">
-                  <i class="fas fa-times-circle"></i>
-                </a>
-              </td>
+             
             </tr>
             {{end}}
           </tbody>
@@ -366,7 +359,7 @@
               <th>Amount</th>
               <th>Date</th>
               <th>Status</th>
-              <th>Actions</th>
+             
             </tr>
           </thead>
         
@@ -377,18 +370,6 @@
               <td>N25,000</td>
               <td>{{.Day}}-{{.Month}}-{{.Year}}</td>
               <td>{{.Status}}</td>
-              <td>
-                <a href="/{{.RecieptFile}}" target="_blank" onclick="viewOrg('{{.ID}}')" title="View">
-                  <i class="fas fa-eye"></i>
-                </a>
-                <a href="/accept_receipt/{{.ID}}">
-                  <i class="fas fa-check-circle"></i>
-                </a>
-                <a href="/reject_receipt/{{.ID}}">
-                  <i class="fas fa-times-circle"></i>
-                </a>
-              </td>
-             
             </tr>
             {{end}}
           </tbody>
