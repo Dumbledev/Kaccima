@@ -3,251 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documents - Admin Dashboard</title>
-
+    <title>Organization - Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="script.js" defer></script>
-      <style>
-  * {
-    box-sizing: border-box;
-  }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-  }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
 
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-image: url('../static/bg.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: url('../static/bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
 
-  .main-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
-  .header {
-    height: 60px;
-    background-color: #f5f5f5;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    flex-shrink: 0;
-  }
+        .header {
+            height: 60px;
+            background-color: #f5f5f5;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
 
-  .user-profile {
-    display: flex;
-    align-items: center;
-  }
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
 
-  .user-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
 
-  .content {
-    padding: 20px;
-    flex: 1;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    background-color: #ffffff;
-    margin: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
+        .content {
+            padding: 20px;
+            flex: 1;
+            overflow: auto;
+            background-color: #ffffff;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
 
-  .search-box {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
 
-  .search-box input {
-    border: none;
-    outline: none;
-    padding: 6px;
-    font-size: 14px;
-  }
+        .search-box input {
+            border: none;
+            outline: none;
+            padding: 6px;
+            font-size: 14px;
+        }
 
-  .table-container {
-    overflow-x: auto;
-  }
+        .table-container {
+            overflow-x: auto;
+        }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
 
-  th, td {
-    border: 1px solid #ddd;
-    padding: 10px 12px;
-    text-align: left;
-  }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            text-align: left;
+        }
 
-  th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
 
-  td:last-child {
-    text-align: center;
-  }
+        .btn {
+            padding: 6px 12px;
+            font-size: 13px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-  /* Styled Buttons */
-  .btn {
-    padding: 6px 12px;
-    font-size: 13px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 2px;
-    transition: background-color 0.3s ease;
-  }
+        .view-btn {
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+        }
 
-  .view-btn {
-    background-color: #2196F3;
-    color: white;
-  }
+        .view-btn:hover {
+            background-color: #1976D2;
+        }
 
-  .view-btn:hover {
-    background-color: #1976D2;
-  }
-
-  .accept-btn {
-    background-color: #4CAF50;
-    color: white;
-  }
-
-  .accept-btn:hover {
-    background-color: #388E3C;
-  }
-
-  .reject-btn {
-    background-color: #F44336;
-    color: white;
-  }
-
-  .reject-btn:hover {
-    background-color: #D32F2F;
-  }
-
-  /* Modal Styles */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .modal-content {
-    background-color: #fff;
-    margin: 8% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 600px;
-    position: relative;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  }
-
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 22px;
-    cursor: pointer;
-    color: #555;
-  }
-
-  .modal-body {
-    margin-top: 15px;
-  }
-
-  .document-actions {
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  .action-btn {
-    display: inline-block;
-    padding: 10px 18px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-  }
-
-  .action-btn:hover {
-    background-color: #388E3C;
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    .page-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .btn {
-      width: 100%;
-      margin-top: 5px;
-    }
-
-    .modal-content {
-      margin: 15% auto;
-    }
-  }
-</style>
-
+        @media (max-width: 600px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
 </head>
 <body>
-  
     <!-- Sidebar Navigation -->
- {{template "adminSideNav"}}
+    {{template "adminSideNav"}}
 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Header -->
         <header class="header">
-    
             <div class="header-right">
                 <div class="user-profile">
                     <img src="../static/avater.jpg" alt="Admin" class="user-avatar" />
@@ -274,7 +171,6 @@
                         <tr>
                             <th>Organization Name</th>
                             <th>CAC Number</th>
-                    
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -282,11 +178,9 @@
                         {{range .}}
                             <tr>
                                 <td>{{.Name}}</td>
-                               <td>{{.CACNumber}}</td>
+                                <td>{{.CACNumber}}</td>
                                 <td>
-                                <a href="/admin_organization_documents/{{.ID}}" class="btn view-btn">View</a>
-                                <!-- <button class="btn accept-btn">Accept</button>
-                                <button class="btn reject-btn">Reject</button> -->
+                                    <a href="/admin_organization_documents/{{.ID}}" class="btn view-btn">View</a>
                                 </td>
                             </tr>
                         {{end}}
@@ -296,38 +190,19 @@
         </div>
     </main>
 
-    <!-- Document Viewer Modal -->
-    <div class="modal" id="documentModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalDocTitle">Document Viewer</h3>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="documentViewer">
-                    <p>Document preview will appear here</p>
-                </div>
-                <div class="document-actions">
-                    <a class="action-btn btn-approve">
-                        <span class="material-icons">View Documents
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        function viewDocument(docName) {
-            document.getElementById('modalDocTitle').innerText = `Viewing: ${docName}`;
-            document.getElementById('documentViewer').innerHTML = `<p>Preview of <strong>${docName}</strong> would appear here.</p>`;
-            document.getElementById('documentModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('documentModal').style.display = 'none';
-        }
-
-        document.addEventListener('DOMContentLoaded', populateDocumentsTable);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            document.getElementById('searchDocuments').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#documentsTable tbody tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        });
     </script>
 </body>
 </html>
