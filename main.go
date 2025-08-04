@@ -26,7 +26,8 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static", fileServer))
 
-	http.HandleFunc("/", index)
+	http.Handle("/", isAuthenticated(index))
+	http.HandleFunc("/home", home)
 	http.HandleFunc("/kaccimanew2025", adminSignUp)
 	http.HandleFunc("/kaccimanew2025_handler", adminSignUpHandler)
 	http.HandleFunc("/kaccimanew2025super", superAdminSignUp)
@@ -113,6 +114,22 @@ func main() {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role == "user" {
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		return
+	} else if currentUser.Role == "admin" {
+		http.Redirect(w, r, "/admin", http.StatusSeeOther)
+		return
+	} else if currentUser.Role == "superAdmin" {
+		http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
+		return
+	} else {
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
+		return
+	}
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "index.html", nil)
 }
 

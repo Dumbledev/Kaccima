@@ -352,7 +352,7 @@ func isAuthenticated(endpoint func(http.ResponseWriter, *http.Request)) http.Han
 		session, _ := store.Get(r, "kaccima_session")
 		email, ok := session.Values["email"]
 		if !ok {
-			http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
+			http.Redirect(w, r, "/home", http.StatusPermanentRedirect)
 			return
 		}
 
