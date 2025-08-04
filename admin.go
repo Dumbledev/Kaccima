@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -223,9 +222,7 @@ func acceptReceipt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-	fmt.Println(string(body))
-	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusPermanentRedirect)
 }
 
 func rejectReceipt(w http.ResponseWriter, r *http.Request) {
@@ -259,9 +256,7 @@ func rejectReceipt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-	fmt.Println(string(body))
-	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusPermanentRedirect)
 }
 
 func acceptOrganization(w http.ResponseWriter, r *http.Request) {
