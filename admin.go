@@ -16,6 +16,10 @@ func admin(w http.ResponseWriter, r *http.Request) {
 		PendingOrg         []Organization
 		PendingBankPayment []BankTransfer
 	}
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	pendingBankTransfer := []BankTransfer{}
 	pendingOrg := []Organization{}
 	users := []User{}
@@ -55,6 +59,10 @@ func admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminDocuments(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	organizations := []Organization{}
 	orgResp, err := findAllOrganizations(dbFindUrl)
 	if err != nil {
@@ -68,6 +76,10 @@ func adminDocuments(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminOrganizationDocuments(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	id := r.PathValue("organizationId")
 	organization := Organization{}
 	orgResp, err := findOrganizationById(dbFindUrl, id)
@@ -82,6 +94,10 @@ func adminOrganizationDocuments(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminMembers(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	organizations := []Organization{}
 	accceptedOrganizations := []Organization{}
 	orgResp, err := findAllOrganizations(dbFindUrl)
@@ -103,6 +119,10 @@ func adminMembers(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminPayment(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	var bankTransfers []BankTransfer
 	bankTransferPendingStatusResponse, err := findOrganizationPayments(dbFindUrl)
 	if err != nil {
@@ -119,6 +139,10 @@ func adminPayment(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminReport(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	id := r.PathValue("organizationId")
 	orgResp, err := findOrganizationById(dbFindUrl, id)
 	if err != nil {
@@ -134,6 +158,10 @@ func adminReport(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminReportHandler(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	r.ParseForm()
 	id := r.FormValue("organizationId")
 	reportType := r.FormValue("reportType")
@@ -186,6 +214,10 @@ func adminReportHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminSettings(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "admin_settings.html", nil)
 }
 
@@ -906,6 +938,10 @@ func rejectIDDocument(w http.ResponseWriter, r *http.Request) {
 }
 
 func approvalAdmin(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "superAdmin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	type PageResult struct {
 		UserCount          int
 		PendingOrgCount    int

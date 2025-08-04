@@ -134,6 +134,10 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func profileUpdate(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	type PageResult struct {
 		User User
 		QA   PasswordResetQuestion
@@ -164,6 +168,10 @@ func profileUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func profileUpdateHandler(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	r.ParseForm()
 	id := r.FormValue("userId")
 	// email := strings.ToLower(r.FormValue("email"))
