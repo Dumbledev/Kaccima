@@ -225,10 +225,10 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	//
 	if user.Role == "admin" {
-		http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/admin", http.StatusSeeOther)
 		return
 	} else if user.Role == "user" {
-		http.Redirect(w, r, "/dashboard", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 		return
 	} else if user.Role == "superAdmin" {
 		http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
@@ -240,9 +240,10 @@ func signOut(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "kaccima_session")
 	delete(session.Values, "email")
 	delete(session.Values, "id")
+	session.Options.MaxAge = -1
 	session.Save(r, w)
 	currentUser = User{}
-	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/sign_in", http.StatusSeeOther)
 }
 
 func forgotPassword(w http.ResponseWriter, r *http.Request) {
