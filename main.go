@@ -114,6 +114,7 @@ func main() {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(currentUser)
 	if currentUser.Role == "user" {
 		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 		return
