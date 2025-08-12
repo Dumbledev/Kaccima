@@ -30,7 +30,7 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -40,7 +40,7 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	payment := paymentResp.Body[0]
@@ -58,7 +58,7 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 // 		return
 // 	}
 // 	if len(orgResp.Body) == 0 {
-// 		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+// 		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 // 		return
 // 	}
 // 	organization := orgResp.Body[0]
@@ -77,7 +77,7 @@ func notification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -87,7 +87,7 @@ func notification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	reports = reportResp.Body
@@ -105,7 +105,7 @@ func reviewedDocuments(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -123,7 +123,7 @@ func organization(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -147,7 +147,7 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -159,7 +159,7 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(userResp.Body) == 0 {
-		http.Redirect(w, r, "/sign_up", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/sign_up", http.StatusSeeOther)
 		return
 	}
 	user := userResp.Body[0]
@@ -447,7 +447,7 @@ func payment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -470,7 +470,7 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 	if len(paymentResp.Body) != 0 {
 		payment = paymentResp.Body[0]
 		if payment.Year == year {
-			http.Redirect(w, r, "/payment", http.StatusPermanentRedirect)
+			http.Redirect(w, r, "/payment", http.StatusSeeOther)
 			// fmt.Println("Already Paid For Current Year")
 			return
 		}
@@ -551,7 +551,7 @@ func updateBankPayment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -635,7 +635,7 @@ func updateBankPaymentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
-	http.Redirect(w, r, "/dashboard", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 // func updateRejectedDocuments(w http.ResponseWriter, r *http.Request) {
@@ -645,7 +645,7 @@ func updateBankPaymentHandler(w http.ResponseWriter, r *http.Request) {
 // 		return
 // 	}
 // 	if len(orgResp.Body) == 0 {
-// 		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+// 		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 // 		return
 // 	}
 // 	organization := orgResp.Body[0]

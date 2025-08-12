@@ -63,7 +63,7 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 		tmpl.ExecuteTemplate(w, "sign_up.html", "Server Error(2)")
 	}
 	defer res.Body.Close()
-	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/sign_in", http.StatusSeeOther)
 }
 
 func adminSignUp(w http.ResponseWriter, r *http.Request) {
@@ -118,7 +118,7 @@ func adminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/sign_in", http.StatusSeeOther)
 }
 
 func superAdminSignUp(w http.ResponseWriter, r *http.Request) {
@@ -173,7 +173,7 @@ func superAdminSignUpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/sign_in", http.StatusSeeOther)
 }
 
 func signIn(w http.ResponseWriter, r *http.Request) {
@@ -192,7 +192,7 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(userResponse.Body) == 0 {
-		http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/sign_in", http.StatusSeeOther)
 		return
 	}
 
@@ -354,7 +354,7 @@ func isAuthenticated(endpoint func(http.ResponseWriter, *http.Request)) http.Han
 		session, _ := store.Get(r, "kaccima_session")
 		email, ok := session.Values["email"]
 		if !ok {
-			http.Redirect(w, r, "/home", http.StatusPermanentRedirect)
+			http.Redirect(w, r, "/home", http.StatusSeeOther)
 			return
 		}
 
