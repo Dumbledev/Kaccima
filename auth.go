@@ -238,11 +238,19 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func signOut(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "kaccima_session")
+	session, err := store.Get(r, "kaccima_session")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	delete(session.Values, "email")
 	delete(session.Values, "id")
 	session.Options.MaxAge = -1
-	session.Save(r, w)
+	err = session.Save(r, w)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	currentUser = User{}
 	http.Redirect(w, r, "/sign_in", http.StatusSeeOther)
 }
