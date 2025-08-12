@@ -223,7 +223,6 @@ func adminSettings(w http.ResponseWriter, r *http.Request) {
 
 func acceptReceipt(w http.ResponseWriter, r *http.Request) {
 	paymentId := r.PathValue("paymentId")
-	fmt.Println(paymentId, "id")
 	payment := BankTransfer{}
 	paymentResp, err := findOrganizationPaymentByID(dbFindUrl, paymentId)
 	if err != nil {
@@ -234,7 +233,6 @@ func acceptReceipt(w http.ResponseWriter, r *http.Request) {
 		payment = paymentResp.Body[0]
 	}
 	payment.Status = "Accepted"
-	fmt.Println(payment)
 
 	jsonData, err := json.Marshal(&payment)
 	if err != nil {
