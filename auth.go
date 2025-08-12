@@ -242,7 +242,7 @@ func signOut(w http.ResponseWriter, r *http.Request) {
 	delete(session.Values, "id")
 	session.Save(r, w)
 	currentUser = User{}
-	http.Redirect(w, r, "/", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/sign_in", http.StatusPermanentRedirect)
 }
 
 func forgotPassword(w http.ResponseWriter, r *http.Request) {
