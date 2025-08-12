@@ -247,6 +247,7 @@ func signOut(w http.ResponseWriter, r *http.Request) {
 	delete(session.Values, "id")
 	session.Options.MaxAge = -1
 	err = session.Save(r, w)
+	fmt.Println(session.Options.Domain, session.Options.MaxAge)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
