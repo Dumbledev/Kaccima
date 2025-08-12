@@ -211,7 +211,7 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	session.Options = &sessions.Options{
-		Domain:   "http://83.229.83.17:8000",
+		Domain:   "localhost",
 		Path:     "/",
 		MaxAge:   86400 * 7,
 		HttpOnly: true,
