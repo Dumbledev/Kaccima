@@ -244,7 +244,7 @@ func signOut(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	delete(session.Values, "email")
-	delete(session.Values, "id")
+	delete(session.Values, "_id")
 	session.Options.MaxAge = -1
 	err = session.Save(r, w)
 	// fmt.Println(session.Options.Domain, session.Options.MaxAge)
