@@ -211,7 +211,7 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	session.Options = &sessions.Options{
-		// Domain:   "localhost",
+		Domain:   "http://83.229.83.17",
 		Path:     "/",
 		MaxAge:   86400 * 7,
 		HttpOnly: true,
@@ -363,7 +363,7 @@ func isAuthenticated(endpoint func(http.ResponseWriter, *http.Request)) http.Han
 		session, _ := store.Get(r, "kaccima_session")
 		email, ok := session.Values["email"]
 		if !ok {
-			http.Redirect(w, r, "/home", http.StatusSeeOther)
+			http.Redirect(w, r, "/sign_in", http.StatusSeeOther)
 			return
 		}
 
