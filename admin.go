@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -16,6 +15,10 @@ func admin(w http.ResponseWriter, r *http.Request) {
 		PendingOrgCount    int
 		PendingOrg         []Organization
 		PendingBankPayment []BankTransfer
+	}
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
 	}
 	pendingBankTransfer := []BankTransfer{}
 	pendingOrg := []Organization{}
@@ -56,6 +59,10 @@ func admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminDocuments(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	organizations := []Organization{}
 	orgResp, err := findAllOrganizations(dbFindUrl)
 	if err != nil {
@@ -69,6 +76,10 @@ func adminDocuments(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminOrganizationDocuments(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	id := r.PathValue("organizationId")
 	organization := Organization{}
 	orgResp, err := findOrganizationById(dbFindUrl, id)
@@ -83,6 +94,10 @@ func adminOrganizationDocuments(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminMembers(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	organizations := []Organization{}
 	accceptedOrganizations := []Organization{}
 	orgResp, err := findAllOrganizations(dbFindUrl)
@@ -104,6 +119,10 @@ func adminMembers(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminPayment(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	var bankTransfers []BankTransfer
 	bankTransferPendingStatusResponse, err := findOrganizationPayments(dbFindUrl)
 	if err != nil {
@@ -120,6 +139,10 @@ func adminPayment(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminReport(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	id := r.PathValue("organizationId")
 	orgResp, err := findOrganizationById(dbFindUrl, id)
 	if err != nil {
@@ -135,6 +158,10 @@ func adminReport(w http.ResponseWriter, r *http.Request) {
 }
 
 func adminReportHandler(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	r.ParseForm()
 	id := r.FormValue("organizationId")
 	reportType := r.FormValue("reportType")
@@ -183,16 +210,19 @@ func adminReportHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	http.Redirect(w, r, "/admin_members", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_members", http.StatusSeeOther)
 }
 
 func adminSettings(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "admin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "admin_settings.html", nil)
 }
 
 func acceptReceipt(w http.ResponseWriter, r *http.Request) {
 	paymentId := r.PathValue("paymentId")
-	fmt.Println(paymentId, "id")
 	payment := BankTransfer{}
 	paymentResp, err := findOrganizationPaymentByID(dbFindUrl, paymentId)
 	if err != nil {
@@ -203,7 +233,6 @@ func acceptReceipt(w http.ResponseWriter, r *http.Request) {
 		payment = paymentResp.Body[0]
 	}
 	payment.Status = "Accepted"
-	fmt.Println(payment)
 
 	jsonData, err := json.Marshal(&payment)
 	if err != nil {
@@ -223,9 +252,7 @@ func acceptReceipt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-	fmt.Println(string(body))
-	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
 }
 
 func rejectReceipt(w http.ResponseWriter, r *http.Request) {
@@ -259,9 +286,7 @@ func rejectReceipt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-	fmt.Println(string(body))
-	http.Redirect(w, r, "/admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
 }
 
 func acceptOrganization(w http.ResponseWriter, r *http.Request) {
@@ -296,7 +321,7 @@ func acceptOrganization(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
-	http.Redirect(w, r, "/approval_admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
 }
 
 func rejectOrganization(w http.ResponseWriter, r *http.Request) {
@@ -331,7 +356,7 @@ func rejectOrganization(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
-	http.Redirect(w, r, "/approval_admin", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
 }
 
 func approveMemorandum(w http.ResponseWriter, r *http.Request) {
@@ -367,7 +392,7 @@ func approveMemorandum(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func rejectMemorandum(w http.ResponseWriter, r *http.Request) {
@@ -403,7 +428,7 @@ func rejectMemorandum(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func approveCoverLetter(w http.ResponseWriter, r *http.Request) {
@@ -439,7 +464,7 @@ func approveCoverLetter(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func rejectCoverLetter(w http.ResponseWriter, r *http.Request) {
@@ -475,7 +500,7 @@ func rejectCoverLetter(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func approveBusinessCertificate(w http.ResponseWriter, r *http.Request) {
@@ -511,7 +536,7 @@ func approveBusinessCertificate(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func rejectBusinessCertificate(w http.ResponseWriter, r *http.Request) {
@@ -547,7 +572,7 @@ func rejectBusinessCertificate(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func approveIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
@@ -583,7 +608,7 @@ func approveIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func rejectIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
@@ -619,7 +644,7 @@ func rejectIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func approveBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
@@ -655,7 +680,7 @@ func approveBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func rejectBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
@@ -691,7 +716,7 @@ func rejectBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func approveCompanyLogo(w http.ResponseWriter, r *http.Request) {
@@ -727,7 +752,7 @@ func approveCompanyLogo(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func rejectCompanyLogo(w http.ResponseWriter, r *http.Request) {
@@ -763,7 +788,7 @@ func rejectCompanyLogo(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func approveFormC07(w http.ResponseWriter, r *http.Request) {
@@ -799,7 +824,7 @@ func approveFormC07(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func rejectFormC07(w http.ResponseWriter, r *http.Request) {
@@ -835,7 +860,7 @@ func rejectFormC07(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func approveIDDocumennt(w http.ResponseWriter, r *http.Request) {
@@ -871,7 +896,7 @@ func approveIDDocumennt(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func rejectIDDocument(w http.ResponseWriter, r *http.Request) {
@@ -907,10 +932,14 @@ func rejectIDDocument(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
 	// fmt.Println(string(body))
-	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/admin_organization_documents/"+organizationId, http.StatusSeeOther)
 }
 
 func approvalAdmin(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "superAdmin" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	type PageResult struct {
 		UserCount          int
 		PendingOrgCount    int

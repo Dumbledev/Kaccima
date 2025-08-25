@@ -16,6 +16,10 @@ import (
 )
 
 func organizationDashboard(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	type PageResult struct {
 		Organization Organization
 		Payment      BankTransfer
@@ -26,7 +30,7 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -36,7 +40,7 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	payment := paymentResp.Body[0]
@@ -54,7 +58,7 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 // 		return
 // 	}
 // 	if len(orgResp.Body) == 0 {
-// 		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+// 		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 // 		return
 // 	}
 // 	organization := orgResp.Body[0]
@@ -62,6 +66,10 @@ func organizationDashboard(w http.ResponseWriter, r *http.Request) {
 // }
 
 func notification(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	var reports []Report
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
@@ -69,7 +77,7 @@ func notification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -79,7 +87,7 @@ func notification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	reports = reportResp.Body
@@ -87,13 +95,17 @@ func notification(w http.ResponseWriter, r *http.Request) {
 }
 
 func reviewedDocuments(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -101,13 +113,17 @@ func reviewedDocuments(w http.ResponseWriter, r *http.Request) {
 }
 
 func organization(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -117,6 +133,10 @@ func organization(w http.ResponseWriter, r *http.Request) {
 }
 
 func profile(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	type PageResult struct {
 		Organization Organization
 		User         User
@@ -127,7 +147,7 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -139,7 +159,7 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(userResp.Body) == 0 {
-		http.Redirect(w, r, "/sign_up", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/sign_up", http.StatusSeeOther)
 		return
 	}
 	user := userResp.Body[0]
@@ -417,13 +437,17 @@ func organizationRegisterHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func payment(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
 	if err != nil {
 		tmpl.ExecuteTemplate(w, "500.html", "Error")
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -446,7 +470,7 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 	if len(paymentResp.Body) != 0 {
 		payment = paymentResp.Body[0]
 		if payment.Year == year {
-			http.Redirect(w, r, "/payment", http.StatusPermanentRedirect)
+			http.Redirect(w, r, "/payment", http.StatusSeeOther)
 			// fmt.Println("Already Paid For Current Year")
 			return
 		}
@@ -513,6 +537,10 @@ func bankTransferHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateBankPayment(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	type PageResult struct {
 		Organization Organization
 		Payment      BankTransfer
@@ -523,7 +551,7 @@ func updateBankPayment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
 		return
 	}
 	organization := orgResp.Body[0]
@@ -607,24 +635,28 @@ func updateBankPaymentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 	// body, _ := io.ReadAll(res.Body)
-	http.Redirect(w, r, "/dashboard", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
-func updateRejectedDocuments(w http.ResponseWriter, r *http.Request) {
-	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
-	if err != nil {
-		tmpl.ExecuteTemplate(w, "500.html", "Error")
-		return
-	}
-	if len(orgResp.Body) == 0 {
-		http.Redirect(w, r, "/organization_register", http.StatusPermanentRedirect)
-		return
-	}
-	organization := orgResp.Body[0]
-	tmpl.ExecuteTemplate(w, "update_rejected_documents.html", organization)
-}
+// func updateRejectedDocuments(w http.ResponseWriter, r *http.Request) {
+// 	orgResp, err := findOrganization(dbFindUrl, currentUser.ID)
+// 	if err != nil {
+// 		tmpl.ExecuteTemplate(w, "500.html", "Error")
+// 		return
+// 	}
+// 	if len(orgResp.Body) == 0 {
+// 		http.Redirect(w, r, "/organization_register", http.StatusSeeOther)
+// 		return
+// 	}
+// 	organization := orgResp.Body[0]
+// 	tmpl.ExecuteTemplate(w, "update_rejected_documents.html", organization)
+// }
 
 func updateMemorandum(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "update_memorandum.html", nil)
 }
 
@@ -685,6 +717,10 @@ func updateMemorandumHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateCoverLetter(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "update_cover_letter.html", nil)
 }
 
@@ -745,6 +781,10 @@ func updateCoverLetterHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateBusinessCertificate(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "update_business_certificate.html", nil)
 }
 
@@ -803,6 +843,10 @@ func updateBusinessCertificateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateIncorporationCertificate(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "update_incorporation_certificate.html", nil)
 }
 
@@ -862,6 +906,10 @@ func updateIncorporationCertificateHandler(w http.ResponseWriter, r *http.Reques
 }
 
 func updateBusinessPremiseCertificate(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "update_business_premise_certificate.html", nil)
 }
 
@@ -921,6 +969,10 @@ func updateBusinessPremiseCertificateHandler(w http.ResponseWriter, r *http.Requ
 }
 
 func updateCompanyLogo(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "update_company_logo.html", nil)
 }
 
@@ -980,6 +1032,10 @@ func updateCompanyLogoHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateFormC07(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "update_formco7.html", nil)
 }
 
@@ -1039,6 +1095,10 @@ func updateFormC07Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateIDDocument(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	tmpl.ExecuteTemplate(w, "update_idDocument.html", nil)
 }
 

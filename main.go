@@ -26,7 +26,8 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static", fileServer))
 
-	http.HandleFunc("/", index)
+	http.Handle("/", isAuthenticated(index))
+	http.HandleFunc("/home", home)
 	http.HandleFunc("/kaccimanew2025", adminSignUp)
 	http.HandleFunc("/kaccimanew2025_handler", adminSignUpHandler)
 	http.HandleFunc("/kaccimanew2025super", superAdminSignUp)
@@ -113,10 +114,31 @@ func main() {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role == "user" {
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+		return
+	} else if currentUser.Role == "admin" {
+		http.Redirect(w, r, "/admin", http.StatusSeeOther)
+		return
+	} else if currentUser.Role == "superAdmin" {
+		http.Redirect(w, r, "/approval_admin", http.StatusSeeOther)
+		return
+	} else {
+		fmt.Println(currentUser.Role, "role")
+		http.Redirect(w, r, "/home", http.StatusSeeOther)
+		return
+	}
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "index.html", nil)
 }
 
 func profileUpdate(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	type PageResult struct {
 		User User
 		QA   PasswordResetQuestion
@@ -147,6 +169,10 @@ func profileUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func profileUpdateHandler(w http.ResponseWriter, r *http.Request) {
+	if currentUser.Role != "user" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	r.ParseForm()
 	id := r.FormValue("userId")
 	// email := strings.ToLower(r.FormValue("email"))
